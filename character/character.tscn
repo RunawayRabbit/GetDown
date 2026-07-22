@@ -82,7 +82,7 @@ animations = [{
 "speed": 5.0
 }, {
 "frames": [{
-"duration": 1.0,
+"duration": 0.5,
 "texture": SubResource("AtlasTexture_hx151")
 }, {
 "duration": 1.0,
@@ -128,19 +128,30 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_omraf"]
-radius = 7.3260074
-height = 23.443224
+radius = 8.791208
+height = 20.512821
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1l1n4"]
+radius = 6.5934067
+height = 20.512821
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=1132243652]
 scale = Vector2(1.365, 1.365)
 script = ExtResource("1_glpr6")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1380152719]
+z_index = 1
 position = Vector2(0, -20)
 sprite_frames = SubResource("SpriteFrames_pjt0s")
-animation = &"fall"
+animation = &"duck"
+frame_progress = 0.2755637
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1308594552]
-position = Vector2(2.1978023, -7.3260074)
+[node name="StandingCollider" type="CollisionShape2D" parent="." unique_id=1308594552]
+position = Vector2(-3.45381e-14, -8.791208)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_omraf")
+
+[node name="DuckingCollider" type="CollisionShape2D" parent="." unique_id=1940819790]
+position = Vector2(0, -6.5934067)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_1l1n4")

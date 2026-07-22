@@ -46,12 +46,12 @@ var _is_ducking : bool = false
 func _physics_process(delta: float) -> void:
 	_update_timers(delta)
 	_process_input(delta)
-	_do_movement(delta)
+	
 	_update_state()
-	_update_sprite()
+	_do_movement(delta)
 	
 	move_and_slide()
-	
+	_update_sprite()
 
 func _update_timers(delta: float) -> void:
 	if is_on_floor():
@@ -83,27 +83,6 @@ func _start_jump() -> void:
 	_is_jumping = true
 	_state = PlayerState.JUMP
 
-func _do_movement(delta: float) -> void:
-	var grav := get_gravity()
-
-	if _is_jumping and Input.is_action_pressed("jump"):
-		_jump_hold_timer += delta
-		velocity += (grav * 0.3) * delta 
-		velocity.y -= jump_hold_force * delta
-	else:
-		velocity += grav * delta
-
-	var accel := acceleration if is_on_floor() else air_acceleration
-	var turn_accel := turn_acceleration if is_on_floor() else air_turn_acceleration
-
-	if _move_input != 0.0:
-		if _move_input * velocity.x > 0:
-			velocity.x = move_toward(velocity.x, _move_input * max_speed, accel * delta)
-		else:
-			velocity.x = move_toward(velocity.x, _move_input * max_speed, turn_accel * delta)
-	else:
-		velocity.x = move_toward(velocity.x, 0.0, deceleration * delta)
-
 func _update_state() -> void:
 	if is_on_floor():
 		if abs(velocity.x) > 10.0:
@@ -116,11 +95,44 @@ func _update_state() -> void:
 		else:
 			_state = PlayerState.FALL
 
+func _do_movement(delta: float) -> void:
+	match _state:
+		PlayerState.IDLE, PlayerState.WALK:
+			_do_ground_movement(delta)
+		PlayerState.JUMP, PlayerState.FALL:
+			_do_air_movement(delta)
+
+func _do_ground_movement(delta: float) -> void:
+	if _move_input != 0.0:
+		if _move_input * velocity.x > 0:
+			velocity.x = move_toward(velocity.x, _move_input * max_speed, acceleration * delta)
+		else:
+			velocity.x = move_toward(velocity.x, _move_input * max_speed, turn_acceleration * delta)
+	else:
+		velocity.x = move_toward(velocity.x, 0.0, deceleration * delta)
+
+func _do_air_movement(delta: float) -> void:
+	var grav := get_gravity()
+
+	if _is_jumping and Input.is_action_pressed("jump"):
+		_jump_hold_timer += delta
+		velocity += (grav * 0.3) * delta
+		velocity.y -= jump_hold_force * delta
+	else:
+		velocity += grav * delta
+
+	if _move_input != 0.0:
+		if _move_input * velocity.x > 0:
+			velocity.x = move_toward(velocity.x, _move_input * max_speed, air_acceleration * delta)
+		else:
+			velocity.x = move_toward(velocity.x, _move_input * max_speed, air_turn_acceleration * delta)
+	else:
+		velocity.x = move_toward(velocity.x, 0.0, deceleration * delta)
+
 func _update_sprite() -> void:
 	if not animated_sprite_2d:
 		return
 	
-	# Facing
 	if velocity.x < 0:
 		animated_sprite_2d.flip_h = false
 	elif velocity.x > 0:
@@ -128,9 +140,15 @@ func _update_sprite() -> void:
 		
 	match _state:
 		PlayerState.JUMP:
-			animated_sprite_2d.play("jump")
+			# Godot will "loop" if I tell it to play on every frame.
+			# Hacky way to prevent this..
+			if animated_sprite_2d.frame_progress < 1.0:
+				animated_sprite_2d.play("jump")
 		PlayerState.FALL:
-			animated_sprite_2d.play("fall")
+			if animated_sprite_2d.sprite_frames.has_animation("fall"):
+				animated_sprite_2d.play("fall")
+			else:
+				animated_sprite_2d.play("jump")
 		PlayerState.WALK:
 			if _is_ducking:
 				animated_sprite_2d.play("duck")
