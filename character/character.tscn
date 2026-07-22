@@ -3,6 +3,14 @@
 [ext_resource type="Script" uid="uid://bq1pxduq0h73o" path="res://character/char_controller.gd" id="1_glpr6"]
 [ext_resource type="Texture2D" uid="uid://cmytfbk448nk8" path="res://art/player/player sprites.png" id="2_1l1n4"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_1l1n4"]
+atlas = ExtResource("2_1l1n4")
+region = Rect2(0, 80, 48, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hd715"]
+atlas = ExtResource("2_1l1n4")
+region = Rect2(96, 120, 48, 40)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_ugqs2"]
 atlas = ExtResource("2_1l1n4")
 region = Rect2(0, 0, 48, 40)
@@ -49,6 +57,22 @@ region = Rect2(144, 0, 48, 40)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_pjt0s"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1l1n4")
+}],
+"loop": 1,
+"name": &"duck",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hd715")
+}],
+"loop": 1,
+"name": &"fall",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ugqs2")
@@ -114,7 +138,7 @@ script = ExtResource("1_glpr6")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1380152719]
 position = Vector2(0, -20)
 sprite_frames = SubResource("SpriteFrames_pjt0s")
-animation = &"jump"
+animation = &"fall"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1308594552]
 position = Vector2(2.1978023, -7.3260074)

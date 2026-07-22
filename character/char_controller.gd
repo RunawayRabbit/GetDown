@@ -10,8 +10,6 @@ class_name CharacterController
 @export var deceleration := 700.0
 ## Rate at which the character decelerates in x when given opposite input. in pixels/sec^2
 @export var turn_acceleration := 1200.0
-## Multiplier for a slight increase in top speed and acceleration when running downhill.
-@export var downhill_boost := 1.5
 
 @export_category("Air Movement")
 ## Rate at which the char accelerates in x in the air when input is provided. in pixels/sec^2
@@ -35,23 +33,25 @@ class_name CharacterController
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
-#enum PlayerState { IDLE, WALK, JUMP, FALL }
-#var _state := PlayerState.IDLE
+enum PlayerState { IDLE, WALK, JUMP, FALL }
+var _state := PlayerState.IDLE
 
 var _coyote_timer : float = 0.0
 var _buffer_timer : float = 0.0
 var _jump_hold_timer : float = 0.0
 var _is_jumping : bool = false
 var _move_input : float = 0.0
-var _duck_held : bool = false
+var _is_ducking : bool = false
 
 func _physics_process(delta: float) -> void:
 	_update_timers(delta)
 	_process_input(delta)
 	_do_movement(delta)
+	_update_state()
+	_update_sprite()
 	
 	move_and_slide()
-	_update_sprite()
+	
 
 func _update_timers(delta: float) -> void:
 	if is_on_floor():
@@ -64,7 +64,7 @@ func _update_timers(delta: float) -> void:
 
 func _process_input(_delta: float) -> void:
 	_move_input = Input.get_axis("move_left", "move_right")
-	_duck_held = Input.is_action_pressed("duck")
+	_is_ducking = Input.is_action_pressed("duck")
 
 	if Input.is_action_just_pressed("jump"):
 		_buffer_timer = jump_buffer_time
@@ -81,6 +81,7 @@ func _start_jump() -> void:
 	_buffer_timer = 0.0
 	_jump_hold_timer = 0.0
 	_is_jumping = true
+	_state = PlayerState.JUMP
 
 func _do_movement(delta: float) -> void:
 	var grav := get_gravity()
@@ -103,15 +104,40 @@ func _do_movement(delta: float) -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0.0, deceleration * delta)
 
+func _update_state() -> void:
+	if is_on_floor():
+		if abs(velocity.x) > 10.0:
+			_state = PlayerState.WALK
+		else:
+			_state = PlayerState.IDLE
+	else:
+		if velocity.y < 0.0:
+			_state = PlayerState.JUMP
+		else:
+			_state = PlayerState.FALL
+
 func _update_sprite() -> void:
 	if not animated_sprite_2d:
 		return
-		
+	
+	# Facing
 	if velocity.x < 0:
 		animated_sprite_2d.flip_h = false
-		animated_sprite_2d.play("run")
 	elif velocity.x > 0:
 		animated_sprite_2d.flip_h = true
-		animated_sprite_2d.play("run")
-	else:
-		animated_sprite_2d.play("idle")
+		
+	match _state:
+		PlayerState.JUMP:
+			animated_sprite_2d.play("jump")
+		PlayerState.FALL:
+			animated_sprite_2d.play("fall")
+		PlayerState.WALK:
+			if _is_ducking:
+				animated_sprite_2d.play("duck")
+			else:
+				animated_sprite_2d.play("run")
+		PlayerState.IDLE:
+			if _is_ducking:
+				animated_sprite_2d.play("duck")
+			else:
+				animated_sprite_2d.play("idle")
