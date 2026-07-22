@@ -144,7 +144,7 @@ z_index = 1
 position = Vector2(0, -20)
 sprite_frames = SubResource("SpriteFrames_pjt0s")
 animation = &"duck"
-frame_progress = 0.2755637
+frame_progress = 0.77073056
 
 [node name="StandingCollider" type="CollisionShape2D" parent="." unique_id=1308594552]
 position = Vector2(-3.45381e-14, -8.791208)
