@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://u7flw2eykdxt" path="res://entities/character/states/state_jump.gd" id="5_o6jyn"]
 [ext_resource type="Script" uid="uid://bdot4hrhlu556" path="res://entities/character/states/state_fall.gd" id="6_tgjim"]
 [ext_resource type="Script" uid="uid://daxuua8m7srvp" path="res://entities/character/states/state_duck.gd" id="7_tgjim"]
+[ext_resource type="Script" uid="uid://d2qqydh5t287t" path="res://entities/character/states/state_wall.gd" id="8_0vyii"]
 [ext_resource type="Script" uid="uid://bdck1ku3x7luc" path="res://entities/character/states/state_hover.gd" id="8_wy5t8"]
 [ext_resource type="Script" uid="uid://c17xgnqt7ydgq" path="res://entities/character/beak_attack.gd" id="9_dy06j"]
 
@@ -98,6 +99,14 @@ region = Rect2(96, 0, 48, 40)
 [sub_resource type="AtlasTexture" id="AtlasTexture_b4qc5"]
 atlas = ExtResource("2_1l1n4")
 region = Rect2(144, 0, 48, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0vyii"]
+atlas = ExtResource("2_1l1n4")
+region = Rect2(48, 120, 48, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6y70v"]
+atlas = ExtResource("2_1l1n4")
+region = Rect2(48, 40, 48, 40)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_pjt0s"]
 animations = [{
@@ -208,6 +217,17 @@ animations = [{
 "loop": 1,
 "name": &"run",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0vyii")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6y70v")
+}],
+"loop": 0,
+"name": &"wall_grab",
+"speed": 5.0
 }]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_omraf"]
@@ -257,6 +277,10 @@ turn_acceleration = 700.0
 script = ExtResource("8_wy5t8")
 curve = SubResource("Curve_wy5t8")
 
+[node name="wall" type="Node" parent="StateMachine" unique_id=931834819]
+script = ExtResource("8_0vyii")
+metadata/_custom_type_script = "uid://d2qqydh5t287t"
+
 [node name="BeakAttack" type="Node" parent="." unique_id=1742894338]
 script = ExtResource("9_dy06j")
 
@@ -264,7 +288,7 @@ script = ExtResource("9_dy06j")
 z_index = 1
 position = Vector2(0, -20)
 sprite_frames = SubResource("SpriteFrames_pjt0s")
-animation = &"attack"
+animation = &"wall_grab"
 
 [node name="Wings" type="AnimatedSprite2D" parent="." unique_id=521792547]
 sprite_frames = SubResource("SpriteFrames_omraf")

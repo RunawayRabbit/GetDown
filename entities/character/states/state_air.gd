@@ -17,11 +17,16 @@ func physics_update(delta: float) -> void:
 	controller.update_facing()
 	controller.play_animation(_get_animation())
 
-	if controller.is_on_floor():
+	if is_groundable() and controller.is_on_floor():
 		state_machine.transition_to("run" if absf(controller.velocity.x) > 10.0 else "idle")
 		return
 
 	_check_air_transition()
+
+## Override: Some states (really just the hover jump) want to be able to control
+## when they are able to go into grounded state. This lets them do that.
+func is_groundable() -> bool:
+	return true
 
 ## Override: apply gravity / hold-force / whatever this state's vertical rule is.
 ## You may safely assume gravity doesn't change in this game. I think. =/

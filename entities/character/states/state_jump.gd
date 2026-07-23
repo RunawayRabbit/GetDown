@@ -6,8 +6,9 @@ var _hold_timer := 0.0
 func enter(_previous_state_name: String, params: Dictionary = {}) -> void:
 	# Params
 	var impulse: float = params.get("impulse", controller.min_jump_force)
+	var horiz: float = params.get("horizontal_impulse", 0.0)
 	
-	
+	controller.velocity.x += horiz
 	controller.velocity.y = -impulse
 	_hold_timer = 0.0
 	controller.consume_jump()

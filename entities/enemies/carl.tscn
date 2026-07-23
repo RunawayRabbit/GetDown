@@ -1,14 +1,51 @@
 [gd_scene format=3 uid="uid://b5b5oaw12bdnr"]
 
 [ext_resource type="Script" uid="uid://htht6lc54b86" path="res://entities/enemies/enemy.gd" id="1_1qciw"]
-[ext_resource type="Texture2D" uid="uid://byexcxfg7fm7a" path="res://icon.svg" id="1_bsh8i"]
+[ext_resource type="Texture2D" uid="uid://dk5gv1s2vebh1" path="res://art/enemies/carl.png" id="2_1mf4w"]
 [ext_resource type="Script" uid="uid://fet56joiwi3x" path="res://entities/hurtbox.gd" id="2_1qciw"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nmbuw"]
+atlas = ExtResource("2_1mf4w")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3f001"]
+atlas = ExtResource("2_1mf4w")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_700jn"]
+atlas = ExtResource("2_1mf4w")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kffeq"]
+atlas = ExtResource("2_1mf4w")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ypd62"]
+atlas = ExtResource("2_1mf4w")
+region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_omraf"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_bsh8i")
+"texture": SubResource("AtlasTexture_nmbuw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3f001")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_700jn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kffeq")
+}],
+"loop": 0,
+"name": &"death",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ypd62")
 }],
 "loop": 1,
 "name": &"default",
@@ -17,10 +54,10 @@ animations = [{
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_omraf"]
 radius = 9.0
-height = 28.0
+height = 24.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_omraf"]
-size = Vector2(25, 28.5)
+size = Vector2(17, 20)
 
 [node name="Carl" type="CharacterBody2D" unique_id=247573165]
 collision_layer = 2
@@ -29,7 +66,6 @@ script = ExtResource("1_1qciw")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=347450487]
 position = Vector2(0, -13)
-scale = Vector2(0.2, 0.2)
 sprite_frames = SubResource("SpriteFrames_omraf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1584150704]
@@ -40,10 +76,11 @@ shape = SubResource("CapsuleShape2D_omraf")
 collision_layer = 2
 monitoring = false
 script = ExtResource("2_1qciw")
+max_health = 1
 metadata/_custom_type_script = "uid://fet56joiwi3x"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=1626367667]
-position = Vector2(-0.5, -14.75)
+position = Vector2(-0.5, -15)
 shape = SubResource("RectangleShape2D_omraf")
 debug_color = Color(0.94320744, 8.95232e-06, 0.60490704, 0.41960785)
 

@@ -35,6 +35,7 @@ class_name CharacterController
 @onready var standing_collider: CollisionShape2D = $StandingCollider
 @onready var state_machine: CharacterStateMachine = $StateMachine
 @onready var beak_attack: BeakAttack = $BeakAttack
+@onready var hitbox: Area2D = $Hitbox
 
 
 var move_input: float = 0.0
@@ -50,6 +51,10 @@ var _jump_buffer_timer: float = 0.0
 var _attack_lock_timer: float = 0.0
 var _attack_buffer_timer: float = 0.0
 
+var wall_released_this_frame: bool = false
+
+func _ready() -> void:
+	DebugDisplay.watch("Has Wall", func(): return has_wall_in_front(facing_dir))
 
 func _physics_process(delta: float) -> void:
 	_update_timers(delta)
@@ -58,7 +63,12 @@ func _physics_process(delta: float) -> void:
 	state_machine.physics_update(delta)
 	_check_jump_trigger()
 	_force_duck()
-	beak_attack.physics_update(delta, _attack_button_went_down)
+	
+	#TODO: Janky and inelegant.
+	var attack_pressed_for_beak := _attack_button_went_down
+	if state_machine.is_in_state("wall_grab") or _check_wall_grab_trigger():
+		attack_pressed_for_beak = false
+	beak_attack.physics_update(delta, attack_pressed_for_beak)
 
 	move_and_slide()
 
@@ -81,6 +91,7 @@ func _update_timers(delta: float) -> void:
 	if _attack_lock_timer > 0.0:
 		_attack_lock_timer -= delta
 
+	wall_released_this_frame = false
 	
 func _read_input() -> void:
 	move_input = Input.get_axis("move_left", "move_right")
@@ -114,12 +125,32 @@ func _force_duck() -> void:
 		state_machine.transition_to("duck")
 
 
+func _check_wall_grab_trigger() -> bool:
+	if is_on_floor():
+		return false
+	if not _attack_button_went_down:
+		return false
+	if wall_released_this_frame:
+		return false
+	if not has_wall_in_front(facing_dir):
+		return false
+	state_machine.transition_to("wall")
+	return true
+
+func has_wall_in_front(dir: int) -> bool:
+	var trans = beak_attack.hitbox.transform
+	trans.origin.x = beak_attack.get_hitbox_offset() * dir
+	# NOTE: Hard-coded because the engine REALLY isn't good at naming collision layers
+	var mask := 1 << 2
+	var result = not shapecast(beak_attack.get_shape(), trans, mask).is_empty()
+	return result
+
 
 func consume_jump() -> void:
 	_coyote_timer = 0.0
 	_jump_buffer_timer = 0.0
 
-func consume_double_jump() -> void:
+func consume_hover_jump() -> void:
 	_can_hover_jump = false
 
 
@@ -137,16 +168,17 @@ func apply_movement(delta: float, max_speed:float, acceleration:float,
 
 
 
-func shapecast(shape:Shape2D, trans:Transform2D) -> Array[Dictionary]:
+func shapecast(shape:Shape2D, trans:Transform2D, mask:int = collision_mask) -> Array[Dictionary]:
 	var space_state = get_world_2d().direct_space_state
 	
 	var query = PhysicsShapeQueryParameters2D.new()
 	query.shape = shape
 	query.transform = transform * trans
-	query.collision_mask = collision_mask
+	query.collision_mask = mask
 	query.exclude = [get_rid()]
 	
-	return space_state.intersect_shape(query)
+	var result = space_state.intersect_shape(query)
+	return result
 
 
 func update_facing() -> void:
@@ -162,6 +194,10 @@ func update_facing() -> void:
 
 func is_attacking() -> bool:
 	return _attack_lock_timer > 0.0
+
+
+func is_attack_pressed() -> bool:
+	return _attack_button_went_down
 
 
 func play_animation(anim_name: String) -> void:

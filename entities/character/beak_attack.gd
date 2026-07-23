@@ -19,7 +19,14 @@ func _ready() -> void:
 	hitbox.area_entered.connect(_on_hitbox_area_entered)
 	hitbox.body_entered.connect(_on_hitbox_body_entered)
 	_attack_hitbox_offset = -hitbox.position.x
+
+func get_hitbox_offset() -> float:
+	return _attack_hitbox_offset
 	
+	
+func get_shape() -> Shape2D:
+	return (hitbox.get_child(0) as CollisionShape2D).shape
+
 
 func physics_update(delta: float, attack_pressed: bool) -> void:
 	if _cooldown_timer > 0.0:

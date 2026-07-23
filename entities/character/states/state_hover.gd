@@ -8,12 +8,14 @@ var _timer := 0.0
 func enter(_previous_state_name: String, _params: Dictionary = {}) -> void:
 	_timer = 0.0
 	controller.velocity.y = 0.0
-	controller.consume_double_jump()
+	controller.consume_hover_jump()
 
 func exit() -> void:
 	DebugDisplay.remove_watch("Hover Weight")
-	
 
+
+func is_groundable() -> bool:
+	return controller.velocity.y > 0.0
 
 func _apply_vertical(delta: float) -> void:
 	var grav = controller.get_gravity()
