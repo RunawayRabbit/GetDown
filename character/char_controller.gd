@@ -1,6 +1,7 @@
 extends CharacterBody2D
 class_name CharacterController
 
+
 @export_category("Ground Movement")
 ## Max speed of the player in pixels/sec
 @export var max_speed := 150.0
@@ -10,6 +11,7 @@ class_name CharacterController
 @export var deceleration := 700.0
 ## Rate at which the character decelerates in x when given opposite input. in pixels/sec^2
 @export var turn_acceleration := 1200.0
+
 
 @export_category("Air Movement")
 ## Rate at which the char accelerates in x in the air when input is provided. in pixels/sec^2
@@ -32,20 +34,27 @@ class_name CharacterController
 ## Impulse applied instead of min_jump_force when jumping out of a charged duck.
 @export var charge_jump_impulse: float = 300.0
 
+
 @export_category("Assists")
 ## When you fall off an edge, you can still input a jump for this many seconds.
 @export var coyote_time: float = 0.15
 ## When landing, you can input a jump this many seconds before you land to jump immediately.
 @export var jump_buffer_time: float = 0.15
 
+
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var state_machine: CharacterStateMachine = $StateMachine
 
+
 var move_input: float = 0.0
 var is_ducking: bool = false
+var _can_hover_jump: bool = false
+var _jump_button_went_down: bool = false
+
 
 var _coyote_timer: float = 0.0
 var _buffer_timer: float = 0.0
+
 
 func _physics_process(delta: float) -> void:
 	_update_timers(delta)
@@ -57,38 +66,46 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 
-
 func _update_timers(delta: float) -> void:
 	if is_on_floor():
 		_coyote_timer = coyote_time
+		_can_hover_jump = true
 	else:
 		_coyote_timer -= delta
 
 	if _buffer_timer > 0.0:
 		_buffer_timer -= delta
 
-
+	
 func _read_input() -> void:
 	move_input = Input.get_axis("move_left", "move_right")
 	is_ducking = Input.is_action_pressed("duck")
 
-	if Input.is_action_just_pressed("jump"):
+	_jump_button_went_down = Input.is_action_just_pressed("jump")
+	if _jump_button_went_down:
 		_buffer_timer = jump_buffer_time
 
 
 func _check_jump_trigger() -> void:
-	if state_machine.is_in_state("jump"):
+	if state_machine.is_in_state("jump") or state_machine.is_in_state("hover"):
 		return
+ 
 	if _buffer_timer > 0.0 and _coyote_timer > 0.0:
 		var params := state_machine.current_state.get_jump_params()
 		state_machine.transition_to("jump", params)
+		return
+ 
 
+	if _can_hover_jump and not is_on_floor() and _jump_button_went_down:
+		state_machine.transition_to("hover")
 
 
 func consume_jump() -> void:
 	_coyote_timer = 0.0
 	_buffer_timer = 0.0
 
+func consume_double_jump() -> void:
+	_can_hover_jump = false
 
 
 

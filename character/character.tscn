@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://u7flw2eykdxt" path="res://character/states/state_jump.gd" id="5_o6jyn"]
 [ext_resource type="Script" uid="uid://bdot4hrhlu556" path="res://character/states/state_fall.gd" id="6_tgjim"]
 [ext_resource type="Script" uid="uid://daxuua8m7srvp" path="res://character/states/state_duck.gd" id="7_tgjim"]
+[ext_resource type="Script" uid="uid://bdck1ku3x7luc" path="res://character/states/state_hover.gd" id="8_wy5t8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1l1n4"]
 atlas = ExtResource("2_1l1n4")
@@ -19,6 +20,22 @@ region = Rect2(0, 120, 48, 40)
 [sub_resource type="AtlasTexture" id="AtlasTexture_hd715"]
 atlas = ExtResource("2_1l1n4")
 region = Rect2(96, 120, 48, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orckd"]
+atlas = ExtResource("2_1l1n4")
+region = Rect2(0, 0, 48, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1dqym"]
+atlas = ExtResource("2_1l1n4")
+region = Rect2(48, 0, 48, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6kuvt"]
+atlas = ExtResource("2_1l1n4")
+region = Rect2(96, 0, 48, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6610h"]
+atlas = ExtResource("2_1l1n4")
+region = Rect2(144, 0, 48, 40)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ugqs2"]
 atlas = ExtResource("2_1l1n4")
@@ -92,6 +109,23 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_orckd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1dqym")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6kuvt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6610h")
+}],
+"loop": 1,
+"name": &"hover",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_ugqs2")
 }],
 "loop": 1,
@@ -154,6 +188,11 @@ height = 20.512821
 radius = 6.5934067
 height = 20.512821
 
+[sub_resource type="Curve" id="Curve_wy5t8"]
+_limits = [-400.0, 600.0, 0.0, 0.9]
+_data = [Vector2(0, -400), 0.0, 0.0, 0, 0, Vector2(0.25909096, 457.1429), 0.0, 0.0, 0, 0, Vector2(0.9, 120.4082), 0.0, 0.0, 0, 0]
+point_count = 3
+
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=1132243652]
 scale = Vector2(1.365, 1.365)
 script = ExtResource("1_glpr6")
@@ -162,7 +201,7 @@ script = ExtResource("1_glpr6")
 z_index = 1
 position = Vector2(0, -20)
 sprite_frames = SubResource("SpriteFrames_pjt0s")
-animation = &"duck"
+animation = &"hover"
 
 [node name="Wings" type="AnimatedSprite2D" parent="." unique_id=521792547]
 sprite_frames = SubResource("SpriteFrames_omraf")
@@ -198,3 +237,7 @@ metadata/_custom_type_script = "uid://bdot4hrhlu556"
 
 [node name="duck" type="Node" parent="StateMachine" unique_id=657314287]
 script = ExtResource("7_tgjim")
+
+[node name="hover" type="Node" parent="StateMachine" unique_id=1782628402]
+script = ExtResource("8_wy5t8")
+curve = SubResource("Curve_wy5t8")
