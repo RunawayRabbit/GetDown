@@ -1,12 +1,24 @@
 extends CharacterState
 class_name StateGrounded
 
+## Max speed of the player in pixels/sec
+@export var max_speed := 150.0
+## Rate at which the char accelerates in x when input is provided. in pixels/sec^2
+@export var acceleration := 700.0
+## Rate at which the char decelerates in x when no input is provided. (Sliding stop.) in pixels/sec^2
+@export var deceleration := 700.0
+## Rate at which the character decelerates in x when given opposite input. in pixels/sec^2
+@export var turn_acceleration := 1200.0
+
+
+
 func physics_update(delta: float) -> void:
 	if controller.is_ducking:
 		state_machine.transition_to("duck")
 		return
- 
-	controller.apply_ground_movement(delta)
+ 	
+	controller.apply_movement(delta, max_speed, acceleration, turn_acceleration, deceleration)
+	
 	controller.update_facing()
  
 	if not controller.is_on_floor():

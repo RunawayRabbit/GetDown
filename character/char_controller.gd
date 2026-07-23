@@ -2,24 +2,6 @@ extends CharacterBody2D
 class_name CharacterController
 
 
-@export_category("Ground Movement")
-## Max speed of the player in pixels/sec
-@export var max_speed := 150.0
-## Rate at which the char accelerates in x when input is provided. in pixels/sec^2
-@export var acceleration := 700.0
-## Rate at which the char decelerates in x when no input is provided. (Sliding stop.) in pixels/sec^2
-@export var deceleration := 700.0
-## Rate at which the character decelerates in x when given opposite input. in pixels/sec^2
-@export var turn_acceleration := 1200.0
-
-
-@export_category("Air Movement")
-## Rate at which the char accelerates in x in the air when input is provided. in pixels/sec^2
-@export var air_acceleration := 400.0
-## Rate at which the char decelerates in x when given opposite input in air. in pixels/sec^2
-@export var air_turn_acceleration := 800.0
-
-
 # TODO: Impulse is fucky because of the weird non-linearity. Do I go all the way to my stupid
 # barely working jump height math?
 @export_category("Jump Tuning")
@@ -44,6 +26,8 @@ class_name CharacterController
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var state_machine: CharacterStateMachine = $StateMachine
+@onready var ducking_collider: CollisionShape2D = $DuckingCollider
+@onready var standing_collider: CollisionShape2D = $StandingCollider
 
 
 var move_input: float = 0.0
@@ -62,6 +46,7 @@ func _physics_process(delta: float) -> void:
 
 	state_machine.physics_update(delta)
 	_check_jump_trigger()
+	_force_duck()
 
 	move_and_slide()
 
@@ -87,7 +72,7 @@ func _read_input() -> void:
 
 
 func _check_jump_trigger() -> void:
-	if state_machine.is_in_state("jump") or state_machine.is_in_state("hover"):
+	if state_machine.is_in_state("hover"):
 		return
  
 	if _buffer_timer > 0.0 and _coyote_timer > 0.0:
@@ -100,6 +85,13 @@ func _check_jump_trigger() -> void:
 		state_machine.transition_to("hover")
 
 
+func _force_duck() -> void:
+	if not shapecast(standing_collider.shape, standing_collider.transform).is_empty() and \
+	   shapecast(ducking_collider.shape, ducking_collider.transform).is_empty():
+		state_machine.transition_to("duck")
+
+
+
 func consume_jump() -> void:
 	_coyote_timer = 0.0
 	_buffer_timer = 0.0
@@ -108,11 +100,9 @@ func consume_double_jump() -> void:
 	_can_hover_jump = false
 
 
-
-# --- HELPERS ---
-
 # TODO: Probably move these to grounded and air state?
-func apply_ground_movement(delta: float) -> void:
+func apply_movement(delta: float, max_speed:float, acceleration:float,
+	 				turn_acceleration:float, deceleration:float) -> void:
 	if move_input != 0.0:
 		if move_input * velocity.x > 0:
 			velocity.x = move_toward(velocity.x, move_input * max_speed, acceleration * delta)
@@ -122,19 +112,18 @@ func apply_ground_movement(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0.0, deceleration * delta)
 
 
-func apply_air_movement(delta: float) -> void:
-	if move_input != 0.0:
-		if move_input * velocity.x > 0:
-			velocity.x = move_toward(velocity.x, move_input * max_speed, air_acceleration * delta)
-		else:
-			velocity.x = move_toward(velocity.x, move_input * max_speed, air_turn_acceleration * delta)
-	else:
-		velocity.x = move_toward(velocity.x, 0.0, deceleration * delta)
 
-
-func apply_ground_friction(delta: float) -> void:
-	velocity.x = move_toward(velocity.x, 0.0, deceleration * delta)
+func shapecast(shape:Shape2D, trans:Transform2D) -> Array[Dictionary]:
+	var space_state = get_world_2d().direct_space_state
 	
+	var query = PhysicsShapeQueryParameters2D.new()
+	query.shape = shape
+	query.transform = transform * trans
+	query.collision_mask = collision_mask
+	query.exclude = [get_rid()]
+	
+	return space_state.intersect_shape(query)
+
 
 func update_facing() -> void:
 	if not animated_sprite_2d:

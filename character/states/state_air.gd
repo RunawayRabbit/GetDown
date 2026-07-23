@@ -1,9 +1,19 @@
 extends CharacterState
 class_name StateAir
 
+## Max speed of the player in pixels/sec
+@export var max_speed := 150.0
+## Rate at which the char accelerates in x when input is provided. in pixels/sec^2
+@export var acceleration := 400.0
+## Rate at which the char decelerates in x when no input is provided. (Sliding stop.) in pixels/sec^2
+@export var deceleration := 300.0
+## Rate at which the character decelerates in x when given opposite input. in pixels/sec^2
+@export var turn_acceleration := 800.0
+
+
 func physics_update(delta: float) -> void:
 	_apply_vertical(delta)
-	controller.apply_air_movement(delta)
+	controller.apply_movement(delta, max_speed, acceleration, turn_acceleration, deceleration)
 	controller.update_facing()
 	controller.play_animation(_get_animation())
 

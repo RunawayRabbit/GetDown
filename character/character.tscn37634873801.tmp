@@ -207,13 +207,12 @@ animation = &"duck_charged"
 sprite_frames = SubResource("SpriteFrames_omraf")
 
 [node name="StandingCollider" type="CollisionShape2D" parent="." unique_id=1308594552]
-z_index = 1000
+visible = false
 position = Vector2(1.4210858e-14, -13.186813)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_omraf")
 
 [node name="DuckingCollider" type="CollisionShape2D" parent="." unique_id=1940819790]
-z_index = 1000
 position = Vector2(0, -6.5934067)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_1l1n4")
@@ -239,9 +238,6 @@ metadata/_custom_type_script = "uid://bdot4hrhlu556"
 
 [node name="duck" type="Node" parent="StateMachine" unique_id=657314287]
 script = ExtResource("7_tgjim")
-max_speed = 50.0
-acceleration = 200.0
-turn_acceleration = 700.0
 
 [node name="hover" type="Node" parent="StateMachine" unique_id=1782628402]
 script = ExtResource("8_wy5t8")
