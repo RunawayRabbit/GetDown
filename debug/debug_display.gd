@@ -30,5 +30,5 @@ func watch(key: String, lambda: Callable):
 	watches[key] = lambda
 
 
-func remove_display(key):
+func remove_watch(key):
 	watches.erase(key)

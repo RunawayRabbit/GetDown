@@ -6,10 +6,15 @@
 [ext_resource type="Script" uid="uid://d4lba42lwoueq" path="res://character/states/state_grounded.gd" id="4_hx151"]
 [ext_resource type="Script" uid="uid://u7flw2eykdxt" path="res://character/states/state_jump.gd" id="5_o6jyn"]
 [ext_resource type="Script" uid="uid://bdot4hrhlu556" path="res://character/states/state_fall.gd" id="6_tgjim"]
+[ext_resource type="Script" uid="uid://daxuua8m7srvp" path="res://character/states/state_duck.gd" id="7_tgjim"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1l1n4"]
 atlas = ExtResource("2_1l1n4")
 region = Rect2(0, 80, 48, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hq3og"]
+atlas = ExtResource("2_1l1n4")
+region = Rect2(0, 120, 48, 40)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hd715"]
 atlas = ExtResource("2_1l1n4")
@@ -67,6 +72,14 @@ animations = [{
 }],
 "loop": 1,
 "name": &"duck",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hq3og")
+}],
+"loop": 1,
+"name": &"duck_charged",
 "speed": 5.0
 }, {
 "frames": [{
@@ -149,7 +162,7 @@ script = ExtResource("1_glpr6")
 z_index = 1
 position = Vector2(0, -20)
 sprite_frames = SubResource("SpriteFrames_pjt0s")
-animation = &"jump"
+animation = &"duck"
 
 [node name="Wings" type="AnimatedSprite2D" parent="." unique_id=521792547]
 sprite_frames = SubResource("SpriteFrames_omraf")
@@ -182,3 +195,6 @@ metadata/_custom_type_script = "uid://u7flw2eykdxt"
 [node name="fall" type="Node" parent="StateMachine" unique_id=1916262173]
 script = ExtResource("6_tgjim")
 metadata/_custom_type_script = "uid://bdot4hrhlu556"
+
+[node name="duck" type="Node" parent="StateMachine" unique_id=657314287]
+script = ExtResource("7_tgjim")

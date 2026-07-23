@@ -17,13 +17,20 @@ class_name CharacterController
 ## Rate at which the char decelerates in x when given opposite input in air. in pixels/sec^2
 @export var air_turn_acceleration := 800.0
 
+
+# TODO: Impulse is fucky because of the weird non-linearity. Do I go all the way to my stupid
+# barely working jump height math?
 @export_category("Jump Tuning")
 ## Impulse applied immediately upon jumping.
-@export var min_jump_force: float = 250.0
+@export var min_jump_force: float = 200.0
 ## Upward force added per second while holding jump button.
-@export var jump_hold_force: float = 500.0
+@export var jump_hold_force: float = 400.0
 ## Hold length in seconds to achieve maximum jump height.
 @export var jump_hold_time_seconds: float = 0.3
+## How long you must hold duck on the ground before the jump becomes charged.
+@export var charge_jump_time: float = 0.8
+## Impulse applied instead of min_jump_force when jumping out of a charged duck.
+@export var charge_jump_impulse: float = 300.0
 
 @export_category("Assists")
 ## When you fall off an edge, you can still input a jump for this many seconds.
@@ -73,7 +80,9 @@ func _check_jump_trigger() -> void:
 	if state_machine.is_in_state("jump"):
 		return
 	if _buffer_timer > 0.0 and _coyote_timer > 0.0:
-		state_machine.transition_to("jump")
+		var params := state_machine.current_state.get_jump_params()
+		state_machine.transition_to("jump", params)
+
 
 
 func consume_jump() -> void:
@@ -105,6 +114,10 @@ func apply_air_movement(delta: float) -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0.0, deceleration * delta)
 
+
+func apply_ground_friction(delta: float) -> void:
+	velocity.x = move_toward(velocity.x, 0.0, deceleration * delta)
+	
 
 func update_facing() -> void:
 	if not animated_sprite_2d:

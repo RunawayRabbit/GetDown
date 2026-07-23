@@ -35,18 +35,19 @@ func physics_update(delta: float) -> void:
 		current_state.physics_update(delta)
 
 
-func transition_to(state_name: String) -> void:
+func transition_to(state_name: String, payload: Dictionary = {}) -> void:
+
 	if not _states.has(state_name):
 		push_error("CharacterStateMachine.transition_to: no state named '%s'." % state_name)
 		return
 	if current_state == _states[state_name]:
 		return
-
+ 
 	var previous_name := current_state.name if current_state else StringName("")
 	if current_state:
 		current_state.exit()
 	current_state = _states[state_name]
-	current_state.enter(previous_name)
+	current_state.enter(previous_name, payload)
 
 
 func get_state_name() -> String:

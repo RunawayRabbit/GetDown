@@ -3,10 +3,15 @@ class_name StateJump
 
 var _hold_timer := 0.0
 
-func enter(_previous_state_name: String) -> void:
-	controller.velocity.y = -controller.min_jump_force
+func enter(_previous_state_name: String, params: Dictionary = {}) -> void:
+	# Params
+	var impulse: float = params.get("impulse", controller.min_jump_force)
+	
+	
+	controller.velocity.y = -impulse
 	_hold_timer = 0.0
 	controller.consume_jump()
+
 
 func _apply_vertical(delta: float) -> void:
 	var still_holding := Input.is_action_pressed("jump") and _hold_timer < controller.jump_hold_time_seconds
@@ -17,8 +22,10 @@ func _apply_vertical(delta: float) -> void:
 	else:
 		controller.velocity += controller.get_gravity() * delta
 
+
 func _get_animation() -> String:
 	return "jump"
+
 
 func _check_air_transition() -> void:
 	if controller.velocity.y >= 0.0:
