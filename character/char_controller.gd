@@ -24,20 +24,31 @@ class_name CharacterController
 @export var jump_buffer_time: float = 0.15
 
 
+@export_category("Attacking")
+## How much we hinder the player's max speed while they are mid-attack.
+@export var attack_movement_penalty: float = 0.4
+## You can input an attack this many seconds before the cooldown is up to queue it.
+@export var attack_buffer_time: float = 0.2
+
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
-@onready var state_machine: CharacterStateMachine = $StateMachine
 @onready var ducking_collider: CollisionShape2D = $DuckingCollider
 @onready var standing_collider: CollisionShape2D = $StandingCollider
+@onready var state_machine: CharacterStateMachine = $StateMachine
+@onready var beak_attack: BeakAttack = $BeakAttack
 
 
 var move_input: float = 0.0
 var is_ducking: bool = false
 var _can_hover_jump: bool = false
 var _jump_button_went_down: bool = false
+var _attack_button_went_down: bool = false
+var facing_dir:int = 1
 
 
 var _coyote_timer: float = 0.0
-var _buffer_timer: float = 0.0
+var _jump_buffer_timer: float = 0.0
+var _attack_lock_timer: float = 0.0
+var _attack_buffer_timer: float = 0.0
 
 
 func _physics_process(delta: float) -> void:
@@ -47,40 +58,52 @@ func _physics_process(delta: float) -> void:
 	state_machine.physics_update(delta)
 	_check_jump_trigger()
 	_force_duck()
+	beak_attack.physics_update(delta, _attack_button_went_down)
 
 	move_and_slide()
 
 
 func _update_timers(delta: float) -> void:
+	#TODO: I know it's a game jam but holy fuck these timers gettin out of control
+	# Really should be doing timestamps holy fuck
 	if is_on_floor():
 		_coyote_timer = coyote_time
 		_can_hover_jump = true
 	else:
 		_coyote_timer -= delta
 
-	if _buffer_timer > 0.0:
-		_buffer_timer -= delta
+	if _jump_buffer_timer > 0.0:
+		_jump_buffer_timer -= delta
+	
+	if _attack_buffer_timer > 0.0:
+		_attack_buffer_timer -= delta
+		
+	if _attack_lock_timer > 0.0:
+		_attack_lock_timer -= delta
 
 	
 func _read_input() -> void:
 	move_input = Input.get_axis("move_left", "move_right")
 	is_ducking = Input.is_action_pressed("duck")
 
+	_attack_button_went_down = Input.is_action_just_pressed("attack")
+	if _attack_button_went_down:
+		_attack_buffer_timer = attack_buffer_time
+
 	_jump_button_went_down = Input.is_action_just_pressed("jump")
 	if _jump_button_went_down:
-		_buffer_timer = jump_buffer_time
+		_jump_buffer_timer = jump_buffer_time
 
 
 func _check_jump_trigger() -> void:
 	if state_machine.is_in_state("hover"):
 		return
  
-	if _buffer_timer > 0.0 and _coyote_timer > 0.0:
+	if _jump_buffer_timer > 0.0 and _coyote_timer > 0.0:
 		var params := state_machine.current_state.get_jump_params()
 		state_machine.transition_to("jump", params)
 		return
  
-
 	if _can_hover_jump and not is_on_floor() and _jump_button_went_down:
 		state_machine.transition_to("hover")
 
@@ -94,7 +117,7 @@ func _force_duck() -> void:
 
 func consume_jump() -> void:
 	_coyote_timer = 0.0
-	_buffer_timer = 0.0
+	_jump_buffer_timer = 0.0
 
 func consume_double_jump() -> void:
 	_can_hover_jump = false
@@ -103,11 +126,12 @@ func consume_double_jump() -> void:
 # TODO: Probably move these to grounded and air state?
 func apply_movement(delta: float, max_speed:float, acceleration:float,
 	 				turn_acceleration:float, deceleration:float) -> void:
+	var speed := max_speed * (attack_movement_penalty if is_attacking() else 1.0)
 	if move_input != 0.0:
 		if move_input * velocity.x > 0:
-			velocity.x = move_toward(velocity.x, move_input * max_speed, acceleration * delta)
+			velocity.x = move_toward(velocity.x, move_input * speed, acceleration * delta)
 		else:
-			velocity.x = move_toward(velocity.x, move_input * max_speed, turn_acceleration * delta)
+			velocity.x = move_toward(velocity.x, move_input * speed, turn_acceleration * delta)
 	else:
 		velocity.x = move_toward(velocity.x, 0.0, deceleration * delta)
 
@@ -129,12 +153,32 @@ func update_facing() -> void:
 	if not animated_sprite_2d:
 		return
 	if velocity.x < 0:
+		facing_dir = -1
 		animated_sprite_2d.flip_h = false
 	elif velocity.x > 0:
+		facing_dir = 1
 		animated_sprite_2d.flip_h = true
 
 
+func is_attacking() -> bool:
+	return _attack_lock_timer > 0.0
+
+
 func play_animation(anim_name: String) -> void:
+	if is_attacking():
+		return
+	_play_animation_internal(anim_name)
+
+ 
+func begin_attack_lock(duration: float) -> void:
+	_attack_lock_timer = duration
+
+ 
+func force_play_animation(anim_name: String) -> void:
+	_play_animation_internal(anim_name)
+ 
+
+func _play_animation_internal(anim_name: String) -> void:
 	if not animated_sprite_2d:
 		return
 	if animated_sprite_2d.sprite_frames and not animated_sprite_2d.sprite_frames.has_animation(anim_name):

@@ -8,24 +8,6 @@
 [ext_resource type="Script" uid="uid://bdot4hrhlu556" path="res://character/states/state_fall.gd" id="6_tgjim"]
 [ext_resource type="Script" uid="uid://daxuua8m7srvp" path="res://character/states/state_duck.gd" id="7_tgjim"]
 [ext_resource type="Script" uid="uid://bdck1ku3x7luc" path="res://character/states/state_hover.gd" id="8_wy5t8"]
-[ext_resource type="Script" uid="uid://c17xgnqt7ydgq" path="res://character/beak_attack.gd" id="9_dy06j"]
-
-[sub_resource type="Curve" id="Curve_wy5t8"]
-_limits = [-400.0, 600.0, 0.0, 0.9]
-_data = [Vector2(0, -400), 0.0, 0.0, 0, 0, Vector2(0.25909096, 457.1429), 0.0, 0.0, 0, 0, Vector2(0.9, 120.4082), 0.0, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0shic"]
-atlas = ExtResource("2_1l1n4")
-region = Rect2(0, 40, 48, 40)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_mbhnd"]
-atlas = ExtResource("2_1l1n4")
-region = Rect2(48, 40, 48, 40)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_wlm6a"]
-atlas = ExtResource("2_1l1n4")
-region = Rect2(96, 40, 48, 40)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1l1n4"]
 atlas = ExtResource("2_1l1n4")
@@ -101,20 +83,6 @@ region = Rect2(144, 0, 48, 40)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_pjt0s"]
 animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_0shic")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_mbhnd")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_wlm6a")
-}],
-"loop": 1,
-"name": &"attack",
-"speed": 5.0
-}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_1l1n4")
@@ -220,12 +188,38 @@ height = 27.838829
 radius = 6.5934067
 height = 20.512821
 
+[sub_resource type="Curve" id="Curve_wy5t8"]
+_limits = [-400.0, 600.0, 0.0, 0.9]
+_data = [Vector2(0, -400), 0.0, 0.0, 0, 0, Vector2(0.25909096, 457.1429), 0.0, 0.0, 0, 0, Vector2(0.9, 120.4082), 0.0, 0.0, 0, 0]
+point_count = 3
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_omraf"]
 size = Vector2(15.128206, 10.25641)
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=1132243652]
 scale = Vector2(1.365, 1.365)
 script = ExtResource("1_glpr6")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1380152719]
+z_index = 1
+position = Vector2(0, -20)
+sprite_frames = SubResource("SpriteFrames_pjt0s")
+animation = &"peck"
+
+[node name="Wings" type="AnimatedSprite2D" parent="." unique_id=521792547]
+sprite_frames = SubResource("SpriteFrames_omraf")
+
+[node name="StandingCollider" type="CollisionShape2D" parent="." unique_id=1308594552]
+z_index = 1000
+position = Vector2(1.4210858e-14, -13.186813)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_omraf")
+
+[node name="DuckingCollider" type="CollisionShape2D" parent="." unique_id=1940819790]
+z_index = 1000
+position = Vector2(0, -6.5934067)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_1l1n4")
 
 [node name="StateMachine" type="Node" parent="." unique_id=865979981]
 script = ExtResource("3_ugqs2")
@@ -257,33 +251,12 @@ script = ExtResource("8_wy5t8")
 curve = SubResource("Curve_wy5t8")
 
 [node name="BeakAttack" type="Node" parent="." unique_id=1742894338]
-script = ExtResource("9_dy06j")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1380152719]
-z_index = 1
-position = Vector2(0, -20)
-sprite_frames = SubResource("SpriteFrames_pjt0s")
-animation = &"attack"
+[node name="Hitbox" type="Area2D" parent="BeakAttack" unique_id=1987433047]
+scale = Vector2(1.365, 1.365)
 
-[node name="Wings" type="AnimatedSprite2D" parent="." unique_id=521792547]
-sprite_frames = SubResource("SpriteFrames_omraf")
-
-[node name="StandingCollider" type="CollisionShape2D" parent="." unique_id=1308594552]
-z_index = 1000
-position = Vector2(1.4210858e-14, -13.186813)
-rotation = 1.5707964
-shape = SubResource("CapsuleShape2D_omraf")
-
-[node name="DuckingCollider" type="CollisionShape2D" parent="." unique_id=1940819790]
-z_index = 1000
-position = Vector2(0, -6.5934067)
-rotation = 1.5707964
-shape = SubResource("CapsuleShape2D_1l1n4")
-
-[node name="Hitbox" type="Area2D" parent="." unique_id=1987433047]
-position = Vector2(-20, -18)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1506303166]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BeakAttack/Hitbox" unique_id=1506303166]
+position = Vector2(-19.542126, -18.31502)
 shape = SubResource("RectangleShape2D_omraf")
 disabled = true
 debug_color = Color(0.9706219, 0, 0.45668054, 0.41960785)

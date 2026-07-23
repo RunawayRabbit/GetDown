@@ -1,14 +1,8 @@
-
 class_name StateHover
 extends StateAir
 
 var _timer := 0.0
 @export var curve:Curve
-
-
-## Duration of the dip-to-ZOOP in seconds.
-@export var time: float = 1.2
-
 
 
 func enter(_previous_state_name: String, _params: Dictionary = {}) -> void:
