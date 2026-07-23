@@ -1,14 +1,14 @@
 [gd_scene format=3 uid="uid://bg6rleg2ecmpq"]
 
-[ext_resource type="Script" uid="uid://bq1pxduq0h73o" path="res://character/char_controller.gd" id="1_glpr6"]
+[ext_resource type="Script" uid="uid://bq1pxduq0h73o" path="res://entities/character/char_controller.gd" id="1_glpr6"]
 [ext_resource type="Texture2D" uid="uid://cmytfbk448nk8" path="res://art/player/player sprites.png" id="2_1l1n4"]
-[ext_resource type="Script" uid="uid://da48umyksopq4" path="res://character/char_state_machine.gd" id="3_ugqs2"]
-[ext_resource type="Script" uid="uid://d4lba42lwoueq" path="res://character/states/state_grounded.gd" id="4_hx151"]
-[ext_resource type="Script" uid="uid://u7flw2eykdxt" path="res://character/states/state_jump.gd" id="5_o6jyn"]
-[ext_resource type="Script" uid="uid://bdot4hrhlu556" path="res://character/states/state_fall.gd" id="6_tgjim"]
-[ext_resource type="Script" uid="uid://daxuua8m7srvp" path="res://character/states/state_duck.gd" id="7_tgjim"]
-[ext_resource type="Script" uid="uid://bdck1ku3x7luc" path="res://character/states/state_hover.gd" id="8_wy5t8"]
-[ext_resource type="Script" uid="uid://c17xgnqt7ydgq" path="res://character/beak_attack.gd" id="9_dy06j"]
+[ext_resource type="Script" uid="uid://da48umyksopq4" path="res://entities/character/char_state_machine.gd" id="3_ugqs2"]
+[ext_resource type="Script" uid="uid://d4lba42lwoueq" path="res://entities/character/states/state_grounded.gd" id="4_hx151"]
+[ext_resource type="Script" uid="uid://u7flw2eykdxt" path="res://entities/character/states/state_jump.gd" id="5_o6jyn"]
+[ext_resource type="Script" uid="uid://bdot4hrhlu556" path="res://entities/character/states/state_fall.gd" id="6_tgjim"]
+[ext_resource type="Script" uid="uid://daxuua8m7srvp" path="res://entities/character/states/state_duck.gd" id="7_tgjim"]
+[ext_resource type="Script" uid="uid://bdck1ku3x7luc" path="res://entities/character/states/state_hover.gd" id="8_wy5t8"]
+[ext_resource type="Script" uid="uid://c17xgnqt7ydgq" path="res://entities/character/beak_attack.gd" id="9_dy06j"]
 
 [sub_resource type="Curve" id="Curve_wy5t8"]
 _limits = [-400.0, 600.0, 0.0, 0.9]
@@ -223,8 +223,9 @@ height = 20.512821
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_omraf"]
 size = Vector2(15.128206, 10.25641)
 
-[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1132243652]
+[node name="Player" type="CharacterBody2D" unique_id=1132243652]
 scale = Vector2(1.365, 1.365)
+collision_mask = 6
 script = ExtResource("1_glpr6")
 
 [node name="StateMachine" type="Node" parent="." unique_id=865979981]
@@ -282,8 +283,9 @@ shape = SubResource("CapsuleShape2D_1l1n4")
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=1987433047]
 position = Vector2(-20, -18)
+collision_layer = 0
+collision_mask = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1506303166]
 shape = SubResource("RectangleShape2D_omraf")
-disabled = true
 debug_color = Color(0.9706219, 0, 0.45668054, 0.41960785)

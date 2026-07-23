@@ -51,12 +51,12 @@ func _start_attack() -> void:
 	controller.force_play_animation("attack")
 
 	hitbox.position.x = _attack_hitbox_offset * controller.facing_dir
-	hitbox.monitoring = true
+	hitbox.set_deferred("monitoring", true)
 
 
 func _end_attack() -> void:
 	_is_active = false
-	hitbox.monitoring = false
+	hitbox.set_deferred("monitoring", false)
 
 
 func _on_hitbox_area_entered(area: Area2D) -> void:
@@ -70,4 +70,4 @@ func _on_hitbox_body_entered(body: Node) -> void:
 ## Placeholder damage interface
 func _deal_damage(target: Node) -> void:
 	if target.has_method("take_damage"):
-		target.take_damage(1)
+		target.take_damage(1, controller)
