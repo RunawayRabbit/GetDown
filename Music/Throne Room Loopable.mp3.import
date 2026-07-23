@@ -13,7 +13,7 @@ dest_files=["res://.godot/imported/Throne Room Loopable.mp3-76e8cb8e1390cb8abc40
 [params]
 
 loop=false
-loop_offset=0
-bpm=0
+loop_offset=0.0
+bpm=90.0
 beat_count=0
 bar_beats=4
