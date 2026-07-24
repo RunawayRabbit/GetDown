@@ -45,6 +45,7 @@ class_name CharacterController
 @onready var state_machine: CharacterStateMachine = $StateMachine
 @onready var beak_attack: BeakAttack = $BeakAttack
 @onready var hitbox: Area2D = $Hitbox
+@onready var remote_transform_2d: RemoteTransform2D = $RemoteTransform2D
 
 
 var move_input: float = 0.0
@@ -59,6 +60,10 @@ var _coyote_timer: float = 0.0
 var _jump_buffer_timer: float = 0.0
 var _attack_lock_timer: float = 0.0
 var _attack_buffer_timer: float = 0.0
+
+
+var cam:Cam
+var game_manager:GameManager
 
 
 func _ready() -> void:
@@ -152,8 +157,10 @@ func _check_wall_grab_trigger() -> bool:
 
 func probe_wall(dir: int) -> Dictionary:
 	var space_state := get_world_2d().direct_space_state
-	var origin := global_position + Vector2(0.0,get_beak_offset(dir).y)
-	var target := origin + Vector2(beak_attack.get_hitbox_offset() * dir, 0.0)
+	# TODO: BUG IS HERE. Fix it before shipping!
+	var beak_offset := get_beak_offset(dir)
+	var origin := global_position + Vector2(0.0, beak_offset.y)
+	var target := origin + Vector2(beak_offset.x, 0.0)
 
 	var query := PhysicsRayQueryParameters2D.create(origin, target)
 	# NOTE: Hard-coded because the engine REALLY isn't good at naming collision layers
@@ -217,6 +224,7 @@ func update_facing() -> void:
 	elif velocity.x > 0:
 		facing_dir = 1
 		animated_sprite_2d.flip_h = true
+	$RemoteTransform2D.position.x = cam.look_ahead_distance * facing_dir
 
 
 func is_attacking() -> bool:
@@ -266,3 +274,8 @@ func _play_animation_internal(anim_name: String) -> void:
 		return
 	if animated_sprite_2d.animation != anim_name:
 		animated_sprite_2d.play(anim_name)
+
+
+func register_camera(camera:Cam) -> void:
+	remote_transform_2d.remote_path = camera.get_path()
+	cam = camera
