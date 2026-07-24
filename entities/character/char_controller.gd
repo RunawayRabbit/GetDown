@@ -39,6 +39,7 @@ class_name CharacterController
 ## snap the player's position so the beak lands exactly on the wall on grab.
 @export var beak_anchor: Vector2 = Vector2(0, 25)
 
+
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var ducking_collider: CollisionShape2D = $DuckingCollider
 @onready var standing_collider: CollisionShape2D = $StandingCollider
@@ -60,6 +61,7 @@ var _coyote_timer: float = 0.0
 var _jump_buffer_timer: float = 0.0
 var _attack_lock_timer: float = 0.0
 var _attack_buffer_timer: float = 0.0
+var wall_released_this_frame: bool = false
 
 
 var cam:Cam
@@ -68,6 +70,7 @@ var game_manager:GameManager
 
 func _ready() -> void:
 	DebugDisplay.watch("Has Wall", func(): return has_wall_in_front(facing_dir))
+
 
 func _physics_process(delta: float) -> void:
 	_update_timers(delta)
@@ -103,6 +106,8 @@ func _update_timers(delta: float) -> void:
 		
 	if _attack_lock_timer > 0.0:
 		_attack_lock_timer -= delta
+
+	wall_released_this_frame = false
 	
 func _read_input() -> void:
 	move_input = Input.get_axis("move_left", "move_right")
@@ -147,6 +152,8 @@ func _check_wall_grab_trigger() -> bool:
 		return false
 	if not beak_attack.is_active():
 		return false
+	if wall_released_this_frame:
+		return false
 	var hit := probe_wall(facing_dir)
 	if hit.is_empty():
 		return false
@@ -160,14 +167,17 @@ func probe_wall(dir: int) -> Dictionary:
 	# TODO: BUG IS HERE. Fix it before shipping!
 	var beak_offset := get_beak_offset(dir)
 	var origin := global_position + Vector2(0.0, beak_offset.y)
-	var target := origin + Vector2(beak_offset.x, 0.0)
+	var probe_distance := absf(beak_offset.x) + 2.0
+	var target := origin + Vector2(probe_distance * dir, 0.0)
 
 	var query := PhysicsRayQueryParameters2D.create(origin, target)
 	# NOTE: Hard-coded because the engine REALLY isn't good at naming collision layers
 	query.collision_mask = 1 << 2
 	query.exclude = [get_rid()]
 
-	return space_state.intersect_ray(query)
+	var result := space_state.intersect_ray(query)
+	return result
+
 
 
 func has_wall_in_front(dir: int) -> bool:
@@ -177,7 +187,8 @@ func has_wall_in_front(dir: int) -> bool:
 func get_beak_offset(dir: int) -> Vector2:
 	var local := beak_anchor - sprite_frame_size / 2.0
 	local.x *= -dir
-	return local
+	return animated_sprite_2d.position + local
+
 
 
 func consume_jump() -> void:
