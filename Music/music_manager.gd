@@ -14,7 +14,7 @@ func _ready() -> void:
 	front_track = track_a
 	back_track = track_b
 
-func play_music(new_stream: AudioStream, fade:bool = true) -> void:
+func play_music(new_stream: AudioStream, fade_in_new:bool = true, fade_out_old:bool = true) -> void:
 	if front_track.stream == new_stream and front_track.playing:
 		return
 
@@ -33,10 +33,13 @@ func play_music(new_stream: AudioStream, fade:bool = true) -> void:
 	fade_tween = create_tween().set_parallel(true)
 
 	if back_track.playing:
-		fade_tween.tween_property(back_track, "volume_linear", 0.0, fade_duration)\
-			.set_ease(Tween.EASE_OUT)
+		if fade_out_old:
+			fade_tween.tween_property(back_track, "volume_linear", 0.0, fade_duration)\
+				.set_ease(Tween.EASE_OUT)
+		else:
+			back_track.stop()
 
-	if fade:
+	if fade_in_new:
 		fade_tween.tween_property(front_track, "volume_linear", 1.0, fade_duration)\
 				.set_ease(Tween.EASE_OUT)
 	else:

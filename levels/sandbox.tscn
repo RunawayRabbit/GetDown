@@ -68,9 +68,10 @@ tile_set = ExtResource("5_ypj6x")
 
 [node name="MusicZone" type="Area2D" parent="." unique_id=918633228]
 position = Vector2(84, -128)
+monitorable = false
 script = ExtResource("6_ypj6x")
 zone_music = ExtResource("7_44b12")
-stop_previous = true
+fade_out_old = true
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MusicZone" unique_id=1327688847]
@@ -79,9 +80,11 @@ debug_color = Color(0.66843635, 0.5105843, 3.85046e-07, 0.41960785)
 
 [node name="MusicZone2" type="Area2D" parent="." unique_id=1747317237]
 position = Vector2(624, -170)
+monitorable = false
 script = ExtResource("6_ypj6x")
 zone_music = ExtResource("8_0fpt2")
 fade_in = true
+fade_out_old = true
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MusicZone2" unique_id=466086129]
