@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://cblyq8tn0613g"]
+
+[ext_resource type="Script" uid="uid://fdwj6dff8w2y" path="res://Music/music_manager.gd" id="1_wto64"]
+
+[node name="MusicManager" type="Node" unique_id=35804439]
+process_mode = 3
+script = ExtResource("1_wto64")
+fade_duration = 3.0
+
+[node name="Track A" type="AudioStreamPlayer" parent="." unique_id=1270762644]
+process_mode = 3
+bus = &"Music"
+
+[node name="Track B" type="AudioStreamPlayer" parent="." unique_id=549979837]

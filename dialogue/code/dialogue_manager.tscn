@@ -3,8 +3,17 @@
 [ext_resource type="Script" uid="uid://fbnfy6i7f16f" path="res://dialogue/code/dialogue_manager.gd" id="1_dpp1v"]
 [ext_resource type="Texture2D" uid="uid://csslwv63unhqg" path="res://art/portraits/CountDownPortrait.png" id="2_ym7p5"]
 [ext_resource type="Texture2D" uid="uid://cnmifaesrjwxv" path="res://art/portraits/PlayerPortrait.png" id="3_bj625"]
+[ext_resource type="FontFile" uid="uid://ditlu3dourvud" path="res://dialogue/code/fette-unz-fraktur.regular.ttf" id="4_bj625"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_bet35"]
+line_spacing = 0.0
+font = ExtResource("4_bj625")
+font_size = 18
+outline_size = 9
+outline_color = Color(0, 0, 0, 1)
 
 [node name="DialogueManager" type="CanvasLayer" unique_id=1878931060]
+process_mode = 3
 script = ExtResource("1_dpp1v")
 dialogue_file_path = "res://dialogue/test_dialogue.json"
 
@@ -35,6 +44,7 @@ offset_top = -24.0
 offset_right = 66.0
 offset_bottom = -1.0
 text = "Test Name"
+label_settings = SubResource("LabelSettings_bet35")
 
 [node name="DialogueText" type="RichTextLabel" parent="Panel" unique_id=1190832187]
 layout_mode = 0

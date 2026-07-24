@@ -57,7 +57,7 @@ func physics_update(delta: float) -> void:
 
 
 func _can_stand() -> bool:
-	var result = controller.shapecast(standing_collider.shape, standing_collider.transform, -0.5)
+	var result = controller.shapecast(standing_collider.shape, standing_collider.transform, controller.collision_mask,  -0.5)
 	return result.is_empty()
 
 

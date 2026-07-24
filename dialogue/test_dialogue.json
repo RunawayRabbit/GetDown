@@ -22,7 +22,7 @@
   {
 	"speaker": "right",
 	"name": "Goose",
-	"text": "..Because Euan didn't make a [shake rate=20 level=10]level[/shake] yet!"
+	"text": "Euan didn't make a [shake rate=20 level=10]level[/shake] yet!"
   },
   {
 	"speaker": "left",
@@ -32,12 +32,17 @@
   {
 	"speaker": "right",
 	"name": "Goose",
-	"text": "Ugh.. wait a second, why are your eyes red?"
+	"text": "Ugh.."
+  },
+  {
+	"speaker": "right",
+	"name": "Goose",
+	"text": "Wait a second, why are your eyes red?"
   },
   {
 	"speaker": "left",
 	"name": "Count Down",
-	"text": "My roommate chain smokes."
+	"text": "My room mate chain smokes."
   },
   {
 	"speaker": "right",

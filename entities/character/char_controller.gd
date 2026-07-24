@@ -152,7 +152,7 @@ func _check_wall_grab_trigger() -> bool:
 
 func probe_wall(dir: int) -> Dictionary:
 	var space_state := get_world_2d().direct_space_state
-	var origin := global_position + get_beak_offset(dir)
+	var origin := global_position + Vector2(0.0,get_beak_offset(dir).y)
 	var target := origin + Vector2(beak_attack.get_hitbox_offset() * dir, 0.0)
 
 	var query := PhysicsRayQueryParameters2D.create(origin, target)

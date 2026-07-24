@@ -44,6 +44,8 @@ func start_dialogue(file_path: String) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
+		if Input.is_action_pressed("honk"):
+			start_dialogue("res://dialogue/test_dialogue.json")
 		return
 
 	if event.is_action_pressed("ui_accept"):

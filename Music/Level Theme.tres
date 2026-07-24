@@ -1,0 +1,14 @@
+[gd_resource type="AudioStreamInteractive" format=3 uid="uid://vjbopkf44ta8"]
+
+[ext_resource type="AudioStream" uid="uid://b6ud3o4wi4eqa" path="res://Music/Level Theme Intro.mp3" id="1_3750e"]
+[ext_resource type="AudioStream" uid="uid://cl5qrym6tbdud" path="res://Music/Level Theme Loopable part.mp3" id="2_7sdyv"]
+
+[resource]
+clip_count = 2
+clip_0/name = &"Level Theme Intro"
+clip_0/stream = ExtResource("1_3750e")
+clip_0/auto_advance = 1
+clip_0/next_clip = 1
+clip_1/name = &"Level Theme Loopable Part"
+clip_1/stream = ExtResource("2_7sdyv")
+clip_1/auto_advance = 0
