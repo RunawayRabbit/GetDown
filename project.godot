@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Get Down"
-run/main_scene="uid://e50mwih6x7c4"
+run/main_scene="uid://br83h7vya3406"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -41,6 +41,7 @@ movie_writer/movie_file="C:/Godot_Proj/GetDown/demo.ogv"
 [global_group]
 
 player=""
+door=""
 
 [input]
 

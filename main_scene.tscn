@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://br83h7vya3406"]
+
+[ext_resource type="Script" uid="uid://deitcpn5uflpj" path="res://levels/script/game_manager.gd" id="1_0f027"]
+
+[node name="MainScene" type="Node" unique_id=1108542706]
+script = ExtResource("1_0f027")
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1454648150]
+
+[node name="Fadeout" type="ColorRect" parent="UI" unique_id=423793549]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.03529412, 0.039215688, 0.078431375, 1)
+
+[node name="LevelContainer" type="Node" parent="." unique_id=990846417]

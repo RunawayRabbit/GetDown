@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://dlvga6dpwon02"]
+
+[ext_resource type="Script" uid="uid://0haerprhgm2l" path="res://camera/cam.gd" id="1_lw1ob"]
+
+[node name="Camera" type="Camera2D" unique_id=311762619]
+limit_left = 100
+limit_top = 100
+limit_right = 550
+limit_bottom = 550
+position_smoothing_enabled = true
+drag_vertical_enabled = true
+drag_top_margin = 0.5
+drag_bottom_margin = 0.1
+editor_draw_screen = false
+editor_draw_limits = true
+script = ExtResource("1_lw1ob")
+limit_transition_speed = 200.0
+look_ahead_speed = 1.0

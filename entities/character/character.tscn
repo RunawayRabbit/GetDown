@@ -471,3 +471,5 @@ collision_mask = 6
 position = Vector2(-1.2454219, 0.3043765)
 shape = SubResource("RectangleShape2D_omraf")
 debug_color = Color(0.9706219, 0, 0.45668054, 0.41960785)
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="." unique_id=108189476]
