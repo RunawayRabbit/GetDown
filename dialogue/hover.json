@@ -1,0 +1,52 @@
+[
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "You're back, and you have some of my down feathers."
+  },
+  {
+	"speaker": "right",
+	"name": "Goose",
+	"text": "Yes, but I can't reach the next section of the level."
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "My dear duckling, have you ever considered [i]utilizing[/i] those wings of yours?"
+  },
+  {
+	"speaker": "right",
+	"name": "Goose",
+	"text": "I keep telling you I'm not a-"
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "[wave amp=50 freq=4]SILENCE![/wave]"
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "As I was saying..."
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "If you press the SPACE bar while in the air, you can now hover to undiscovered parts of Castle Down."
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "Go forth and aqcuire more of my down feathers!"
+  },
+  {
+	"speaker": "right",
+	"name": "Goose",
+	"text": "Why do you want them back so badly?"
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "Because they are [wave amp=50 freq=4]MINE[/wave]."
+  },
+]

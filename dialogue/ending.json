@@ -1,0 +1,57 @@
+[
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "OVO What's this?"
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "You have returned all down feathers back to me! Most splendid."
+  },
+  {
+	"speaker": "right",
+	"name": "Goose",
+	"text": "Shouldn't you be thanking me?"
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "What? Of course not! It was an honour for you to serve Count Down."
+  },
+  {
+	"speaker": "right",
+	"name": "Goose",
+	"text": "But-"
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "[wave amp=50 freq=4]SILENCE![/wave]"
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "What I was getting to..."
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "Is that you no longer serve a purpose here."
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "I suggest you remove yourself from my presence imminently."
+  },
+  {
+	"speaker": "right",
+	"name": "Goose",
+	"text": "How come?"
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "So that the game can end."
+  },
+]

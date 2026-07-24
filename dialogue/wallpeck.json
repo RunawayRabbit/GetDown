@@ -1,0 +1,52 @@
+[
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "Little duckling, I am almost pleased to see you."
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "You bring me down feathers, but there are more out there still."
+  },
+  {
+	"speaker": "right",
+	"name": "Goose",
+	"text": "I am a fully grown-."
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "[wave amp=50 freq=4]SILENCE![/wave]"
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "So..."
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "What do you necessitate to continue making progress?"
+  },
+  {
+	"speaker": "right",
+	"name": "Goose",
+	"text": "It would be good to be able to wall climb, I guess?"
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "Peck a wall, your beak will become an anchor and you can hold the S key to charge a flick upwards."
+  },
+  {
+	"speaker": "right",
+	"name": "Goose",
+	"text": "Why are your eyes red?"
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "It is a trait inherited through the Down family line for generations. Now off with you!"
+  },
+]

@@ -1,0 +1,57 @@
+[
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "Hm? Ah yes, the new servant."
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "Greetings little duckling, I am Count Down! Please, there is no need to bow."
+  },
+  {
+	"speaker": "right",
+	"name": "Goose",
+	"text": "... I wasn't bowing."
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "Haha, yes, as I was saying-"
+  },
+  {
+	"speaker": "right",
+	"name": "Goose",
+	"text": "Also I am a fully grown mallard, not a [i]duckling[/i]."
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "[wave amp=50 freq=4]SILENCE![/wave]"
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "Ahem."
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "A most vexing wind has carried away my down feathers and spread them throughout Castle Down."
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "I require of you to fetch them for me."
+  },
+  {
+	"speaker": "right",
+	"name": "Goose",
+	"text": "Why?"
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "So that the game can happen."
+  },
+]
