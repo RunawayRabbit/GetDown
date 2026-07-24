@@ -1,10 +1,12 @@
 extends CharacterState
 class_name StateWall
 
+@export_category("Wall Flick")
 ## Duration we hold duck for in order to trigger a jump.
 @export var flick_charge_time: float = 1.0
 ## Vertical impulse of a wall jump, same units as min_jump_force.
 @export var wall_jump_impulse: float = 220.0
+
 
 var _grabbed_dir: int = 1
 var _charge_timer:float = 0.0
@@ -13,17 +15,15 @@ var _is_charged: bool = false
 
 func enter(_previous_state_name: String, _payload: Dictionary = {}) -> void:
 	_grabbed_dir = controller.facing_dir
-	controller.velocity = Vector2.ZERO
-	controller.play_animation("wall")
-
 	_charge_timer = 0.0
 	_is_charged = false
+	controller.velocity = Vector2.ZERO
+	#controller.refill_double_jump()
 
-	#TODO: Does wall grabbing give you a new float?
-	#controller.refill_hover_jump()
+	if _payload.has("contact_point"):
+		var beak_offset := controller.get_beak_offset(_grabbed_dir)
+		controller.global_position.x = _payload["contact_point"].x - beak_offset.x
 
-func exit() -> void:
-	controller.wall_released_this_frame = true
 
 func physics_update(delta: float) -> void:
 	controller.velocity = Vector2.ZERO

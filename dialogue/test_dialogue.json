@@ -1,0 +1,52 @@
+[
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "What is a Mallard? A miserable little pile of secrets!"
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "But enough talk... Have at you!"
+  },
+  {
+	"speaker": "right",
+	"name": "Goose",
+	"text": "..What the hell are you talking about?"
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "Wait.. you! What are [i]you[/i] still doing here?!"
+  },
+  {
+	"speaker": "right",
+	"name": "Goose",
+	"text": "..Because Euan didn't make a [shake rate=20 level=10]level[/shake] yet!"
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "That sounds like a [wave amp=50 freq=4]you problem[/wave] homie."
+  },
+  {
+	"speaker": "right",
+	"name": "Goose",
+	"text": "Ugh.. wait a second, why are your eyes red?"
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "My roommate chain smokes."
+  },
+  {
+	"speaker": "right",
+	"name": "Goose",
+	"text": "..."
+  },
+  {
+	"speaker": "right",
+	"name": "Goose",
+	"text": "Fair enough."
+  },
+]
