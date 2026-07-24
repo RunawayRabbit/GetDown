@@ -2,11 +2,14 @@ extends StateAir
 class_name StateJump
 
 var _hold_timer := 0.0
+var _anim_override:String
+
 
 func enter(_previous_state_name: String, params: Dictionary = {}) -> void:
 	# Params
 	var impulse: float = params.get("impulse", controller.min_jump_force)
 	var horiz: float = params.get("horizontal_impulse", 0.0)
+	_anim_override = params.get("animation", "jump")
 	
 	controller.velocity.x += horiz
 	controller.velocity.y = -impulse
@@ -25,7 +28,7 @@ func _apply_vertical(delta: float) -> void:
 
 
 func _get_animation() -> String:
-	return "jump"
+	return _anim_override
 
 
 func _check_air_transition() -> void:

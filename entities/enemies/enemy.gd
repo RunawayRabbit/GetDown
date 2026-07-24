@@ -18,7 +18,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if _is_dying: return
-	_t += delta * wavelength
+	_t += delta / wavelength
 	position.y = _base_y + sin(_t) * amplitude
 
 

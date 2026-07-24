@@ -8,37 +8,62 @@ class_name StateWall
 
 var _grabbed_dir: int = 1
 var _charge_timer:float = 0.0
+var _is_charged: bool = false
 
 
 func enter(_previous_state_name: String, _payload: Dictionary = {}) -> void:
 	_grabbed_dir = controller.facing_dir
 	controller.velocity = Vector2.ZERO
-	controller.play_animation("wall_grab")
+	controller.play_animation("wall")
+
+	_charge_timer = 0.0
+	_is_charged = false
 
 	#TODO: Does wall grabbing give you a new float?
-	#controller.refill_double_jump()
+	#controller.refill_hover_jump()
 
 func exit() -> void:
 	controller.wall_released_this_frame = true
 
-func physics_update(_delta: float) -> void:
+func physics_update(delta: float) -> void:
 	controller.velocity = Vector2.ZERO
-
+	
 	if controller.is_on_floor():
 		state_machine.transition_to("run" if absf(controller.velocity.x) > 10.0 else "idle")
 		return
-
+ 
 	if not controller.has_wall_in_front(_grabbed_dir):
 		state_machine.transition_to("fall")
 		return
-
-
-	if controller.is_attack_pressed() or controller.move_input * _grabbed_dir < -0.1:
+ 
+	# Push away from the grabbed wall to let go early.
+	if controller.move_input * _grabbed_dir < -0.1:
 		state_machine.transition_to("fall")
 		return
+ 
+	# Attack lets go
+	if controller.attack_button_went_down:
+		state_machine.transition_to("fall")
+		return
+ 
+	if _is_charged:
+		controller.play_animation("flick_charged")
+		if not controller.is_ducking:
+			state_machine.transition_to("jump", get_jump_params())
+		return
+ 
+	if controller.is_ducking:
+		_charge_timer += delta
+		if _charge_timer >= flick_charge_time:
+			_is_charged = true
+	else:
+		_charge_timer = 0.0
+
+	controller.scrub_animation("flick_charging", _charge_timer / flick_charge_time)
 
 
 func get_jump_params() -> Dictionary:
 	return {
-		"impulse": wall_jump_impulse
+		"impulse": wall_jump_impulse,
+		"animation" : "flick"
 	}

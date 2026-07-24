@@ -42,7 +42,7 @@ var move_input: float = 0.0
 var is_ducking: bool = false
 var _can_hover_jump: bool = false
 var _jump_button_went_down: bool = false
-var _attack_button_went_down: bool = false
+var attack_button_went_down: bool = false
 var facing_dir:int = 1
 
 
@@ -65,7 +65,7 @@ func _physics_process(delta: float) -> void:
 	_force_duck()
 	
 	#TODO: Janky and inelegant.
-	var attack_pressed_for_beak := _attack_button_went_down
+	var attack_pressed_for_beak := attack_button_went_down
 	if state_machine.is_in_state("wall_grab") or _check_wall_grab_trigger():
 		attack_pressed_for_beak = false
 	beak_attack.physics_update(delta, attack_pressed_for_beak)
@@ -97,8 +97,8 @@ func _read_input() -> void:
 	move_input = Input.get_axis("move_left", "move_right")
 	is_ducking = Input.is_action_pressed("duck")
 
-	_attack_button_went_down = Input.is_action_just_pressed("attack")
-	if _attack_button_went_down:
+	attack_button_went_down = Input.is_action_just_pressed("attack")
+	if attack_button_went_down:
 		_attack_buffer_timer = attack_buffer_time
 
 	_jump_button_went_down = Input.is_action_just_pressed("jump")
@@ -107,6 +107,8 @@ func _read_input() -> void:
 
 
 func _check_jump_trigger() -> void:
+	# TODO: Raycast/shapecast down to see if we're nearing the floor.
+	# Avoid hovering if we are in 
 	if state_machine.is_in_state("hover"):
 		return
  
@@ -126,9 +128,10 @@ func _force_duck() -> void:
 
 
 func _check_wall_grab_trigger() -> bool:
+	#TODO: Probably a bug here in whatever's calling this, should be every frame while attacking?
 	if is_on_floor():
 		return false
-	if not _attack_button_went_down:
+	if not attack_button_went_down:
 		return false
 	if wall_released_this_frame:
 		return false
@@ -197,23 +200,40 @@ func is_attacking() -> bool:
 
 
 func is_attack_pressed() -> bool:
-	return _attack_button_went_down
-
+	return attack_button_went_down
 
 func play_animation(anim_name: String) -> void:
 	if is_attacking():
 		return
 	_play_animation_internal(anim_name)
-
+ 
  
 func begin_attack_lock(duration: float) -> void:
 	_attack_lock_timer = duration
-
+ 
+ 
+func clear_attack_lock() -> void:
+	_attack_lock_timer = 0.0
+ 
  
 func force_play_animation(anim_name: String) -> void:
 	_play_animation_internal(anim_name)
  
-
+ 
+func scrub_animation(anim_name: String, progress: float) -> void:
+	if is_attacking():
+		return
+	if not animated_sprite_2d or not animated_sprite_2d.sprite_frames:
+		return
+	if not animated_sprite_2d.sprite_frames.has_animation(anim_name):
+		return
+	if animated_sprite_2d.animation != anim_name:
+		animated_sprite_2d.play(anim_name)
+	animated_sprite_2d.pause()
+	var frame_count := animated_sprite_2d.sprite_frames.get_frame_count(anim_name)
+	animated_sprite_2d.frame = clampi(int(clampf(progress, 0.0, 1.0) * frame_count), 0, frame_count - 1)
+ 
+ 
 func _play_animation_internal(anim_name: String) -> void:
 	if not animated_sprite_2d:
 		return
@@ -221,3 +241,4 @@ func _play_animation_internal(anim_name: String) -> void:
 		return
 	if animated_sprite_2d.animation != anim_name:
 		animated_sprite_2d.play(anim_name)
+ 

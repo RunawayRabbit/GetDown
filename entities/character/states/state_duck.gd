@@ -30,18 +30,21 @@ func exit() -> void:
 func physics_update(delta: float) -> void:
 	
 	controller.apply_movement(delta, max_speed, acceleration, turn_acceleration, deceleration)
+	
+	var can_stand = _can_stand()
 
-	if controller.move_input != 0.0: _charge_timer = 0.0
+	if not can_stand or controller.move_input != 0.0:
+		_charge_timer = 0.0
+		_is_charged = false
+		
 	controller.update_facing()
-
 	controller.velocity += controller.get_gravity() * delta
-
 
 	if not controller.is_on_floor():
 		state_machine.transition_to("fall")
 		return
 
-	if not controller.is_ducking and _can_stand():
+	if not controller.is_ducking and can_stand:
 		state_machine.transition_to("run" if absf(controller.velocity.x) > 10.0 else "idle")
 		return
 
@@ -65,4 +68,10 @@ func get_jump_params() -> Dictionary:
 
 
 func _current_animation() -> String:
-	return "duck_charged" if _is_charged else "duck"
+	if abs(controller.velocity.x) > 10:
+		return "waddle"
+	if _is_charged:
+		return "duck_charged"
+	if _charge_timer > 0.5 * controller.charge_jump_time:
+		return "duck_charging"
+	return "duck"
