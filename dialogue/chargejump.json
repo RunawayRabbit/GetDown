@@ -1,0 +1,72 @@
+[
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "You're still alive? Good."
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "And you brought back more of my feathers. Even better!"
+  },
+  {
+	"speaker": "right",
+	"name": "Goose",
+	"text": "Yes your lordship but-."
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "Count."
+  },
+  {
+	"speaker": "right",
+	"name": "Goose",
+	"text": "One, two, three, four..."
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "No, I mean to say that I am a count, not that [i]you[/i] should begin [i]counting[/i]."
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "I bet the aristoquacksy in Tertil doesn't have to put up with this..."
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "Why are you still standing here when there are more down feathers to find?"
+  },
+  {
+	"speaker": "right",
+	"name": "Goose",
+	"text": "I can't quite reach."
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "Why not?"
+  },
+  {
+	"speaker": "right",
+	"name": "Goose",
+	"text": "..."
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "[wave amp=50 freq=4]SIGH[/wave]"
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "While ducking, hold the S key to charge and then press the SPACE bar to jump."
+  },
+  {
+	"speaker": "left",
+	"name": "Count Down",
+	"text": "Now begone from my sight."
+  },
+]
