@@ -34,6 +34,7 @@ script = ExtResource("1_k8vnx")
 
 [node name="UIShell" type="CanvasLayer" parent="." unique_id=1454648150]
 process_mode = 3
+layer = 2
 script = ExtResource("2_0pvqg")
 
 [node name="Fadeout" type="ColorRect" parent="UIShell" unique_id=423793549]
@@ -48,6 +49,7 @@ mouse_filter = 2
 color = Color(0.03529412, 0.039215688, 0.078431375, 1)
 
 [node name="TitleScreen" type="Control" parent="UIShell" unique_id=433733863]
+z_index = 500
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -142,9 +144,11 @@ label_settings = SubResource("LabelSettings_omraf")
 
 [node name="OptionsMenu" parent="UIShell" unique_id=1676357572 instance=ExtResource("8_2lh0v")]
 visible = false
+z_index = 200
 
 [node name="PauseMenu" type="Control" parent="UIShell" unique_id=647197045]
 visible = false
+z_index = 100
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

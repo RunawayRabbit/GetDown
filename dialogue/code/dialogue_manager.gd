@@ -11,7 +11,7 @@ extends CanvasLayer
 @onready var speaker_name: Label = $Panel/SpeakerName
 @onready var dialogue_text: RichTextLabel = $Panel/DialogueText
 
-const pause_reason: StringName = "Dialogue"
+const PAUSE_REASON: StringName = "dialogue"
 
 ## Typing speed in seconds per character. Yea that's inverted from what makes most sense,
 ## fuck you I'm tired.
@@ -26,6 +26,7 @@ signal dialogue_finished
 
 func _ready() -> void:
 	hide()
+	process_mode = Node.PROCESS_MODE_ALWAYS
 
 func start_dialogue(file_path: String) -> void:
 	if not FileAccess.file_exists(file_path):
@@ -39,7 +40,7 @@ func start_dialogue(file_path: String) -> void:
 		current_index = 0
 		
 		# Pause the entire game and display UI
-		Pause.request_pause(pause_reason)
+		Pause.request_pause(PAUSE_REASON)
 		show()
 		show_line()
 
@@ -49,7 +50,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			start_dialogue("res://dialogue/beginning.json")
 		return
 
-func _input(event):
+	if not Pause.is_topmost(PAUSE_REASON):
+		return
+
 	if event.is_action_pressed("ui_accept") or \
 	   (event is InputEventMouseButton and \
 		event.is_pressed() and \
@@ -68,7 +71,7 @@ func _input(event):
 
 func finish_dialogue() -> void:
 	hide()
-	Pause.release_pause(pause_reason)
+	Pause.release_pause(PAUSE_REASON)
 	dialogue_finished.emit()
 
 func show_line() -> void:
