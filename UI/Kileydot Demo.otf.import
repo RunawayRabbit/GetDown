@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://ditlu3dourvud"
-path="res://.godot/imported/fette-unz-fraktur.regular.ttf-faf6b180b1b1e227f44ef379aa376f99.fontdata"
+uid="uid://d50kkdub6lxj"
+path="res://.godot/imported/Kileydot Demo.otf-1dd76ce821845e6bb36e79d846f726a4.fontdata"
 
 [deps]
 
-source_file="res://dialogue/code/fette-unz-fraktur.regular.ttf"
-dest_files=["res://.godot/imported/fette-unz-fraktur.regular.ttf-faf6b180b1b1e227f44ef379aa376f99.fontdata"]
+source_file="res://UI/Kileydot Demo.otf"
+dest_files=["res://.godot/imported/Kileydot Demo.otf-1dd76ce821845e6bb36e79d846f726a4.fontdata"]
 
 [params]
 

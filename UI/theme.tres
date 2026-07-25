@@ -1,0 +1,8 @@
+[gd_resource type="Theme" format=3 uid="uid://cwp6rwkepbpkq"]
+
+[ext_resource type="FontFile" uid="uid://d50kkdub6lxj" path="res://UI/Kileydot Demo.otf" id="1_go05t"]
+
+[resource]
+default_base_scale = 1.0
+default_font = ExtResource("1_go05t")
+default_font_size = 32
