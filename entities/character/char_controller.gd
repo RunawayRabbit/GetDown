@@ -162,7 +162,6 @@ func _check_wall_grab_trigger() -> bool:
 
 func probe_wall(dir: int) -> Dictionary:
 	var space_state := get_world_2d().direct_space_state
-	# TODO: BUG IS HERE. Fix it before shipping!
 	var beak_offset := get_beak_offset(dir)
 	var origin := global_position + Vector2(0.0, beak_offset.y)
 	var probe_distance := absf(beak_offset.x) + 2.0
@@ -232,6 +231,10 @@ func update_facing() -> void:
 	elif velocity.x > 0:
 		facing_dir = 1
 		animated_sprite_2d.flip_h = true
+		
+	#TODO: Hacky, REMOVE 
+	cam  = get_viewport().get_camera_2d() as Cam
+	$RemoteTransform2D.remote_path = cam.get_path()
 	$RemoteTransform2D.position.x = cam.look_ahead_distance * facing_dir
 
 

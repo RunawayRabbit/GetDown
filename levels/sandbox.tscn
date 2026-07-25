@@ -8,8 +8,7 @@
 [ext_resource type="Script" uid="uid://bhwsveefbirw5" path="res://Music/music_zone.gd" id="6_ypj6x"]
 [ext_resource type="AudioStream" uid="uid://vjbopkf44ta8" path="res://Music/Level Theme.tres" id="7_44b12"]
 [ext_resource type="AudioStream" uid="uid://bq5x6o7quuiqe" path="res://Music/Throne Room Loopable.mp3" id="8_0fpt2"]
-[ext_resource type="PackedScene" uid="uid://yyo7b747jo8j" path="res://entities/doodads/door.tscn" id="8_tv6ri"]
-[ext_resource type="Script" uid="uid://b25ehee4pwi7h" path="res://camera/cam_zone.gd" id="10_h8jws"]
+[ext_resource type="PackedScene" uid="uid://ckuaq5t3qfvpr" path="res://camera/cam_zone.tscn" id="10_h8jws"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jpsdj"]
 texture = ExtResource("2_p7lbm")
@@ -45,14 +44,8 @@ sources/1 = SubResource("TileSetAtlasSource_h8jws")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_awmjm"]
 size = Vector2(300, 279)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_omraf"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_pjd6e"]
-size = Vector2(902, 480)
-
-[node name="TestLevel" type="Node2D" unique_id=439793185 node_paths=PackedStringArray("doors")]
+[node name="TestLevel" type="Node2D" unique_id=439793185]
 script = ExtResource("1_jpsdj")
-doors = [NodePath("Door")]
 
 [node name="Carl" parent="." unique_id=247573165 instance=ExtResource("3_p7lbm")]
 position = Vector2(172, -73)
@@ -91,23 +84,5 @@ metadata/_edit_group_ = true
 shape = SubResource("RectangleShape2D_awmjm")
 debug_color = Color(0.66843635, 0.5105843, 3.85046e-07, 0.41960785)
 
-[node name="Door" parent="." unique_id=1260081676 instance=ExtResource("8_tv6ri")]
-position = Vector2(861, -49)
-destination = "uid://e50mwih6x7c4"
-
-[node name="CamZone" type="Area2D" parent="." unique_id=1914070852]
+[node name="CamZone" parent="." unique_id=1234361721 instance=ExtResource("10_h8jws")]
 position = Vector2(-28, -10)
-script = ExtResource("10_h8jws")
-metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CamZone" unique_id=61720807]
-visible = false
-position = Vector2(16, 1)
-shape = SubResource("RectangleShape2D_omraf")
-
-[node name="Bounds" type="CollisionShape2D" parent="CamZone" unique_id=902620010]
-visible = false
-position = Vector2(448, -152)
-shape = SubResource("RectangleShape2D_pjd6e")
-disabled = true
-debug_color = Color(4.0911136e-06, 0.64550835, 0.26523384, 0.41960785)

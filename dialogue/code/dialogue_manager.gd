@@ -11,6 +11,7 @@ extends CanvasLayer
 @onready var speaker_name: Label = $Panel/SpeakerName
 @onready var dialogue_text: RichTextLabel = $Panel/DialogueText
 
+const pause_reason: StringName = "Dialogue"
 
 ## Typing speed in seconds per character. Yea that's inverted from what makes most sense,
 ## fuck you I'm tired.
@@ -38,19 +39,21 @@ func start_dialogue(file_path: String) -> void:
 		current_index = 0
 		
 		# Pause the entire game and display UI
-		get_tree().paused = true
+		Pause.request_pause(pause_reason)
 		show()
 		show_line()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
-		if Input.is_action_pressed("honk"):
-			start_dialogue("res://dialogue/test_dialogue.json")
+		if Input.is_action_just_pressed("honk"):
+			start_dialogue("res://dialogue/beginning.json")
 		return
 
-	if \
-		event.is_action_pressed("ui_accept") or \
-		Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) :
+func _input(event):
+	if event.is_action_pressed("ui_accept") or \
+	   (event is InputEventMouseButton and \
+		event.is_pressed() and \
+		event.button_index == MOUSE_BUTTON_LEFT):
 		if is_typing:
 			if tween and tween.is_running():
 				tween.kill()
@@ -65,7 +68,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func finish_dialogue() -> void:
 	hide()
-	get_tree().paused = false # Unpause the game!
+	Pause.release_pause(pause_reason)
 	dialogue_finished.emit()
 
 func show_line() -> void:

@@ -58,7 +58,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
 	# Boot straight into the title screen with the world frozen behind it.
-	get_tree().paused = true
+	Pause.request_pause("title")
 	title_screen.show()
 	pause_menu.hide()
 	options_menu.hide()
@@ -77,16 +77,15 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not _game_started:
 		return
 
-	# Explicit visibility check rather than relying on input-handled ordering
-	# between siblings - OptionsMenu manages its own ui_cancel behavior.
-	if event.is_action_pressed("ui_cancel") and not options_menu.visible:
+	if event.is_action_pressed("ui_cancel") and not options_menu.visible \
+			and not Pause.is_blocked_by_other("menu"):
 		_toggle_pause()
 
 
 func _on_start_pressed() -> void:
 	_game_started = true
 	title_screen.hide()
-	get_tree().paused = false
+	Pause.release_pause("title")
 	game_started.emit()
 
 
@@ -96,14 +95,14 @@ func _toggle_pause() -> void:
 	else:
 		fade_to(fade_alpha, fade_time)
 		pause_menu.show()
-		get_tree().paused = true
+		Pause.request_pause("menu")
 		game_paused.emit()
 
 
 func _on_resume_pressed() -> void:
 	fade_to(0.0, 0.1)
 	pause_menu.hide()
-	get_tree().paused = false
+	Pause.release_pause("menu")
 	game_resumed.emit()
 
 

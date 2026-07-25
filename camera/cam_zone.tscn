@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://ckuaq5t3qfvpr"]
+
+[ext_resource type="Script" uid="uid://b25ehee4pwi7h" path="res://camera/cam_zone.gd" id="1_t1xer"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_omraf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pjd6e"]
+size = Vector2(902, 480)
+
+[node name="CamZone" type="Area2D" unique_id=1234361721]
+script = ExtResource("1_t1xer")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=508428621]
+visible = false
+position = Vector2(16, 1)
+shape = SubResource("RectangleShape2D_omraf")
+
+[node name="Bounds" type="CollisionShape2D" parent="." unique_id=1836860311]
+visible = false
+position = Vector2(448, -152)
+shape = SubResource("RectangleShape2D_pjd6e")
+disabled = true
+debug_color = Color(4.0911136e-06, 0.64550835, 0.26523384, 0.41960785)
