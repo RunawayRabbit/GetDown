@@ -1,0 +1,20 @@
+[gd_resource type="Theme" format=3 uid="uid://cvhb110m1xugo"]
+
+[ext_resource type="FontFile" uid="uid://d50kkdub6lxj" path="res://UI/Kileydot Demo.otf" id="1_3gvjp"]
+[ext_resource type="StyleBox" uid="uid://pxo4wfmd3r4b" path="res://UI/button_box_hover.tres" id="2_3de2e"]
+[ext_resource type="StyleBox" uid="uid://be5gnma5c7l1k" path="res://UI/button_box.tres" id="3_laycx"]
+[ext_resource type="FontFile" uid="uid://bh0700dstkaql" path="res://UI/AppleGaramond-Bold.ttf" id="4_6a6f4"]
+
+[resource]
+default_base_scale = 1.0
+default_font = ExtResource("4_6a6f4")
+default_font_size = 16
+Button/constants/outline_size = 12
+Button/font_sizes/font_size = 24
+Button/fonts/font = ExtResource("1_3gvjp")
+Button/styles/hover = ExtResource("2_3de2e")
+Button/styles/normal = ExtResource("3_laycx")
+Button/styles/pressed = ExtResource("2_3de2e")
+TabContainer/constants/tab_separation = 4
+TabContainer/font_sizes/font_size = 16
+TabContainer/fonts/font = ExtResource("4_6a6f4")

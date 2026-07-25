@@ -1,0 +1,19 @@
+[gd_resource type="Theme" format=3 uid="uid://t10bof6wpj4g"]
+
+[ext_resource type="StyleBox" uid="uid://pxo4wfmd3r4b" path="res://UI/button_box_hover.tres" id="2_n678l"]
+[ext_resource type="StyleBox" uid="uid://be5gnma5c7l1k" path="res://UI/button_box.tres" id="3_h0jrw"]
+[ext_resource type="FontFile" uid="uid://bh0700dstkaql" path="res://UI/AppleGaramond-Bold.ttf" id="4_00t07"]
+
+[resource]
+default_base_scale = 1.0
+default_font = ExtResource("4_00t07")
+default_font_size = 16
+Button/constants/outline_size = 12
+Button/font_sizes/font_size = 12
+Button/fonts/font = ExtResource("4_00t07")
+Button/styles/hover = ExtResource("2_n678l")
+Button/styles/normal = ExtResource("3_h0jrw")
+Button/styles/pressed = ExtResource("2_n678l")
+TabContainer/constants/tab_separation = 4
+TabContainer/font_sizes/font_size = 16
+TabContainer/fonts/font = ExtResource("4_00t07")

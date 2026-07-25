@@ -20,7 +20,6 @@ func is_groundable() -> bool:
 func _apply_vertical(delta: float) -> void:
 	var grav = controller.get_gravity()
 
-	DebugDisplay.watch("Hover Weight", func(): return curve.sample(_timer))
 	var hover_force: float = grav.y + curve.sample(_timer)
 	controller.velocity += grav * delta
 	controller.velocity.y -= hover_force * delta

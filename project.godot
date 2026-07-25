@@ -17,13 +17,14 @@ config/icon="res://icon.svg"
 
 [audio]
 
-buses/default_bus_layout="uid://eruuto6hqomy"
+buses/default_bus_layout="uid://dc6qg3mfvuleg"
 
 [autoload]
 
 DebugDisplay="*uid://drmnqwiyb12bl"
 DialogueManager="*uid://cl4d363vropap"
 MusicManager="*uid://cblyq8tn0613g"
+Settings="*uid://d2ipy0xx4iu3o"
 
 [display]
 
@@ -42,6 +43,7 @@ movie_writer/movie_file="C:/Godot_Proj/GetDown/demo.ogv"
 
 player=""
 door=""
+interactable=""
 
 [input]
 

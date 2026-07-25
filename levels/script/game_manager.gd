@@ -2,18 +2,20 @@ extends Node
 class_name GameManager
 
 @onready var level_container: Node = $LevelContainer
-@onready var fadeout: ColorRect = $UI/Fadeout
+@onready var fadeout: ColorRect = $"../UIShell/Fadeout"
 
 # Hard-coded as FUCK! It works though. Putting my game jam hat on.
 var completed_wings: Dictionary = {
-	"wing_north": false,	
+	"wing_north": false,
 	"wing_south": false,
 	"wing_east": false,
 	"wing_west": false
 }
 
+var _active_wing: LevelManager = null
+var _hub: LevelManager = null
+var _hub_scene_path: String = ""
 
-var _active_level: LevelManager = null
 var _loading_level: String = ""
 var _staged_level: String = ""
 var _is_loading: bool = false
@@ -24,27 +26,28 @@ const player_scene = preload("res://entities/character/character.tscn")
 const camera_scene = preload("res://camera/camera.tscn")
 
 
-
 signal wing_completed(wing_id: String)
 signal level_loaded(scene_path: String, level: LevelManager)
+
 
 func _ready() -> void:
 	fadeout.modulate.a = 1.0
 	_fade(0.0, 2.0)
-		
+
+	_hub_scene_path = throne_room_scene.resource_path
 	var throne_room = throne_room_scene.instantiate() as LevelManager
-	
+
 	var camera = camera_scene.instantiate() as Cam
 	add_child(camera)
-	
-	# TODO: Remember to change this to the correct scene when throne room is in..
-	throne_room.initialize(self, "res://levels/sandbox.tscn")
-	level_container.add_child(throne_room)
 
-	
+	# TODO: Remember to change this to the correct scene when throne room is in..
+	throne_room.initialize(self, _hub_scene_path)
+	level_container.add_child(throne_room)
+	_hub = throne_room
+
 	var player = spawn_player(Vector2.ZERO)
 	player.register_camera(camera)
-	
+
 
 func _process(_delta: float) -> void:
 	if not _is_loading:
@@ -67,7 +70,7 @@ func _process(_delta: float) -> void:
 				_begin_load(_staged_level)
 
 
-func spawn_player(position:Vector2) -> CharacterController:
+func spawn_player(position: Vector2) -> CharacterController:
 	var player = player_scene.instantiate() as CharacterController
 	player.game_manager = self
 	player.global_position = position
@@ -75,12 +78,22 @@ func spawn_player(position:Vector2) -> CharacterController:
 	return player
 
 
-func load_level(scene_path: String, global_position:Vector2) -> void:
-	if _active_level and scene_path == _active_level.scene_file_path:
+## anchor_position is where the loaded level's root gets placed in world space.
+## Pass a door's dedicated LevelAnchor marker here, not the door's own
+## global_position — keeps the trigger hitbox and the world-alignment point
+## independently tunable.
+func load_level(scene_path: String, anchor_position: Vector2) -> void:
+	if _active_wing and scene_path == _active_wing.scene_file_path:
+		return
+
+	# The hub is never unloaded, so returning to it skips the loader entirely —
+	# it's just "free whatever wing is active" instead of a fresh instantiate.
+	if scene_path == _hub_scene_path:
+		_return_to_hub()
 		return
 
 	_staged_level = scene_path
-	_loading_position = global_position
+	_loading_position = anchor_position
 
 	# Something is already loading.
 	if _is_loading:
@@ -112,10 +125,24 @@ func _finish_load() -> void:
 	level.initialize(self, finished_path)
 	level.global_position = _loading_position
 	level_container.add_child(level)
-	_active_level = level
+
+	# A fresh instance is our whole reset strategy — drop the old one now that
+	# its replacement is in the tree, so re-entering a wing is always clean.
+	if _active_wing and is_instance_valid(_active_wing):
+		_active_wing.queue_free()
+
+	_active_wing = level
 	level_loaded.emit(finished_path, level)
-	
+
 	_loading_position = Vector2.ZERO
+
+
+func _return_to_hub() -> void:
+	if _active_wing and is_instance_valid(_active_wing):
+		_active_wing.queue_free()
+		_active_wing = null
+
+	level_loaded.emit(_hub_scene_path, _hub)
 
 
 ## Call this when a wing's escape sequence is successfully finished
@@ -142,7 +169,7 @@ func are_all_wings_complete() -> bool:
 func _fade(target_alpha: float, duration: float) -> void:
 	if not fadeout:
 		return
-		
+
 	fadeout.mouse_filter = Control.MOUSE_FILTER_STOP if target_alpha > 0.0 else Control.MOUSE_FILTER_IGNORE
 	var tween = create_tween()
 	tween.tween_property(fadeout, "modulate:a", target_alpha, duration)
