@@ -117,6 +117,8 @@ func _read_input() -> void:
 	if attack_button_went_down:
 		_attack_buffer_timer = attack_buffer_time
 
+	#TODO: BUG: "jump" often meaning "space" is also used by the dialogue manager.
+	# Meaning we jump right after exiting a dialogue. Fun stuff. -.-
 	_jump_button_went_down = Input.is_action_just_pressed("jump")
 	if _jump_button_went_down:
 		_jump_buffer_timer = jump_buffer_time
@@ -188,7 +190,6 @@ func get_beak_offset(dir: int) -> Vector2:
 	var local := beak_anchor - sprite_frame_size / 2.0
 	local.x *= -dir
 	return animated_sprite_2d.position + local
-
 
 
 func consume_jump() -> void:

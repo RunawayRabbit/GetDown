@@ -48,7 +48,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			start_dialogue("res://dialogue/test_dialogue.json")
 		return
 
-	if event.is_action_pressed("ui_accept"):
+	if \
+		event.is_action_pressed("ui_accept") or \
+		Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) :
 		if is_typing:
 			if tween and tween.is_running():
 				tween.kill()
