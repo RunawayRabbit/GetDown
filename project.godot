@@ -24,6 +24,7 @@ buses/default_bus_layout="uid://dc6qg3mfvuleg"
 DebugDisplay="*uid://drmnqwiyb12bl"
 DialogueManager="*uid://cl4d363vropap"
 MusicManager="*uid://cblyq8tn0613g"
+Settings="*uid://d2ipy0xx4iu3o"
 
 [display]
 

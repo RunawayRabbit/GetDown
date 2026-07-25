@@ -13,6 +13,8 @@ var fade_tween: Tween
 func _ready() -> void:
 	front_track = track_a
 	back_track = track_b
+	front_track.bus = &"Music"
+	back_track.bus = &"Music"
 
 func play_music(new_stream: AudioStream, fade_in_new:bool = true, fade_out_old:bool = true) -> void:
 	if front_track.stream == new_stream and front_track.playing:

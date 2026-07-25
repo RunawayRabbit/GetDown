@@ -27,7 +27,6 @@ func _ready() -> void:
 	else:
 		push_error("CharacterStateMachine._ready: initial_state_name: '%s' ain't a valid state my dude. \
 			Name must match the name of a child node of the StateMachine." % initial_state_name)
-	DebugDisplay.watch("State", func(): return current_state.name)
 
 
 func physics_update(delta: float) -> void:

@@ -1,15 +1,17 @@
 extends CanvasLayer
 class_name UIShell
 
-# Expected node structure (build this in the editor, it's just a couple of
-# Controls and buttons — not worth hand-authoring a .tscn for):
+# Expected node structure:
 #
 # UIShell (CanvasLayer)  <- this script
 # ├── TitleScreen (Control, full rect)
-# │   └── StartButton (Button)
-# └── PauseMenu (Control, full rect, Visible = off)
-#     ├── ResumeButton (Button)
-#     └── QuitButton (Button)
+# │   ├── StartButton (Button)
+# │   └── OptionsButton (Button)
+# ├── PauseMenu (Control, full rect, Visible = off)
+# │   ├── ResumeButton (Button)
+# │   ├── OptionsButton (Button)
+# │   └── QuitButton (Button)
+# └── OptionsMenu (Control, full rect, Visible = off, options_menu.gd)
 #
 # Set this node's Process Mode to "Always" in the editor (or leave it to
 # _ready() below) so it keeps responding while the tree is paused — that's
@@ -23,8 +25,13 @@ signal game_paused
 
 @onready var title_screen: Control = $TitleScreen
 @onready var pause_menu: Control = $PauseMenu
+@onready var options_menu: OptionsMenu = $OptionsMenu
+
 @onready var start_button: Button = $TitleScreen/StartButton
+@onready var title_options_button: Button = $TitleScreen/OptionsButton
+
 @onready var resume_button: Button = $PauseMenu/VBoxContainer/ResumeButton
+@onready var pause_options_button: Button = $PauseMenu/VBoxContainer/OptionsButton
 @onready var quit_button: Button = $PauseMenu/VBoxContainer/QuitButton
 
 @onready var fadeout: ColorRect = $Fadeout
@@ -36,6 +43,8 @@ var active_fade_tween: Tween
 @export var fade_time: float = 0.4
 
 var _game_started: bool = false
+var _options_return_panel: Control = null
+
 
 func fade_to(target_alpha: float, duration_seconds: float) -> void:
 	# Kill any existing fade in progress so they don't fight
@@ -52,18 +61,25 @@ func _ready() -> void:
 	get_tree().paused = true
 	title_screen.show()
 	pause_menu.hide()
+	options_menu.hide()
 
 	start_button.pressed.connect(_on_start_pressed)
+	title_options_button.pressed.connect(func(): _open_options(title_screen))
+
 	resume_button.pressed.connect(_on_resume_pressed)
+	pause_options_button.pressed.connect(func(): _open_options(pause_menu))
 	quit_button.pressed.connect(_on_quit_pressed)
+
+	options_menu.closed.connect(_on_options_closed)
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	# Don't let ui_cancel open the pause menu before the game has even started.
 	if not _game_started:
 		return
 
-	if event.is_action_pressed("ui_cancel"):
+	# Explicit visibility check rather than relying on input-handled ordering
+	# between siblings - OptionsMenu manages its own ui_cancel behavior.
+	if event.is_action_pressed("ui_cancel") and not options_menu.visible:
 		_toggle_pause()
 
 
@@ -93,3 +109,15 @@ func _on_resume_pressed() -> void:
 
 func _on_quit_pressed() -> void:
 	get_tree().quit()
+
+
+func _open_options(return_panel: Control) -> void:
+	_options_return_panel = return_panel
+	return_panel.hide()
+	options_menu.show()
+
+
+func _on_options_closed() -> void:
+	options_menu.hide()
+	if _options_return_panel:
+		_options_return_panel.show()

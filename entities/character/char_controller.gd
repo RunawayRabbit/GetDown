@@ -68,10 +68,6 @@ var cam:Cam
 var game_manager:GameManager
 
 
-func _ready() -> void:
-	DebugDisplay.watch("Has Wall", func(): return has_wall_in_front(facing_dir))
-
-
 func _physics_process(delta: float) -> void:
 	_update_timers(delta)
 	_read_input()

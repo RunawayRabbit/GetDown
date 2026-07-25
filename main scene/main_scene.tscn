@@ -2,12 +2,13 @@
 
 [ext_resource type="Script" uid="uid://1ulsta1a7lcu" path="res://main scene/main_scene.gd" id="1_k8vnx"]
 [ext_resource type="Script" uid="uid://lcklf0e7shte" path="res://main scene/ui_shell.gd" id="2_0pvqg"]
-[ext_resource type="Theme" uid="uid://cwp6rwkepbpkq" path="res://UI/theme.tres" id="3_0pvqg"]
+[ext_resource type="Theme" uid="uid://cvhb110m1xugo" path="res://UI/ui_style.tres" id="3_2lh0v"]
 [ext_resource type="Script" uid="uid://deitcpn5uflpj" path="res://levels/script/game_manager.gd" id="3_r7nwt"]
 [ext_resource type="StyleBox" uid="uid://be5gnma5c7l1k" path="res://UI/button_box.tres" id="4_2iv45"]
 [ext_resource type="StyleBox" uid="uid://pxo4wfmd3r4b" path="res://UI/button_box_hover.tres" id="5_s3ajk"]
 [ext_resource type="Texture2D" uid="uid://csslwv63unhqg" path="res://art/portraits/CountDownPortrait.png" id="6_rrtnf"]
 [ext_resource type="FontFile" uid="uid://d50kkdub6lxj" path="res://UI/Kileydot Demo.otf" id="7_rrtnf"]
+[ext_resource type="PackedScene" uid="uid://o1ei3brgqc63" path="res://main scene/options_menu.tscn" id="8_2lh0v"]
 
 [sub_resource type="Gradient" id="Gradient_cbcyk"]
 colors = PackedColorArray(0.30980393, 0.40392157, 0.41960785, 1, 0.07450981, 0.101960786, 0.14117648, 1)
@@ -15,6 +16,11 @@ colors = PackedColorArray(0.30980393, 0.40392157, 0.41960785, 1, 0.07450981, 0.1
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_omraf"]
 gradient = SubResource("Gradient_cbcyk")
 width = 42
+
+[sub_resource type="Theme" id="Theme_omraf"]
+default_base_scale = 1.0
+default_font = ExtResource("7_rrtnf")
+default_font_size = 32
 
 [sub_resource type="LabelSettings" id="LabelSettings_omraf"]
 font = ExtResource("7_rrtnf")
@@ -47,6 +53,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("3_2lh0v")
 
 [node name="BG Gradient" type="TextureRect" parent="UIShell/TitleScreen" unique_id=835058158]
 show_behind_parent = true
@@ -72,12 +79,26 @@ offset_right = 274.0
 offset_bottom = 162.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("3_0pvqg")
+theme = SubResource("Theme_omraf")
 theme_override_constants/outline_size = 8
 theme_override_styles/normal = ExtResource("4_2iv45")
 theme_override_styles/hover = ExtResource("5_s3ajk")
 theme_override_styles/focus = ExtResource("5_s3ajk")
 text = "Start Game"
+
+[node name="OptionsButton" type="Button" parent="UIShell/TitleScreen" unique_id=1706546359]
+layout_mode = 0
+offset_left = 302.0
+offset_top = 264.0
+offset_right = 399.0
+offset_bottom = 342.0
+theme = SubResource("Theme_omraf")
+theme_override_constants/outline_size = 8
+theme_override_styles/normal = ExtResource("4_2iv45")
+theme_override_styles/pressed = ExtResource("4_2iv45")
+theme_override_styles/hover = ExtResource("5_s3ajk")
+theme_override_styles/focus = ExtResource("5_s3ajk")
+text = "Options"
 
 [node name="CountDown" type="TextureRect" parent="UIShell/TitleScreen" unique_id=864778968]
 layout_mode = 1
@@ -118,7 +139,11 @@ offset_bottom = 252.0
 text = "Down"
 label_settings = SubResource("LabelSettings_omraf")
 
+[node name="OptionsMenu" parent="UIShell" unique_id=1676357572 instance=ExtResource("8_2lh0v")]
+visible = false
+
 [node name="PauseMenu" type="Control" parent="UIShell" unique_id=647197045]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -143,7 +168,6 @@ theme_override_constants/separation = 12
 
 [node name="ResumeButton" type="Button" parent="UIShell/PauseMenu/VBoxContainer" unique_id=2088147748]
 layout_mode = 2
-theme = ExtResource("3_0pvqg")
 theme_override_constants/outline_size = 8
 theme_override_styles/normal = ExtResource("4_2iv45")
 theme_override_styles/pressed = ExtResource("4_2iv45")
@@ -151,9 +175,8 @@ theme_override_styles/hover = ExtResource("5_s3ajk")
 theme_override_styles/focus = ExtResource("5_s3ajk")
 text = "Resume"
 
-[node name="Options Button" type="Button" parent="UIShell/PauseMenu/VBoxContainer" unique_id=1886862807]
+[node name="OptionsButton" type="Button" parent="UIShell/PauseMenu/VBoxContainer" unique_id=1886862807]
 layout_mode = 2
-theme = ExtResource("3_0pvqg")
 theme_override_constants/outline_size = 8
 theme_override_styles/normal = ExtResource("4_2iv45")
 theme_override_styles/pressed = ExtResource("4_2iv45")
@@ -163,12 +186,7 @@ text = "Options"
 
 [node name="QuitButton" type="Button" parent="UIShell/PauseMenu/VBoxContainer" unique_id=1114735425]
 layout_mode = 2
-theme = ExtResource("3_0pvqg")
 theme_override_constants/outline_size = 8
-theme_override_styles/normal = ExtResource("4_2iv45")
-theme_override_styles/pressed = ExtResource("4_2iv45")
-theme_override_styles/hover = ExtResource("5_s3ajk")
-theme_override_styles/focus = ExtResource("5_s3ajk")
 text = "Quit Game"
 
 [node name="GameManager" type="Node" parent="." unique_id=703891925]

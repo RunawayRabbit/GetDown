@@ -1,0 +1,139 @@
+[gd_scene format=3 uid="uid://o1ei3brgqc63"]
+
+[ext_resource type="Script" uid="uid://c43kd467nyveb" path="res://main scene/options_menu.gd" id="1_5c814"]
+[ext_resource type="Theme" uid="uid://cvhb110m1xugo" path="res://UI/ui_style.tres" id="2_d0eo4"]
+[ext_resource type="Theme" uid="uid://t10bof6wpj4g" path="res://UI/ui_style_smol_buttons.tres" id="3_t42gx"]
+
+[node name="OptionsMenu" type="Control" unique_id=1676357572]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_d0eo4")
+script = ExtResource("1_5c814")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1566183508]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="CenterContainer" unique_id=1393359994]
+layout_mode = 2
+
+[node name="TabContainer" type="TabContainer" parent="CenterContainer/Panel" unique_id=1344611111]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -150.0
+offset_right = 300.0
+offset_bottom = 123.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+theme = ExtResource("2_d0eo4")
+current_tab = 1
+
+[node name="Audio" type="CenterContainer" parent="CenterContainer/Panel/TabContainer" unique_id=1375694662]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="GridContainer" type="VBoxContainer" parent="CenterContainer/Panel/TabContainer/Audio" unique_id=2016017977]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("2_d0eo4")
+
+[node name="MasterLabel" type="Label" parent="CenterContainer/Panel/TabContainer/Audio/GridContainer" unique_id=1537444805]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "Master Volume"
+horizontal_alignment = 2
+
+[node name="MasterSlider" type="HSlider" parent="CenterContainer/Panel/TabContainer/Audio/GridContainer" unique_id=1849065277]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+max_value = 1.0
+step = 0.01
+
+[node name="MusicLabel" type="Label" parent="CenterContainer/Panel/TabContainer/Audio/GridContainer" unique_id=916869206]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "Music Volume"
+horizontal_alignment = 2
+
+[node name="MusicSlider" type="HSlider" parent="CenterContainer/Panel/TabContainer/Audio/GridContainer" unique_id=1784920614]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+max_value = 1.0
+step = 0.01
+
+[node name="SFXLabel" type="Label" parent="CenterContainer/Panel/TabContainer/Audio/GridContainer" unique_id=1334931832]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "SFX Volume"
+horizontal_alignment = 2
+
+[node name="SFXSlider" type="HSlider" parent="CenterContainer/Panel/TabContainer/Audio/GridContainer" unique_id=100375505]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+max_value = 1.0
+step = 0.01
+
+[node name="Controls" type="ScrollContainer" parent="CenterContainer/Panel/TabContainer" unique_id=622260609]
+propagate_maximum_size = true
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/Panel/TabContainer/Controls" unique_id=307796737]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+offset_transform_position = Vector2(0, 20)
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="KeybindList" type="VBoxContainer" parent="CenterContainer/Panel/TabContainer/Controls/MarginContainer" unique_id=270009123]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("3_t42gx")
+
+[node name="BackButton" type="Button" parent="." unique_id=1771447650]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -39.0
+offset_top = -47.0
+offset_right = 38.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("3_t42gx")
+text = "Back"
