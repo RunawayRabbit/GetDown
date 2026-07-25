@@ -30,7 +30,7 @@ func set_bus_volume(bus_name: String, linear_value: float) -> void:
 		push_warning("No audio bus named '%s'." % bus_name)
 		return
 
-	AudioServer.set_bus_volume_db(idx, linear_to_db(linear_value))
+	AudioServer.set_bus_volume_linear(idx, linear_value)
 
 	_config.set_value("audio", bus_name, linear_value)
 	_config.save(SETTINGS_PATH)
