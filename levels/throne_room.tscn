@@ -83,7 +83,6 @@ process_mode = 3
 limit_transition_speed = 2000.0
 
 [node name="CamZone" parent="." unique_id=1234361721 instance=ExtResource("8_evc64")]
-visible = false
 
 [node name="CollisionShape2D" parent="CamZone" index="0" unique_id=508428621]
 visible = true
@@ -103,14 +102,17 @@ destination = "uid://e50mwih6x7c4"
 metadata/_edit_group_ = true
 
 [node name="Fader" parent="YoshiDoor" index="6" unique_id=1973993668]
+visible = true
 position = Vector2(193.70337, 26.041672)
 rotation = 3.1415927
 scale = Vector2(1.2708747, 375.7449)
 
 [node name="TutorialDoor" parent="." unique_id=1702238760 instance=ExtResource("9_ntupo")]
 position = Vector2(493, 116)
-destination = "uid://e50mwih6x7c4"
-metadata/_edit_group_ = true
+destination = "uid://d2hum3a20na71"
+
+[node name="LevelAnchor" parent="TutorialDoor" index="4" unique_id=2087890823]
+position = Vector2(131, 0)
 
 [node name="Fader" parent="TutorialDoor" index="6" unique_id=1973993668]
 position = Vector2(193.70337, 26.041672)

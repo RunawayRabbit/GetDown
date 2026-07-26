@@ -67,8 +67,21 @@ func set_facing(direction: int) -> void:
 
 
 func set_zone_limits(rect: Rect2, snap: bool = false) -> void:
-	set_process(true)
 	_target_rect = rect
 	_target_rect.position = round(_target_rect.position)
 	_target_rect.size = round(_target_rect.size)
-	if snap: _snap_to_target()
+	
+	if snap:
+		_snap_to_target()
+	else:
+		
+		var viewport_size := get_viewport_rect().size / zoom
+		var center := get_screen_center_position()
+		_current_rect = Rect2(center - viewport_size * 0.5, viewport_size)
+		
+		limit_left = round(_current_rect.position.x)
+		limit_top = round(_current_rect.position.y)
+		limit_right = round(_current_rect.end.x)
+		limit_bottom = round(_current_rect.end.y)
+		
+		set_process(true)

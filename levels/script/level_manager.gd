@@ -74,6 +74,7 @@ func _resume_with_golden_feather() -> void:
 
 func _on_collectable_collected(_collectable: Collectable) -> void:
 	collected_count += 1
+	prints("Feather Get!", collected_count-total_collectables, "remaining.")
 	_update_golden_feather_lock()
 
 
@@ -88,6 +89,7 @@ func _on_golden_feather_collected(_feather: Collectable) -> void:
 
 
 func _start_escape_timer() -> void:
+	DebugDisplay.watch("Timer", func(): return _timer.time_left)
 	_timer.start(escape_time_seconds)
 	escape_timer_started.emit(escape_time_seconds)
 

@@ -473,8 +473,8 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_pjd6e"]
-b = Vector2(0, -77)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fe6m6"]
+size = Vector2(8, 55)
 
 [sub_resource type="Gradient" id="Gradient_0p7hw"]
 interpolation_mode = 2
@@ -515,9 +515,11 @@ sprite_frames = SubResource("SpriteFrames_awmjm")
 
 [node name="DoorCollider" type="StaticBody2D" parent="DoorSprite" unique_id=1409500198]
 position = Vector2(0, 31.5)
+collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DoorSprite/DoorCollider" unique_id=1416152074]
-shape = SubResource("SegmentShape2D_pjd6e")
+position = Vector2(-1.9073486e-06, -26.5)
+shape = SubResource("RectangleShape2D_fe6m6")
 debug_color = Color(0.9584257, 3.080368e-06, 0.5298511, 0.41960785)
 
 [node name="LevelAnchor" type="Marker2D" parent="." unique_id=2087890823]

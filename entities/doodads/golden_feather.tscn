@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://db7wok8clpn1t"]
+
+[ext_resource type="Script" uid="uid://cxpyoage1kg7n" path="res://entities/doodads/golden_feather.gd" id="1_slwyl"]
+[ext_resource type="Texture2D" uid="uid://nona6ltrlf76" path="res://art/pickups/goldenfeather.png" id="2_slwyl"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_omraf"]
+radius = 18.027756
+
+[node name="GoldenFeather" type="Area2D" unique_id=839498800]
+script = ExtResource("1_slwyl")
+wavelength = 1.0
+amplitude = 5.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1739027392]
+texture = ExtResource("2_slwyl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=993692814]
+shape = SubResource("CircleShape2D_omraf")

@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://cutonouy8x2y4"]
+
+[ext_resource type="Script" uid="uid://b6oo5xhbdur10" path="res://entities/doodads/collectable.gd" id="1_gyqjp"]
+[ext_resource type="Texture2D" uid="uid://bmv2i412iu3bw" path="res://art/pickups/downfeather.png" id="2_jkogr"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_omraf"]
+
+[node name="Feather" type="Area2D" unique_id=839498800]
+script = ExtResource("1_gyqjp")
+wavelength = 0.4
+amplitude = 2.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1739027392]
+texture = ExtResource("2_jkogr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=993692814]
+shape = SubResource("CircleShape2D_omraf")

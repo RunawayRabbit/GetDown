@@ -6,10 +6,10 @@ class_name GameManager
 
 # Hard-coded as FUCK! It works though. Putting my game jam hat on.
 var completed_wings: Dictionary = {
-	"yoshi_room": false,
-	"climb_room": false,
-	"tutorial_room": false,
-	"intro_room": false
+	"yoshi": false,
+	"climb": false,
+	"tutorial": false,
+	"duck": false
 }
 
 var _active_wing: LevelManager = null
@@ -35,6 +35,7 @@ signal level_loaded(scene_path: String, level: LevelManager)
 func _ready() -> void:
 	fadeout.modulate.a = 1.0
 	_fade(0.0, 2.0)
+	DebugDisplay.watch("Wings Cleared", func(): return  completed_wings)
 
 	_throne_room_path = throne_room_scene.resource_path
 	var throne_room = throne_room_scene.instantiate() as LevelManager
