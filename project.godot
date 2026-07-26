@@ -13,7 +13,8 @@ config_version=5
 config/name="Get Down"
 run/main_scene="uid://br83h7vya3406"
 config/features=PackedStringArray("4.7", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="uid://bka6jb6auxiw2"
+config/windows_native_icon="res://icon.ico"
 
 [audio]
 
