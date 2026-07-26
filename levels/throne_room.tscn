@@ -45,10 +45,10 @@ sources/1 = SubResource("TileSetAtlasSource_icn5j")
 size = Vector2(115, 112)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_evc64"]
-size = Vector2(622, 223)
+size = Vector2(1223, 533)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ntupo"]
-size = Vector2(1525, 899)
+size = Vector2(1373, 572)
 
 [node name="ThroneRoom" type="Node" unique_id=952412467 node_paths=PackedStringArray("doors")]
 script = ExtResource("1_ymp05")
@@ -83,15 +83,19 @@ process_mode = 3
 limit_transition_speed = 2000.0
 
 [node name="CamZone" parent="." unique_id=1234361721 instance=ExtResource("8_evc64")]
+visible = false
 
 [node name="CollisionShape2D" parent="CamZone" index="0" unique_id=508428621]
-position = Vector2(10, -37.5)
+visible = true
+position = Vector2(-34.5, -89.5)
 shape = SubResource("RectangleShape2D_evc64")
 
 [node name="Bounds" parent="CamZone" index="1" unique_id=1836860311]
 visible = true
-position = Vector2(-0.5, 9.5)
+position = Vector2(-63.5, -130)
 shape = SubResource("RectangleShape2D_ntupo")
+disabled = false
+debug_color = Color(0.67871416, 0.5071297, 3.85046e-07, 0.41960785)
 
 [node name="YoshiDoor" parent="." unique_id=1260081676 instance=ExtResource("9_ntupo")]
 position = Vector2(539, -252)

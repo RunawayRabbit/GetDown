@@ -16,13 +16,11 @@ func _ready() -> void:
 func enter(_previous_state_name: String, _params: Dictionary = {}) -> void:
 	_charge_timer = 0.0
 	_is_charged = false
-	DebugDisplay.watch("Jump Charge", func(): return _is_charged)
 	standing_collider.disabled = true
 	ducking_collider.disabled = false
 
 
 func exit() -> void:
-	DebugDisplay.remove_watch("Jump Charge")
 	standing_collider.disabled = false
 	ducking_collider.disabled = true
 

@@ -353,7 +353,7 @@ animations = [{
 }],
 "loop": 1,
 "name": &"run",
-"speed": 5.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -408,14 +408,17 @@ metadata/_custom_type_script = "uid://d4lba42lwoueq"
 
 [node name="run" type="Node" parent="StateMachine" unique_id=718881530]
 script = ExtResource("4_hx151")
+max_speed = 200.0
 metadata/_custom_type_script = "uid://d4lba42lwoueq"
 
 [node name="jump" type="Node" parent="StateMachine" unique_id=877762585]
 script = ExtResource("5_o6jyn")
+max_speed = 200.0
 metadata/_custom_type_script = "uid://u7flw2eykdxt"
 
 [node name="fall" type="Node" parent="StateMachine" unique_id=1916262173]
 script = ExtResource("6_tgjim")
+max_speed = 200.0
 metadata/_custom_type_script = "uid://bdot4hrhlu556"
 
 [node name="duck" type="Node" parent="StateMachine" unique_id=657314287]
@@ -428,6 +431,7 @@ turn_acceleration = 300.0
 [node name="hover" type="Node" parent="StateMachine" unique_id=1782628402]
 script = ExtResource("8_wy5t8")
 curve = SubResource("Curve_wy5t8")
+max_speed = 200.0
 
 [node name="wall" type="Node" parent="StateMachine" unique_id=931834819]
 script = ExtResource("8_0vyii")
@@ -443,9 +447,8 @@ attack_cooldown = 0.7
 z_index = 1
 position = Vector2(0, -24.175825)
 sprite_frames = SubResource("SpriteFrames_pjt0s")
-animation = &"attack"
-frame = 3
-frame_progress = 1.0
+animation = &"run"
+frame_progress = 0.6697786
 
 [node name="Wings" type="AnimatedSprite2D" parent="." unique_id=521792547]
 sprite_frames = SubResource("SpriteFrames_omraf")

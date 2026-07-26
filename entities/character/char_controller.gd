@@ -227,15 +227,21 @@ func update_facing() -> void:
 		return
 	if velocity.x < 0:
 		facing_dir = -1
-		animated_sprite_2d.flip_h = false
+		animated_sprite_2d.flip_h = true
 	elif velocity.x > 0:
 		facing_dir = 1
-		animated_sprite_2d.flip_h = true
+		animated_sprite_2d.flip_h = false
 		
 	#TODO: Hacky, REMOVE 
 	cam  = get_viewport().get_camera_2d() as Cam
 	$RemoteTransform2D.remote_path = cam.get_path()
 	$RemoteTransform2D.position.x = cam.look_ahead_distance * facing_dir
+
+
+func reset() -> void:
+	velocity = Vector2.ZERO
+	state_machine.transition_to("")
+	state_machine.transition_to(state_machine.initial_state_name)
 
 
 func is_attacking() -> bool:
