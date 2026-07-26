@@ -30,8 +30,6 @@ func _ready() -> void:
 	if return_zone:
 		return_zone.body_entered.connect(_on_return_zone_entered)
 
-	DebugDisplay.watch("DoorState", func(): return state)
-
 	if not level_anchor:
 		push_warning("%s has no LevelAnchor Marker2D — falling back to door position." % name)
 	if not return_zone:
