@@ -97,7 +97,6 @@ func has_ability(ability: StringName) -> bool:
 	return _abilities.has(ability)
 
 func add_ability(ability: StringName) -> void:
-	prints("Adding ability", ability)
 	_abilities[ability] = true
 
 func remove_ability(ability: StringName) -> void:
