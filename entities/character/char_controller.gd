@@ -41,15 +41,7 @@ class_name CharacterController
 
 
 @export_category("Collision Shapes")
-## Both the physics collider and the hurtbox swap together, driven from one
-## place - keeps them from ever drifting out of sync, and replaces the old
-## two-CollisionShape2D disable/enable dance that was causing the
-## double-trigger: disabling one shape's owner while enabling a different
-## one's inside the same physics step reads to Godot as a real exit
-## followed by a real re-entry, even though you were continuously
-## overlapping the whole time. Swapping .shape on one always-enabled node
-## keeps that owner's identity stable across the change, so there's nothing
-## for an overlapping Area2D to exit/re-enter over.
+
 @export var standing_shape: Shape2D
 @export var standing_offset: Vector2 = Vector2.ZERO
 @export var ducking_shape: Shape2D
@@ -68,10 +60,7 @@ class_name CharacterController
 
 var move_input: float = 0.0
 var is_ducking: bool = false
-## Tracks which shape is actually applied right now - distinct from
-## is_ducking (raw input state) since this only changes when the state
-## machine actually enters/exits the duck state, not every frame the
-## button happens to be held.
+
 var is_shape_ducked: bool = false
 var _can_hover_jump: bool = false
 var _jump_button_went_down: bool = false
@@ -196,18 +185,6 @@ func _force_duck() -> void:
 		state_machine.transition_to("duck")
 
 
-## Swaps both the physics collider and the hurtbox to the standing or
-## ducking shape together, so they can never disagree about the player's
-## current size. Call this instead of touching either collider directly.
-##
-## standing_offset/ducking_offset are both measured relative to the
-## character's own base (CharacterController's origin) - NOT relative to
-## whatever parent each CollisionShape2D actually has. body_collider is a
-## direct child so that's a 1:1 assignment, but hurtbox_collider's parent is
-## Hurtbox, which may itself sit at a non-zero local position - so its
-## offset has to be re-based into Hurtbox's own local space, or the two
-## shapes will silently end up in different places despite sharing a
-## "shared" offset value.
 func set_ducked_shape(ducked: bool) -> void:
 	if ducked == is_shape_ducked:
 		return
