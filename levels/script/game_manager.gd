@@ -51,6 +51,7 @@ func _ready() -> void:
 	_player.register_camera(camera)
 
 	DialogueManager.game_manager = self
+	Pause.player = _player
 
 
 func _process(_delta: float) -> void:
@@ -175,16 +176,16 @@ func retry_active_wing(resume_after_golden: bool) -> void:
 	level_loaded.emit(scene_path, level)
 	level.initialize(self, scene_path, resume_after_golden)
 
+	var target_position := anchor
 	if resume_after_golden:
 		if level.golden_feather_spawn:
-			_player.global_position = level.golden_feather_spawn.global_position
+			target_position = level.golden_feather_spawn.global_position
 		else:
 			push_warning("%s has no golden_feather_spawn Marker2D set - falling back to the entrance anchor." % level.name)
-			_player.reset(anchor)
-	else:
-		_player.reset(anchor)
 
-	fadeout.fade(0.0, 0.4)
+	_player.reset(target_position)
+
+	await fadeout.fade(0.0, 0.4)
 
 
 ## Call this when the player dies. Decides hard vs. soft restart based on

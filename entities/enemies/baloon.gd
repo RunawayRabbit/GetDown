@@ -1,5 +1,5 @@
 extends CharacterBody2D
-class_name Enemy
+class_name Baloon
 
 @onready var hurtbox: Hurtbox = $Hurtbox
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D

@@ -2,7 +2,9 @@
 
 [ext_resource type="Script" uid="uid://bq1pxduq0h73o" path="res://entities/character/char_controller.gd" id="1_glpr6"]
 [ext_resource type="Texture2D" uid="uid://cmytfbk448nk8" path="res://art/player/player sprites.png" id="2_1l1n4"]
+[ext_resource type="Shape2D" uid="uid://c8ur4xajad6g2" path="res://entities/character/standing_shape.tres" id="2_555hj"]
 [ext_resource type="Script" uid="uid://da48umyksopq4" path="res://entities/character/char_state_machine.gd" id="3_ugqs2"]
+[ext_resource type="Shape2D" uid="uid://p2p6cilw8jlg" path="res://entities/character/ducking_shape.tres" id="3_xrw5f"]
 [ext_resource type="Script" uid="uid://d4lba42lwoueq" path="res://entities/character/states/state_grounded.gd" id="4_hx151"]
 [ext_resource type="Script" uid="uid://u7flw2eykdxt" path="res://entities/character/states/state_jump.gd" id="5_o6jyn"]
 [ext_resource type="Script" uid="uid://bdot4hrhlu556" path="res://entities/character/states/state_fall.gd" id="6_tgjim"]
@@ -11,6 +13,7 @@
 [ext_resource type="Script" uid="uid://bdck1ku3x7luc" path="res://entities/character/states/state_hover.gd" id="8_wy5t8"]
 [ext_resource type="Script" uid="uid://chsxwp4j7fofv" path="res://entities/character/char_state.gd" id="9_6y70v"]
 [ext_resource type="Script" uid="uid://c17xgnqt7ydgq" path="res://entities/character/beak_attack.gd" id="9_dy06j"]
+[ext_resource type="Script" uid="uid://fet56joiwi3x" path="res://entities/hurtbox.gd" id="12_wu0gw"]
 
 [sub_resource type="Curve" id="Curve_wy5t8"]
 _limits = [-400.0, 600.0, 0.0, 0.9]
@@ -382,23 +385,20 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_omraf"]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_omraf"]
-radius = 13.186813
-height = 27.838829
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1l1n4"]
-radius = 6.5934067
-height = 20.512821
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_omraf"]
 size = Vector2(15.128206, 10.25641)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_omraf"]
+radius = 13.0
 
 [node name="Player" type="CharacterBody2D" unique_id=1132243652 groups=["player"]]
 scale = Vector2(1.365, 1.365)
 collision_mask = 6
 script = ExtResource("1_glpr6")
+standing_shape = ExtResource("2_555hj")
+standing_offset = Vector2(0, -13)
+ducking_shape = ExtResource("3_xrw5f")
+ducking_offset = Vector2(0, -8)
 
 [node name="StateMachine" type="Node" parent="." unique_id=865979981]
 script = ExtResource("3_ugqs2")
@@ -452,23 +452,13 @@ attack_cooldown = 0.7
 z_index = 1
 position = Vector2(0, -24.175825)
 sprite_frames = SubResource("SpriteFrames_pjt0s")
-animation = &"run"
-frame_progress = 0.6697786
+animation = &"jump"
+metadata/_edit_group_ = true
 
-[node name="Wings" type="AnimatedSprite2D" parent="." unique_id=521792547]
-sprite_frames = SubResource("SpriteFrames_omraf")
-
-[node name="StandingCollider" type="CollisionShape2D" parent="." unique_id=1308594552]
+[node name="BodyCollider" type="CollisionShape2D" parent="." unique_id=1308594552]
 z_index = 1000
-position = Vector2(1.4210858e-14, -13.186813)
-rotation = 1.5707964
-shape = SubResource("CapsuleShape2D_omraf")
-
-[node name="DuckingCollider" type="CollisionShape2D" parent="." unique_id=1940819790]
-z_index = 1000
-position = Vector2(0, -6.5934067)
-rotation = 1.5707964
-shape = SubResource("CapsuleShape2D_1l1n4")
+position = Vector2(0, -13)
+shape = ExtResource("2_555hj")
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=1987433047]
 position = Vector2(-20, -23.015)
@@ -481,3 +471,14 @@ shape = SubResource("RectangleShape2D_omraf")
 debug_color = Color(0.9706219, 0, 0.45668054, 0.41960785)
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="." unique_id=108189476]
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=1730454720]
+position = Vector2(0, 2.930403)
+script = ExtResource("12_wu0gw")
+metadata/_custom_type_script = "uid://fet56joiwi3x"
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=876650479]
+position = Vector2(0, -16.117216)
+shape = SubResource("CircleShape2D_omraf")
+debug_color = Color(1, 1, 1, 0.8862745)

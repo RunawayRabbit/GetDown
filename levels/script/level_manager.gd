@@ -103,6 +103,7 @@ func _on_escape_timer_timeout() -> void:
 ## Called by this level's Door once the player reaches its ReturnZone with
 ## the golden feather in hand.
 func complete() -> void:
+	if _timer.time_left < 0.0: return
 	DebugDisplay.remove_watch("Timer")
 
 	_timer.stop()

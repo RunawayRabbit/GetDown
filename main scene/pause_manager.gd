@@ -3,8 +3,10 @@ extends Node
 # Now it's a stack idk lol should've made this an integer
 var _stack: Array[StringName] = []
 
+var player: CharacterController = null
 
 func request_pause(reason: StringName) -> void:
+	if player: player.set_physics_process(false)
 	if not _stack.has(reason):
 		_stack.append(reason)
 	get_tree().paused = true
@@ -12,7 +14,13 @@ func request_pause(reason: StringName) -> void:
 
 func release_pause(reason: StringName) -> void:
 	_stack.erase(reason)
-	get_tree().paused = not _stack.is_empty()
+	var paused = not _stack.is_empty()
+	get_tree().paused = paused
+	if player:
+		# Prevents the "jump when exit" thing by ignoring input for a frame.
+		await get_tree().physics_frame
+		await get_tree().physics_frame
+		player.set_physics_process(not paused)
 
 
 func is_paused_for(reason: StringName) -> bool:

@@ -40,17 +40,39 @@ class_name CharacterController
 @export var beak_anchor: Vector2 = Vector2(0, 25)
 
 
+@export_category("Collision Shapes")
+## Both the physics collider and the hurtbox swap together, driven from one
+## place - keeps them from ever drifting out of sync, and replaces the old
+## two-CollisionShape2D disable/enable dance that was causing the
+## double-trigger: disabling one shape's owner while enabling a different
+## one's inside the same physics step reads to Godot as a real exit
+## followed by a real re-entry, even though you were continuously
+## overlapping the whole time. Swapping .shape on one always-enabled node
+## keeps that owner's identity stable across the change, so there's nothing
+## for an overlapping Area2D to exit/re-enter over.
+@export var standing_shape: Shape2D
+@export var standing_offset: Vector2 = Vector2.ZERO
+@export var ducking_shape: Shape2D
+@export var ducking_offset: Vector2 = Vector2.ZERO
+
+
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
-@onready var ducking_collider: CollisionShape2D = $DuckingCollider
-@onready var standing_collider: CollisionShape2D = $StandingCollider
+@onready var body_collider: CollisionShape2D = $BodyCollider
+@onready var hurtbox_collider: CollisionShape2D = $Hurtbox/CollisionShape2D
 @onready var state_machine: CharacterStateMachine = $StateMachine
 @onready var beak_attack: BeakAttack = $BeakAttack
 @onready var hitbox: Area2D = $Hitbox
+@onready var hurtbox: Hurtbox = $Hurtbox
 @onready var remote_transform_2d: RemoteTransform2D = $RemoteTransform2D
 
 
 var move_input: float = 0.0
 var is_ducking: bool = false
+## Tracks which shape is actually applied right now - distinct from
+## is_ducking (raw input state) since this only changes when the state
+## machine actually enters/exits the duck state, not every frame the
+## button happens to be held.
+var is_shape_ducked: bool = false
 var _can_hover_jump: bool = false
 var _jump_button_went_down: bool = false
 var attack_button_went_down: bool = false
@@ -84,6 +106,16 @@ func remove_ability(ability: StringName) -> void:
 
 var cam:Cam
 var game_manager:GameManager
+
+
+func _ready() -> void:
+	hurtbox.died.connect(_on_hurtbox_died)
+	set_ducked_shape(false)
+
+
+func _on_hurtbox_died() -> void:
+	if game_manager:
+		game_manager.player_died()
 
 
 func _physics_process(delta: float) -> void:
@@ -158,9 +190,38 @@ func _check_jump_trigger() -> void:
 
 
 func _force_duck() -> void:
-	if not shapecast(standing_collider.shape, standing_collider.transform).is_empty() and \
-	   shapecast(ducking_collider.shape, ducking_collider.transform).is_empty():
+	var standing_transform := Transform2D(0.0, standing_offset)
+	var ducking_transform := Transform2D(0.0, ducking_offset)
+	if not shapecast(standing_shape, standing_transform).is_empty() and \
+	   shapecast(ducking_shape, ducking_transform).is_empty():
 		state_machine.transition_to("duck")
+
+
+## Swaps both the physics collider and the hurtbox to the standing or
+## ducking shape together, so they can never disagree about the player's
+## current size. Call this instead of touching either collider directly.
+##
+## standing_offset/ducking_offset are both measured relative to the
+## character's own base (CharacterController's origin) - NOT relative to
+## whatever parent each CollisionShape2D actually has. body_collider is a
+## direct child so that's a 1:1 assignment, but hurtbox_collider's parent is
+## Hurtbox, which may itself sit at a non-zero local position - so its
+## offset has to be re-based into Hurtbox's own local space, or the two
+## shapes will silently end up in different places despite sharing a
+## "shared" offset value.
+func set_ducked_shape(ducked: bool) -> void:
+	if ducked == is_shape_ducked:
+		return
+
+	is_shape_ducked = ducked
+	var shape := ducking_shape if ducked else standing_shape
+	var offset := ducking_offset if ducked else standing_offset
+
+	body_collider.shape = shape
+	body_collider.position = offset
+
+	hurtbox_collider.shape = shape
+	hurtbox_collider.position = offset - hurtbox.position
 
 
 func _check_wall_grab_trigger() -> bool:
@@ -263,6 +324,7 @@ func reset(global_pos: Vector2) -> void:
 	velocity = Vector2.ZERO
 	state_machine.transition_to("reset")
 	state_machine.transition_to(state_machine.initial_state_name)
+	hurtbox.reset()
 
 
 func is_attacking() -> bool:

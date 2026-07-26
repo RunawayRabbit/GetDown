@@ -6,25 +6,14 @@ var _charge_timer := 0.0
 var _is_charged := false
 
 
-@onready var standing_collider: CollisionShape2D = $"../../StandingCollider"
-@onready var ducking_collider: CollisionShape2D = $"../../DuckingCollider"
-
-
-func _ready() -> void:
-	standing_collider.disabled = false
-	ducking_collider.disabled = true
-
-
 func enter(_previous_state_name: String, _params: Dictionary = {}) -> void:
 	_charge_timer = 0.0
 	_is_charged = false
-	standing_collider.disabled = true
-	ducking_collider.disabled = false
+	controller.set_ducked_shape(true)
 
 
 func exit() -> void:
-	standing_collider.disabled = false
-	ducking_collider.disabled = true
+	controller.set_ducked_shape(false)
 
 
 func physics_update(delta: float) -> void:
@@ -57,7 +46,7 @@ func physics_update(delta: float) -> void:
 
 
 func _can_stand() -> bool:
-	var result = controller.shapecast(standing_collider.shape, standing_collider.transform, controller.collision_mask,  -0.5)
+	var result = controller.shapecast(controller.standing_shape, Transform2D(0.0, controller.standing_offset), controller.collision_mask, -0.5)
 	return result.is_empty()
 
 

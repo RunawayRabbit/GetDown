@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://db7wok8clpn1t" path="res://entities/doodads/golden_feather.tscn" id="5_u6trv"]
 [ext_resource type="PackedScene" uid="uid://cutonouy8x2y4" path="res://entities/doodads/feather.tscn" id="6_dsa6f"]
 [ext_resource type="PackedScene" uid="uid://ckuaq5t3qfvpr" path="res://camera/cam_zone.tscn" id="7_dsa6f"]
+[ext_resource type="PackedScene" uid="uid://svrhbskj8ea0" path="res://entities/enemies/spikes.tscn" id="8_nwtq3"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_16ips"]
 texture = ExtResource("1_dxoof")
@@ -90,5 +91,8 @@ shape = SubResource("RectangleShape2D_dsa6f")
 visible = true
 position = Vector2(219.5, -72.5)
 shape = SubResource("RectangleShape2D_nwtq3")
+
+[node name="Spikes" parent="." unique_id=2127231259 instance=ExtResource("8_nwtq3")]
+position = Vector2(229, -16)
 
 [editable path="CamZone"]

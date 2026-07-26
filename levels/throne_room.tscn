@@ -81,11 +81,14 @@ animations = [{
 "speed": 2.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_evc64"]
-size = Vector2(1223, 533)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ymp05"]
+size = Vector2(1080, 227.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ntupo"]
 size = Vector2(1373, 572)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hayi4"]
+size = Vector2(991, 250.35)
 
 [node name="ThroneRoom" type="Node" unique_id=952412467 node_paths=PackedStringArray("doors")]
 script = ExtResource("1_ymp05")
@@ -125,14 +128,27 @@ process_mode = 3
 limit_transition_speed = 2000.0
 
 [node name="CamZone" parent="." unique_id=1234361721 instance=ExtResource("8_evc64")]
-visible = false
 
 [node name="CollisionShape2D" parent="CamZone" index="0" unique_id=508428621]
 visible = true
-position = Vector2(-34.5, -89.5)
-shape = SubResource("RectangleShape2D_evc64")
+position = Vector2(-56, 14.25)
+shape = SubResource("RectangleShape2D_ymp05")
 
 [node name="Bounds" parent="CamZone" index="1" unique_id=1836860311]
+visible = true
+position = Vector2(-63.5, -130)
+shape = SubResource("RectangleShape2D_ntupo")
+disabled = false
+debug_color = Color(0.67871416, 0.5071297, 3.85046e-07, 0.41960785)
+
+[node name="CamZone2" parent="." unique_id=622738727 instance=ExtResource("8_evc64")]
+
+[node name="CollisionShape2D" parent="CamZone2" index="0" unique_id=508428621]
+visible = true
+position = Vector2(38.5, -226.175)
+shape = SubResource("RectangleShape2D_hayi4")
+
+[node name="Bounds" parent="CamZone2" index="1" unique_id=1836860311]
 visible = true
 position = Vector2(-63.5, -130)
 shape = SubResource("RectangleShape2D_ntupo")
@@ -186,6 +202,7 @@ rotation = 3.1415927
 scale = Vector2(1.2708747, 375.7449)
 
 [editable path="CamZone"]
+[editable path="CamZone2"]
 [editable path="YoshiDoor"]
 [editable path="TutorialDoor"]
 [editable path="DuckDoor"]

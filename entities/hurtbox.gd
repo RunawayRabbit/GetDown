@@ -48,3 +48,9 @@ func is_invincible() -> bool:
 
 func is_dead() -> bool:
 	return _is_dead
+
+func reset() -> void:
+	current_health = max_health
+	_invincible_timer = 0.0
+	_is_dead = false
+	health_changed.emit(current_health, max_health)
