@@ -14,7 +14,6 @@ func _on_body_entered(body: Node2D) -> void:
 
 	var cam := get_viewport().get_camera_2d() as Cam
 	cam.set_zone_limits(rect)
-	print(rect)
 
 
 func _get_bounds_rect() -> Rect2:

@@ -6,10 +6,10 @@ class_name GameManager
 
 # Hard-coded as FUCK! It works though. Putting my game jam hat on.
 var completed_wings: Dictionary = {
-	"wing_north": false,
-	"wing_south": false,
-	"wing_east": false,
-	"wing_west": false
+	"tutorial": false,
+	"duck": false,
+	"yoshi": false,
+	"peck": false
 }
 
 var _active_wing: LevelManager = null
@@ -35,7 +35,7 @@ signal level_loaded(scene_path: String, level: LevelManager)
 
 func _ready() -> void:
 	fadeout.modulate.a = 1.0
-	_fade(0.0, 2.0)
+	fadeout.fade(0.0, 2.0)
 
 	_throne_room_uid = throne_room_scene.resource_path
 	var throne_room = throne_room_scene.instantiate() as LevelManager
@@ -49,6 +49,8 @@ func _ready() -> void:
 
 	_player = spawn_player(Vector2.ZERO)
 	_player.register_camera(camera)
+
+	DialogueManager.game_manager = self
 
 
 func _process(_delta: float) -> void:
@@ -160,7 +162,7 @@ func retry_active_wing(resume_after_golden: bool) -> void:
 	var scene_path := _active_wing_scene_path
 	var anchor := _active_wing_anchor
 
-	await _fade(1.0, 0.4)
+	await fadeout.fade(1.0, 0.4)
 
 	_active_wing.queue_free()
 
@@ -182,7 +184,7 @@ func retry_active_wing(resume_after_golden: bool) -> void:
 	else:
 		_player.reset(anchor)
 
-	await _fade(0.0, 0.4)
+	fadeout.fade(0.0, 0.4)
 
 
 ## Call this when the player dies. Decides hard vs. soft restart based on
@@ -200,20 +202,12 @@ func mark_wing_complete(wing_id: String) -> void:
 		completed_wings[wing_id] = true
 		wing_completed.emit(wing_id)
 
+func is_wing_complete(wing_id: String) -> bool:
+	return completed_wings.get(wing_id, false)
+
 
 func are_all_wings_complete() -> bool:
 	for wing in completed_wings:
 		if not completed_wings[wing]:
 			return false
 	return true
-
-
-### Smooth screen fade helper
-func _fade(target_alpha: float, duration: float) -> void:
-	if not fadeout:
-		return
-
-	fadeout.mouse_filter = Control.MOUSE_FILTER_STOP if target_alpha > 0.0 else Control.MOUSE_FILTER_IGNORE
-	var tween = create_tween()
-	tween.tween_property(fadeout, "modulate:a", target_alpha, duration)
-	await tween.finished

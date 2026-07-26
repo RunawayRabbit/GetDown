@@ -65,9 +65,9 @@ var wall_released_this_frame: bool = false
 
 
 class Ability:
-	const DUCK_JUMP: StringName = &"duck_jump"
-	const YOSHI_JUMP: StringName = &"yoshi_jump"
-	const PECK_CLIMB: StringName = &"peck_climb"
+	const DUCK_JUMP: StringName = &"duck"
+	const YOSHI_JUMP: StringName = &"yoshi"
+	const PECK_CLIMB: StringName = &"peck"
 
 var _abilities: Dictionary = {}
 
@@ -75,6 +75,7 @@ func has_ability(ability: StringName) -> bool:
 	return _abilities.has(ability)
 
 func add_ability(ability: StringName) -> void:
+	prints("Adding ability", ability)
 	_abilities[ability] = true
 
 func remove_ability(ability: StringName) -> void:

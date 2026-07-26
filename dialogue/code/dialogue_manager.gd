@@ -22,11 +22,59 @@ var current_index: int = 0
 var tween: Tween
 var is_typing: bool = false
 
+var current_dialogue_path: String = ""
+
+var game_manager:GameManager
+
 signal dialogue_finished
 
 func _ready() -> void:
 	hide()
 	process_mode = Node.PROCESS_MODE_ALWAYS
+
+# This is what we call a Stringly Typed system.
+# I won't tell anyone if you don't.
+class DialogueGroup:
+	func _init(wing_:String, files_: Array[String]):
+		wing = wing_
+		files = files_
+	var wing: String
+	var files: Array[String]
+
+# wing names are the level we are *going to*. Names must match GameManager's version because OOF
+# I am not programming well today.
+var DIALOGUE_LISTS: Array[DialogueGroup] = [
+	DialogueGroup.new("tutorial", ["res://dialogue/beginning.json"]),
+	DialogueGroup.new("duck", ["res://dialogue/chargejump.json"]),
+	DialogueGroup.new("yoshi", ["res://dialogue/hover.json"]),
+	DialogueGroup.new("peck", ["res://dialogue/wallpeck.json"]),
+	DialogueGroup.new("end", ["res://dialogue/ending.json"]),
+]
+
+var _seen_dialogues: Dictionary[String, bool] = {}
+
+func start_next_dialogue() -> void:
+	for stage in DIALOGUE_LISTS:
+		game_manager._player.add_ability(stage.wing)
+		if game_manager.is_wing_complete(stage.wing):
+			continue
+
+		for file in stage.files:
+			if !has_seen_dialogue(file):
+				start_dialogue(file)
+				return
+
+		# Repeat the final one.
+		start_dialogue(stage.files[-1])
+		return
+	
+	assert(false) # unreachable
+
+func has_seen_dialogue(dialogue: String) -> bool:
+	return _seen_dialogues.has(dialogue)
+
+func mark_dialogue_seen(dialogue: String) -> void:
+	_seen_dialogues[dialogue] = true
 
 func start_dialogue(file_path: String) -> void:
 	if not FileAccess.file_exists(file_path):
@@ -36,6 +84,7 @@ func start_dialogue(file_path: String) -> void:
 	var file = FileAccess.open(file_path, FileAccess.READ)
 	var json = JSON.new()
 	if json.parse(file.get_as_text()) == OK:
+		current_dialogue_path = file_path
 		dialogue_data = json.data
 		current_index = 0
 		
@@ -45,10 +94,6 @@ func start_dialogue(file_path: String) -> void:
 		show_line()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not visible:
-		if Input.is_action_just_pressed("honk"):
-			start_dialogue("res://dialogue/beginning.json")
-		return
 
 	if not Pause.is_topmost(PAUSE_REASON):
 		return
@@ -72,6 +117,8 @@ func _unhandled_input(event: InputEvent) -> void:
 func finish_dialogue() -> void:
 	hide()
 	Pause.release_pause(PAUSE_REASON)
+	mark_dialogue_seen(current_dialogue_path)
+	current_dialogue_path = ""
 	dialogue_finished.emit()
 
 func show_line() -> void:

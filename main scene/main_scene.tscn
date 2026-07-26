@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://lcklf0e7shte" path="res://main scene/ui_shell.gd" id="2_0pvqg"]
 [ext_resource type="Theme" uid="uid://cvhb110m1xugo" path="res://UI/ui_style.tres" id="3_2lh0v"]
 [ext_resource type="Script" uid="uid://deitcpn5uflpj" path="res://levels/script/game_manager.gd" id="3_r7nwt"]
+[ext_resource type="Script" uid="uid://uoe41vxowe7i" path="res://main scene/fadeout.gd" id="3_waue3"]
 [ext_resource type="StyleBox" uid="uid://be5gnma5c7l1k" path="res://UI/button_box.tres" id="4_2iv45"]
 [ext_resource type="StyleBox" uid="uid://pxo4wfmd3r4b" path="res://UI/button_box_hover.tres" id="5_s3ajk"]
 [ext_resource type="Texture2D" uid="uid://csslwv63unhqg" path="res://art/portraits/CountDownPortrait.png" id="6_rrtnf"]
@@ -48,6 +49,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0.03529412, 0.039215688, 0.078431375, 1)
+script = ExtResource("3_waue3")
 
 [node name="TitleScreen" type="Control" parent="UIShell" unique_id=433733863]
 z_index = 500
@@ -186,8 +188,8 @@ layout_mode = 2
 text = "Quit Game"
 
 [node name="GameManager" type="Node" parent="." unique_id=703891925]
-process_mode = 1
 script = ExtResource("3_r7nwt")
 metadata/_custom_type_script = "uid://deitcpn5uflpj"
 
 [node name="LevelContainer" type="Node" parent="GameManager" unique_id=990846417]
+process_mode = 1

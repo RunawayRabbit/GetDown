@@ -108,16 +108,17 @@ texture = ExtResource("4_lnsbk")
 script = ExtResource("5_16ips")
 
 [node name="Area2D" type="Area2D" parent="CountDownThrone" unique_id=85043855]
-monitoring = false
+collision_layer = 8
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CountDownThrone/Area2D" unique_id=1544678819]
 position = Vector2(-1.5, -4)
 shape = SubResource("RectangleShape2D_omraf")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CountDownThrone" unique_id=905659190]
+[node name="SpeechBubble" type="AnimatedSprite2D" parent="CountDownThrone" unique_id=905659190]
 position = Vector2(-22, -25)
 sprite_frames = SubResource("SpriteFrames_omraf")
-frame_progress = 0.8034478
+frame_progress = 0.64981854
 
 [node name="Camera" parent="." unique_id=311762619 instance=ExtResource("7_icn5j")]
 process_mode = 3
