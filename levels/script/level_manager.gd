@@ -27,7 +27,7 @@ var _timer: Timer
 var _game_manager: GameManager
 var _scene_file_path: String = ""
 
-signal escape_timer_started(seconds: float)
+signal escape_timer_started(timer:Timer)
 signal escape_failed
 signal wing_completed
 
@@ -89,13 +89,11 @@ func _on_golden_feather_collected(_feather: Collectable) -> void:
 
 
 func _start_escape_timer() -> void:
-	DebugDisplay.watch("Timer", func(): return _timer.time_left)
 	_timer.start(escape_time_seconds)
-	escape_timer_started.emit(escape_time_seconds)
+	escape_timer_started.emit(_timer)
 
 
 func _on_escape_timer_timeout() -> void:
-	DebugDisplay.remove_watch("Timer")
 	escape_failed.emit()
 	_game_manager.retry_active_wing(true)
 

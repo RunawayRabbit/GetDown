@@ -12,10 +12,11 @@ func _ready() -> void:
 
 
 func _on_game_started() -> void:
-	
+	MusicManager.play_music(load("res://Music/Throne Room Loopable.mp3"), false, true)
 	pass
 
 
+#TODO: These turned out to be redundant. PauseManager ended up being needed..
 func _on_game_paused() -> void:
 	pass
 

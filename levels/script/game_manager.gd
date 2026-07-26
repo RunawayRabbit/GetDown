@@ -3,6 +3,7 @@ class_name GameManager
 
 @onready var level_container: Node = $LevelContainer
 @onready var fadeout: ColorRect = %Fadeout
+@onready var timer_display: TimerDisplay = %TimerDisplay
 
 # Hard-coded as FUCK! It works though. Putting my game jam hat on.
 var completed_wings: Dictionary = {
@@ -146,6 +147,9 @@ func _finish_load() -> void:
 	level.initialize(self, finished_path)
 
 	_loading_position = Vector2.ZERO
+	level.escape_timer_started.connect(timer_display.start_timer)
+	level.escape_failed.connect(timer_display.end_timer)
+	level.wing_completed.connect(timer_display.freeze_timer)
 
 
 func _return_to_hub() -> void:
