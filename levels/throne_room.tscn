@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cf7hojfoc50wh" path="res://art/throne_room/count_down_throne.png" id="4_lnsbk"]
 [ext_resource type="Script" uid="uid://c8y2r0khtgk0n" path="res://entities/doodads/count_down.gd" id="5_16ips"]
 [ext_resource type="PackedScene" uid="uid://dlvga6dpwon02" path="res://camera/camera.tscn" id="7_icn5j"]
+[ext_resource type="Texture2D" uid="uid://d1l7r2m4xy0cl" path="res://art/particles/speech.png" id="7_ymp05"]
 [ext_resource type="PackedScene" uid="uid://ckuaq5t3qfvpr" path="res://camera/cam_zone.tscn" id="8_evc64"]
 [ext_resource type="PackedScene" uid="uid://yyo7b747jo8j" path="res://entities/doodads/door.tscn" id="9_ntupo"]
 
@@ -44,6 +45,42 @@ sources/1 = SubResource("TileSetAtlasSource_icn5j")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_omraf"]
 size = Vector2(115, 112)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_hayi4"]
+atlas = ExtResource("7_ymp05")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3g1wa"]
+atlas = ExtResource("7_ymp05")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wny1k"]
+atlas = ExtResource("7_ymp05")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ufed1"]
+atlas = ExtResource("7_ymp05")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_omraf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hayi4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3g1wa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wny1k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ufed1")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 2.0
+}]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_evc64"]
 size = Vector2(1223, 533)
 
@@ -69,7 +106,6 @@ tile_set = ExtResource("3_lnsbk")
 position = Vector2(0, -25)
 texture = ExtResource("4_lnsbk")
 script = ExtResource("5_16ips")
-metadata/_edit_group_ = true
 
 [node name="Area2D" type="Area2D" parent="CountDownThrone" unique_id=85043855]
 monitoring = false
@@ -78,11 +114,17 @@ monitoring = false
 position = Vector2(-1.5, -4)
 shape = SubResource("RectangleShape2D_omraf")
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CountDownThrone" unique_id=905659190]
+position = Vector2(-22, -25)
+sprite_frames = SubResource("SpriteFrames_omraf")
+frame_progress = 0.8034478
+
 [node name="Camera" parent="." unique_id=311762619 instance=ExtResource("7_icn5j")]
 process_mode = 3
 limit_transition_speed = 2000.0
 
 [node name="CamZone" parent="." unique_id=1234361721 instance=ExtResource("8_evc64")]
+visible = false
 
 [node name="CollisionShape2D" parent="CamZone" index="0" unique_id=508428621]
 visible = true
@@ -112,7 +154,7 @@ position = Vector2(493, 116)
 destination = "uid://d2hum3a20na71"
 
 [node name="LevelAnchor" parent="TutorialDoor" index="4" unique_id=2087890823]
-position = Vector2(131, 0)
+position = Vector2(131, -4)
 
 [node name="Fader" parent="TutorialDoor" index="6" unique_id=1973993668]
 position = Vector2(193.70337, 26.041672)

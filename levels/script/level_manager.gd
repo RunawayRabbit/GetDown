@@ -33,6 +33,7 @@ signal wing_completed
 
 
 func initialize(game_manager: GameManager, path: String, resume_after_golden: bool = false) -> void:
+	
 	_game_manager = game_manager
 	_scene_file_path = path
 
@@ -74,7 +75,6 @@ func _resume_with_golden_feather() -> void:
 
 func _on_collectable_collected(_collectable: Collectable) -> void:
 	collected_count += 1
-	prints("Feather Get!", collected_count-total_collectables, "remaining.")
 	_update_golden_feather_lock()
 
 
@@ -95,6 +95,7 @@ func _start_escape_timer() -> void:
 
 
 func _on_escape_timer_timeout() -> void:
+	DebugDisplay.remove_watch("Timer")
 	escape_failed.emit()
 	_game_manager.retry_active_wing(true)
 
@@ -102,6 +103,8 @@ func _on_escape_timer_timeout() -> void:
 ## Called by this level's Door once the player reaches its ReturnZone with
 ## the golden feather in hand.
 func complete() -> void:
+	DebugDisplay.remove_watch("Timer")
+
 	_timer.stop()
 	wing_completed.emit()
 	_game_manager.mark_wing_complete(wing_id)

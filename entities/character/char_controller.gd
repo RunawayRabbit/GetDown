@@ -64,6 +64,23 @@ var _attack_buffer_timer: float = 0.0
 var wall_released_this_frame: bool = false
 
 
+class Ability:
+	const DUCK_JUMP: StringName = &"duck_jump"
+	const YOSHI_JUMP: StringName = &"yoshi_jump"
+	const PECK_CLIMB: StringName = &"peck_climb"
+
+var _abilities: Dictionary = {}
+
+func has_ability(ability: StringName) -> bool:
+	return _abilities.has(ability)
+
+func add_ability(ability: StringName) -> void:
+	_abilities[ability] = true
+
+func remove_ability(ability: StringName) -> void:
+	_abilities.erase(ability)
+
+
 var cam:Cam
 var game_manager:GameManager
 
@@ -135,7 +152,7 @@ func _check_jump_trigger() -> void:
 		state_machine.transition_to("jump", params)
 		return
  
-	if _can_hover_jump and not is_on_floor() and _jump_button_went_down:
+	if has_ability(Ability.YOSHI_JUMP) and _can_hover_jump and not is_on_floor() and _jump_button_went_down:
 		state_machine.transition_to("hover")
 
 
@@ -146,6 +163,8 @@ func _force_duck() -> void:
 
 
 func _check_wall_grab_trigger() -> bool:
+	if not has_ability(Ability.PECK_CLIMB):
+		return false
 	if is_on_floor():
 		return false
 	if not beak_attack.is_active():
@@ -238,9 +257,10 @@ func update_facing() -> void:
 	$RemoteTransform2D.position.x = cam.look_ahead_distance * facing_dir
 
 
-func reset() -> void:
+func reset(global_pos: Vector2) -> void:
+	global_position = global_pos
 	velocity = Vector2.ZERO
-	state_machine.transition_to("")
+	state_machine.transition_to("reset")
 	state_machine.transition_to(state_machine.initial_state_name)
 
 

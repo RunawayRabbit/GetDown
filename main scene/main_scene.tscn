@@ -38,6 +38,7 @@ layer = 2
 script = ExtResource("2_0pvqg")
 
 [node name="Fadeout" type="ColorRect" parent="UIShell" unique_id=423793549]
+unique_name_in_owner = true
 process_mode = 3
 modulate = Color(1, 1, 1, 0)
 anchors_preset = 15

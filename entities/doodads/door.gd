@@ -23,17 +23,6 @@ func initialize(manager: GameManager) -> void:
 	self._game_manager = manager
 
 
-func _physics_process(_delta: float) -> void:
-	if Input.is_key_pressed(KEY_1):
-		anim.play("waiting")
-	if Input.is_key_pressed(KEY_2):
-		anim.play("opening")
-	if Input.is_key_pressed(KEY_3):
-		anim.play("closing")
-	if Input.is_key_pressed(KEY_4):
-		anim.play("RESET")
-	
-
 func _ready() -> void:
 	if _game_manager: _game_manager.level_loaded.connect(_on_level_loaded)
 	open_zone.body_entered.connect(_on_body_entered)
@@ -72,13 +61,13 @@ func _on_body_entered(body: Node2D) -> void:
 
 
 func _on_level_loaded(scene_path: String, level: LevelManager) -> void:
-	if state != State.WAITING_FOR_LEVEL:
-		return
-
 	if scene_path != destination:
 		return
 
 	_level = level
+
+	if state != State.WAITING_FOR_LEVEL:
+		return
 
 	# GameManager already parents the level under level_container by this
 	# point — this handler is purely a reaction to it being ready.

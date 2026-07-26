@@ -1,8 +1,10 @@
 class_name StateDuck
 extends StateGrounded
 
+
 var _charge_timer := 0.0
 var _is_charged := false
+
 
 @onready var standing_collider: CollisionShape2D = $"../../StandingCollider"
 @onready var ducking_collider: CollisionShape2D = $"../../DuckingCollider"
@@ -46,7 +48,7 @@ func physics_update(delta: float) -> void:
 		state_machine.transition_to("run" if absf(controller.velocity.x) > 10.0 else "idle")
 		return
 
-	if not _is_charged:
+	if controller.has_ability(CharacterController.Ability.DUCK_JUMP) and not _is_charged:
 		_charge_timer += delta
 		if _charge_timer >= controller.charge_jump_time:
 			_is_charged = true

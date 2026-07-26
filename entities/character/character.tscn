@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://daxuua8m7srvp" path="res://entities/character/states/state_duck.gd" id="7_tgjim"]
 [ext_resource type="Script" uid="uid://d2qqydh5t287t" path="res://entities/character/states/state_wall.gd" id="8_0vyii"]
 [ext_resource type="Script" uid="uid://bdck1ku3x7luc" path="res://entities/character/states/state_hover.gd" id="8_wy5t8"]
+[ext_resource type="Script" uid="uid://chsxwp4j7fofv" path="res://entities/character/char_state.gd" id="9_6y70v"]
 [ext_resource type="Script" uid="uid://c17xgnqt7ydgq" path="res://entities/character/beak_attack.gd" id="9_dy06j"]
 
 [sub_resource type="Curve" id="Curve_wy5t8"]
@@ -437,6 +438,10 @@ max_speed = 200.0
 script = ExtResource("8_0vyii")
 wall_jump_impulse = 500.0
 metadata/_custom_type_script = "uid://d2qqydh5t287t"
+
+[node name="reset" type="Node" parent="StateMachine" unique_id=1750419625]
+script = ExtResource("9_6y70v")
+metadata/_custom_type_script = "uid://chsxwp4j7fofv"
 
 [node name="BeakAttack" type="Node" parent="." unique_id=1742894338]
 script = ExtResource("9_dy06j")
