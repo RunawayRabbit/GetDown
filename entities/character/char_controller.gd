@@ -48,6 +48,16 @@ class_name CharacterController
 @export var ducking_offset: Vector2 = Vector2.ZERO
 
 
+@export_category("Audio")
+## How many one-shot sounds can overlap at once.
+@export var sfx_pool_size: int = 4
+## Random pitch variance applied on every play_sfx() call,
+@export var sfx_pitch_variance: float = 0.06
+
+var _sfx_players: Array[AudioStreamPlayer2D] = []
+var _next_sfx_player: int = 0
+
+
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var body_collider: CollisionShape2D = $BodyCollider
 @onready var hurtbox_collider: CollisionShape2D = $Hurtbox/CollisionShape2D
@@ -93,17 +103,43 @@ func remove_ability(ability: StringName) -> void:
 
 
 var cam:Cam
-var game_manager:GameManager
 
 
 func _ready() -> void:
-	hurtbox.died.connect(_on_hurtbox_died)
 	set_ducked_shape(false)
+	_setup_sfx_pool()
 
 
-func _on_hurtbox_died() -> void:
-	if game_manager:
-		game_manager.player_died()
+func _setup_sfx_pool() -> void:
+	for i in sfx_pool_size:
+		var player := AudioStreamPlayer2D.new()
+		player.bus = "SFX" # Same bus the options menu's volume slider controls.
+		add_child(player)
+		_sfx_players.append(player)
+
+
+## Plays a one-shot sound without interrupting whatever else is currently
+## playing. Call this from states for jump/land/attack/etc, rather than
+## reaching for a single AudioStreamPlayer2D directly - a lone player cuts
+## off its own previous sound every time you call .play() on it again,
+## which is exactly what you'd hit landing right after a jump.
+##
+## Round-robins through the pool rather than searching for a free player -
+## simpler, and fine as long as sfx_pool_size comfortably covers however
+## many sounds actually overlap in practice. If a sound gets cut off in
+## testing, that's your signal to just raise sfx_pool_size, not to add a
+## smarter allocator.
+func play_sfx(stream: AudioStream, volume_db: float = 0.0) -> void:
+	if not stream or _sfx_players.is_empty():
+		return
+
+	var player := _sfx_players[_next_sfx_player]
+	_next_sfx_player = (_next_sfx_player + 1) % _sfx_players.size()
+
+	player.stream = stream
+	player.volume_db = volume_db
+	player.pitch_scale = 1.0 + randf_range(-sfx_pitch_variance, sfx_pitch_variance)
+	player.play()
 
 
 func _physics_process(delta: float) -> void:

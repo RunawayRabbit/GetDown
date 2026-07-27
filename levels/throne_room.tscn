@@ -125,7 +125,7 @@ frame_progress = 0.1357148
 
 [node name="Camera" parent="." unique_id=311762619 instance=ExtResource("7_icn5j")]
 process_mode = 3
-limit_transition_speed = 2000.0
+limit_transition_speed = 120.0
 
 [node name="CamZone" parent="." unique_id=1234361721 instance=ExtResource("8_evc64")]
 
@@ -138,7 +138,6 @@ shape = SubResource("RectangleShape2D_ymp05")
 visible = true
 position = Vector2(-63.5, -130)
 shape = SubResource("RectangleShape2D_ntupo")
-disabled = false
 debug_color = Color(0.67871416, 0.5071297, 3.85046e-07, 0.41960785)
 
 [node name="CamZone2" parent="." unique_id=622738727 instance=ExtResource("8_evc64")]
@@ -152,7 +151,6 @@ shape = SubResource("RectangleShape2D_hayi4")
 visible = true
 position = Vector2(-63.5, -130)
 shape = SubResource("RectangleShape2D_ntupo")
-disabled = false
 debug_color = Color(0.67871416, 0.5071297, 3.85046e-07, 0.41960785)
 
 [node name="YoshiDoor" parent="." unique_id=1260081676 instance=ExtResource("9_ntupo")]

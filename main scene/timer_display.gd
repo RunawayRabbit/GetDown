@@ -8,6 +8,7 @@ class_name TimerDisplay
 var _timer: Timer = null
 var _last_seen_time: String = ""
 
+
 func start_timer(timer: Timer) -> void:
 	visible = true
 	_timer = timer

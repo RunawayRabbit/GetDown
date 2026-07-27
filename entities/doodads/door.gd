@@ -12,11 +12,12 @@ class_name Door
 @onready var level_anchor: Marker2D = $LevelAnchor if has_node("LevelAnchor") else null
 @onready var return_zone: Area2D = $ReturnZone if has_node("ReturnZone") else null
 
-enum State { CLOSED, OPENING, WAITING_FOR_LEVEL, OPEN, CLOSING }
-var state := State.CLOSED
-
 var _game_manager: GameManager
 var _level: LevelManager = null
+
+
+var _level_ready: bool = false
+var _is_open: bool = false
 
 # Called by GameManager before _ready().
 func initialize(manager: GameManager) -> void:
@@ -30,6 +31,9 @@ func _ready() -> void:
 	if return_zone:
 		return_zone.body_entered.connect(_on_return_zone_entered)
 
+	DebugDisplay.watch("DoorState", func():
+		return "open" if _is_open else ("ready" if _level_ready else "loading"))
+
 	if not level_anchor:
 		push_warning("%s has no LevelAnchor Marker2D — falling back to door position." % name)
 	if not return_zone:
@@ -42,13 +46,26 @@ func _exit_tree() -> void:
 		_game_manager.level_loaded.disconnect(_on_level_loaded)
 
 
+func _on_level_loaded(scene_path: String, level: LevelManager) -> void:
+	if scene_path != destination:
+		return
+
+	_level = level
+	_level_ready = true
+
+	_open()
+
+
 func _on_body_entered(body: Node2D) -> void:
 	if not body.is_in_group("player"): return
 
-	if state != State.CLOSED:
+	if _is_open:
 		return
 
-	state = State.WAITING_FOR_LEVEL
+	if _level_ready:
+		_open()
+		return
+
 	var anchor := level_anchor.global_position if level_anchor else global_position
 
 	# enter_wing (not load_level) - it's the one entry point that knows
@@ -58,34 +75,24 @@ func _on_body_entered(body: Node2D) -> void:
 	anim.play("waiting")
 
 
-func _on_level_loaded(scene_path: String, level: LevelManager) -> void:
-	if scene_path != destination:
+func _open() -> void:
+	if _is_open:
 		return
 
-	_level = level
-
-	if state != State.WAITING_FOR_LEVEL:
-		return
-
-	# GameManager already parents the level under level_container by this
-	# point — this handler is purely a reaction to it being ready.
-	state = State.OPENING
+	_is_open = true
 	anim.play("opening")
-	await anim.animation_finished
-
-	state = State.OPEN
 
 
 func _on_return_zone_entered(body: Node2D) -> void:
 	if not body.is_in_group("player"): return
-	if state != State.OPEN: return
-	if not _level or not _level.has_golden_feather: return
+	if not _is_open: return
+	if not is_instance_valid(_level) or not _level.has_golden_feather: return
 
 	_level.complete()
+	_close()
 
-	state = State.CLOSING
+
+func _close() -> void:
+	_is_open = false
+	_level_ready = false # Next approach should request a fresh reload.
 	anim.play("closing")
-	await anim.animation_finished
-
-	state = State.CLOSED
-	_level = null

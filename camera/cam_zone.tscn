@@ -16,7 +16,7 @@ visible = false
 position = Vector2(16, 1)
 shape = SubResource("RectangleShape2D_omraf")
 
-[node name="Bounds" type="CollisionShape2D" parent="." unique_id=1836860311]
+[node name="Bounds" type="CollisionShape2D" parent="." unique_id=1836860311 groups=["cam_zones"]]
 visible = false
 position = Vector2(448, -152)
 shape = SubResource("RectangleShape2D_pjd6e")

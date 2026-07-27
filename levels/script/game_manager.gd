@@ -44,12 +44,15 @@ func _ready() -> void:
 	var camera = camera_scene.instantiate() as Cam
 	add_child(camera)
 
-	throne_room.initialize(self, _throne_room_uid)
+	_wire_doors(throne_room)
 	level_container.add_child(throne_room)
+	throne_room.initialize()
+	_wire_level(throne_room)
 	_hub = throne_room
 
 	_player = spawn_player(Vector2.ZERO)
 	_player.register_camera(camera)
+	_player.hurtbox.died.connect(_on_player_died)
 
 	DialogueManager.game_manager = self
 	Pause.player = _player
@@ -78,7 +81,6 @@ func _process(_delta: float) -> void:
 
 func spawn_player(position: Vector2) -> CharacterController:
 	var player = player_scene.instantiate() as CharacterController
-	player.game_manager = self
 	player.global_position = position
 	add_child(player)
 	return player
@@ -87,7 +89,8 @@ func spawn_player(position: Vector2) -> CharacterController:
 func enter_wing(scene_path: String, anchor_position: Vector2) -> void:
 	if _active_wing and scene_path == _active_wing_scene_path:
 		_active_wing_anchor = anchor_position
-		retry_active_wing(false)
+
+		_reload_active_wing(false, false)
 		return
 
 	load_level(scene_path, anchor_position)
@@ -131,6 +134,7 @@ func _finish_load() -> void:
 
 	var level: LevelManager = packed.instantiate()
 	level.global_position = _loading_position
+	_wire_doors(level)
 	level_container.add_child(level)
 
 	# Why maintain a dirty list and do *actual programming* when you can just
@@ -144,12 +148,26 @@ func _finish_load() -> void:
 
 	# Emit before initialize()
 	level_loaded.emit(finished_path, level)
-	level.initialize(self, finished_path)
+	level.initialize() # Fresh start - no golden feather to resume from.
+	_wire_level(level)
 
 	_loading_position = Vector2.ZERO
+
+
+func _wire_doors(level: LevelManager) -> void:
+	for door in level.doors:
+		door.initialize(self)
+
+
+func _wire_level(level: LevelManager) -> void:
 	level.escape_timer_started.connect(timer_display.start_timer)
 	level.escape_failed.connect(timer_display.end_timer)
 	level.wing_completed.connect(timer_display.freeze_timer)
+	level.wing_completed.connect(func(): mark_wing_complete(level.wing_id))
+	level.reset_requested.connect(_on_reset_requested)
+
+	for door in level.doors:
+		door.initialize(self)
 
 
 func _return_to_hub() -> void:
@@ -160,27 +178,42 @@ func _return_to_hub() -> void:
 	level_loaded.emit(_throne_room_uid, _hub)
 
 
+## Requests come from LevelManager, we just do what it asks for.
+func _on_reset_requested(resume_after_golden: bool) -> void:
+	retry_active_wing(resume_after_golden)
+
+
 func retry_active_wing(resume_after_golden: bool) -> void:
+	# This IS the death/timeout case - fade to black makes sense here.
+	await _reload_active_wing(resume_after_golden, true)
+
+
+func _reload_active_wing(resume_after_golden: bool, is_forced_respawn: bool) -> void:
 	if not _active_wing:
 		return
 
 	var scene_path := _active_wing_scene_path
 	var anchor := _active_wing_anchor
 
-	await fadeout.fade(1.0, 0.4)
+	if is_forced_respawn:
+		await fadeout.fade(1.0, 0.4)
 
 	_active_wing.queue_free()
 
 	var level: LevelManager = load(scene_path).instantiate()
 	level.global_position = anchor
-	level_container.add_child(level)
+	_wire_doors(level)
+	level_container.call_deferred("add_child", level)
 
 	_active_wing = level
 
 	level_loaded.emit(scene_path, level)
-	level.initialize(self, scene_path, resume_after_golden)
+	level.initialize(resume_after_golden)
+	_wire_level(level)
 
-	var target_position := anchor
+	var target_position := _player.global_position
+	if is_forced_respawn:
+		target_position = anchor
 	if resume_after_golden:
 		if level.golden_feather_spawn:
 			target_position = level.golden_feather_spawn.global_position
@@ -189,16 +222,17 @@ func retry_active_wing(resume_after_golden: bool) -> void:
 
 	_player.reset(target_position)
 
-	await fadeout.fade(0.0, 0.4)
+	if is_forced_respawn:
+		await fadeout.fade(0.0, 0.4)
 
 
-## Call this when the player dies. Decides hard vs. soft restart based on
-## whether the currently active wing's golden feather has been collected.
-func player_died() -> void:
+## Call this when the player dies.
+func _on_player_died() -> void:
 	if not _active_wing:
-		return # Dying in the hub isn't handled yet - no hazards live there currently.
+		push_error("How the fuck did you die in the throne room? Seriously, tell me.")
+		return
 
-	retry_active_wing(_active_wing.has_golden_feather)
+	_active_wing.on_player_died()
 
 
 ## Call this when a wing's escape sequence is successfully finished

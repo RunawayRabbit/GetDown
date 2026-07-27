@@ -3,16 +3,12 @@ class_name LevelManager
 
 ## Set up the doors. Sorry in advance.
 @export var doors: Array[Door]
-
 ## Regular feathers go here.
 @export var collectables: Array[Collectable]
-
 ## Our ONE AND ONLY golden feather.
 @export var golden_feather: GoldenFeather
-
 ## Spawnpoint for heading back.
 @export var golden_feather_spawn: Marker2D
-
 ## Matches a key in GameManager.completed_wings. Janky but it will work.
 @export var wing_id: String = ""
 
@@ -24,22 +20,19 @@ var collected_count: int = 0
 var total_collectables: int = 0
 
 var _timer: Timer
-var _game_manager: GameManager
-var _scene_file_path: String = ""
 
-signal escape_timer_started(timer:Timer)
+## Emitted whenever this level decides a reset is needed - the escape timer
+## expiring, or the player dying. Game Manager listens for this.
+signal reset_requested(resume_after_golden: bool)
+signal escape_timer_started(timer: Timer)
 signal escape_failed
 signal wing_completed
 
 
-func initialize(game_manager: GameManager, path: String, resume_after_golden: bool = false) -> void:
-	
-	_game_manager = game_manager
-	_scene_file_path = path
-
-	for door in doors:
-		door.initialize(game_manager)
-
+## The only thing a level needs to know about the outside world at start:
+## whether it's beginning fresh, or resuming with the golden feather already
+## collected.
+func initialize(resume_after_golden: bool = false) -> void:
 	total_collectables = collectables.size()
 
 	_timer = Timer.new()
@@ -95,15 +88,19 @@ func _start_escape_timer() -> void:
 
 func _on_escape_timer_timeout() -> void:
 	escape_failed.emit()
-	_game_manager.retry_active_wing(true)
+	reset_requested.emit(true)
+
+
+## Call this when the player dies. CharacterController will do the reset.
+func on_player_died() -> void:
+	reset_requested.emit(has_golden_feather)
 
 
 ## Called by this level's Door once the player reaches its ReturnZone with
 ## the golden feather in hand.
 func complete() -> void:
-	if _timer.time_left < 0.0: return
+	if _timer.is_stopped(): return
 	DebugDisplay.remove_watch("Timer")
 
 	_timer.stop()
 	wing_completed.emit()
-	_game_manager.mark_wing_complete(wing_id)
