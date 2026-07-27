@@ -41,7 +41,6 @@ class_name CharacterController
 
 
 @export_category("Collision Shapes")
-
 @export var standing_shape: Shape2D
 @export var standing_offset: Vector2 = Vector2.ZERO
 @export var ducking_shape: Shape2D
@@ -176,8 +175,6 @@ func _read_input() -> void:
 	if attack_button_went_down:
 		_attack_buffer_timer = attack_buffer_time
 
-	#TODO: BUG: "jump" often meaning "space" is also used by the dialogue manager.
-	# Meaning we jump right after exiting a dialogue. Fun stuff. -.-
 	_jump_button_went_down = Input.is_action_just_pressed("jump")
 	if _jump_button_went_down:
 		_jump_buffer_timer = jump_buffer_time
@@ -185,7 +182,7 @@ func _read_input() -> void:
 
 func _check_jump_trigger() -> void:
 	# TODO: Raycast/shapecast down to see if we're nearing the floor.
-	# Avoid hovering if we are in 
+	# Avoid hovering if we are close so we trigger a buffered jump instead.
 	if state_machine.is_in_state("hover"):
 		return
 
@@ -203,6 +200,7 @@ func _check_jump_trigger() -> void:
 
 
 func _force_duck() -> void:
+	if state_machine.current_state is StateAir: return
 	var standing_transform := Transform2D(0.0, standing_offset)
 	var ducking_transform := Transform2D(0.0, ducking_offset)
 	if not shapecast(standing_shape, standing_transform).is_empty() and \
