@@ -118,17 +118,6 @@ func _setup_sfx_pool() -> void:
 		_sfx_players.append(player)
 
 
-## Plays a one-shot sound without interrupting whatever else is currently
-## playing. Call this from states for jump/land/attack/etc, rather than
-## reaching for a single AudioStreamPlayer2D directly - a lone player cuts
-## off its own previous sound every time you call .play() on it again,
-## which is exactly what you'd hit landing right after a jump.
-##
-## Round-robins through the pool rather than searching for a free player -
-## simpler, and fine as long as sfx_pool_size comfortably covers however
-## many sounds actually overlap in practice. If a sound gets cut off in
-## testing, that's your signal to just raise sfx_pool_size, not to add a
-## smarter allocator.
 func play_sfx(stream: AudioStream, volume_db: float = 0.0) -> void:
 	if not stream or _sfx_players.is_empty():
 		return

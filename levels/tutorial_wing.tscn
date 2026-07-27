@@ -8,6 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://cutonouy8x2y4" path="res://entities/doodads/feather.tscn" id="6_dsa6f"]
 [ext_resource type="PackedScene" uid="uid://ckuaq5t3qfvpr" path="res://camera/cam_zone.tscn" id="7_dsa6f"]
 [ext_resource type="PackedScene" uid="uid://svrhbskj8ea0" path="res://entities/enemies/spikes.tscn" id="8_nwtq3"]
+[ext_resource type="PackedScene" uid="uid://tvc1lvprpaop" path="res://debug/level_test_scaffold.tscn" id="9_l006y"]
+[ext_resource type="PackedScene" uid="uid://6ayxylsougji" path="res://entities/doodads/moving_platform.tscn" id="10_003w8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_16ips"]
 texture = ExtResource("1_dxoof")
@@ -99,6 +101,8 @@ shape = SubResource("RectangleShape2D_nwtq3")
 [node name="Spikes" parent="." unique_id=2127231259 instance=ExtResource("8_nwtq3")]
 position = Vector2(229, -16)
 
+[node name="LevelTestScaffold" parent="." unique_id=1134908556 instance=ExtResource("9_l006y")]
+
 [node name="ReferenceRect" type="ReferenceRect" parent="." unique_id=773129779]
 offset_top = -132.0
 offset_right = 72.0
@@ -114,5 +118,10 @@ grow_vertical = 2
 text = "Test label to ensure we can write stuff."
 label_settings = SubResource("LabelSettings_omraf")
 autowrap_mode = 3
+
+[node name="MovingPlatform" parent="." unique_id=134645671 instance=ExtResource("10_003w8")]
+position = Vector2(120, -165)
+loop_mode = 0
+one_way_collision = true
 
 [editable path="CamZone"]

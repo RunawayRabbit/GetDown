@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://6ayxylsougji"]
+
+[ext_resource type="Script" uid="uid://dpmqbcyfetx6l" path="res://entities/doodads/moving_platform.gd" id="1_dcoc3"]
+
+[sub_resource type="Curve2D" id="Curve2D_uufl4"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 9, -27, 0, 0, 0, 0, 111.1875, -27, 0, 0, 0, 0, 9, -27)
+}
+point_count = 3
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_fe6m6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_omraf"]
+size = Vector2(64, 16)
+
+[node name="MovingPlatform" type="Node2D" unique_id=134645671]
+script = ExtResource("1_dcoc3")
+loop_mode = 1
+move_duration = 5.0
+pause_duration = 2.0
+
+[node name="Path2D" type="Path2D" parent="." unique_id=1359240538]
+position = Vector2(-9.6, 18.109756)
+scale = Vector2(1.0666667, 0.6707317)
+curve = SubResource("Curve2D_uufl4")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D" unique_id=1135556142]
+position = Vector2(9, -27)
+rotates = false
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Path2D/PathFollow2D" unique_id=2048675729]
+remote_path = NodePath("../../../AnimatableBody2D")
+
+[node name="AnimatableBody2D" type="AnimatableBody2D" parent="." unique_id=1947332733]
+scale = Vector2(1.0666667, 0.6707317)
+collision_layer = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="AnimatableBody2D" unique_id=422653896]
+position = Vector2(1.013279e-06, 0.124999404)
+scale = Vector2(64.00001, 15.75)
+texture = SubResource("PlaceholderTexture2D_fe6m6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatableBody2D" unique_id=1958943926]
+shape = SubResource("RectangleShape2D_omraf")
+one_way_collision = true

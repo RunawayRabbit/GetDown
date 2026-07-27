@@ -26,11 +26,10 @@ var current_dialogue_path: String = ""
 
 var game_manager:GameManager
 
+var dialogue_cooldown: Timer = Timer.new()
+
 signal dialogue_finished
 
-func _ready() -> void:
-	hide()
-	process_mode = Node.PROCESS_MODE_ALWAYS
 
 # This is what we call a Stringly Typed system.
 # I won't tell anyone if you don't.
@@ -52,6 +51,12 @@ var DIALOGUE_LISTS: Array[DialogueGroup] = [
 ]
 
 var _seen_dialogues: Dictionary[String, bool] = {}
+
+func _ready() -> void:
+	hide()
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	dialogue_cooldown.one_shot = true
+	add_child(dialogue_cooldown)
 
 func start_next_dialogue() -> void:
 	for stage in DIALOGUE_LISTS:
@@ -77,6 +82,8 @@ func mark_dialogue_seen(dialogue: String) -> void:
 	_seen_dialogues[dialogue] = true
 
 func start_dialogue(file_path: String) -> void:
+	if !dialogue_cooldown.is_stopped(): return
+	
 	if not FileAccess.file_exists(file_path):
 		push_error("Dialogue file not found: " + file_path)
 		return
@@ -120,6 +127,7 @@ func finish_dialogue() -> void:
 	Pause.release_pause(PAUSE_REASON)
 	mark_dialogue_seen(current_dialogue_path)
 	current_dialogue_path = ""
+	dialogue_cooldown.start(1.0)
 	dialogue_finished.emit()
 
 func show_line() -> void:
