@@ -27,6 +27,7 @@ Pause="*uid://ca4vgqobs5qil"
 DialogueManager="*uid://cl4d363vropap"
 MusicManager="*uid://cblyq8tn0613g"
 Settings="*uid://d2ipy0xx4iu3o"
+FX="*uid://cupos7klvi8mv"
 
 [display]
 

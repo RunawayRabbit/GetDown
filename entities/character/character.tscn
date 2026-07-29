@@ -6,7 +6,10 @@
 [ext_resource type="Script" uid="uid://da48umyksopq4" path="res://entities/character/char_state_machine.gd" id="3_ugqs2"]
 [ext_resource type="Shape2D" uid="uid://p2p6cilw8jlg" path="res://entities/character/ducking_shape.tres" id="3_xrw5f"]
 [ext_resource type="Script" uid="uid://d4lba42lwoueq" path="res://entities/character/states/state_grounded.gd" id="4_hx151"]
+[ext_resource type="Resource" uid="uid://kvkbef02n1yg" path="res://FX/player_jump.tres" id="4_sa5ij"]
+[ext_resource type="Resource" uid="uid://bglgk4lab42nd" path="res://FX/player_land.tres" id="4_xrw5f"]
 [ext_resource type="Script" uid="uid://u7flw2eykdxt" path="res://entities/character/states/state_jump.gd" id="5_o6jyn"]
+[ext_resource type="Resource" uid="uid://di7buqassfy4p" path="res://FX/player_attack.tres" id="6_7cb1a"]
 [ext_resource type="Script" uid="uid://bdot4hrhlu556" path="res://entities/character/states/state_fall.gd" id="6_tgjim"]
 [ext_resource type="Script" uid="uid://daxuua8m7srvp" path="res://entities/character/states/state_duck.gd" id="7_tgjim"]
 [ext_resource type="Script" uid="uid://d2qqydh5t287t" path="res://entities/character/states/state_wall.gd" id="8_0vyii"]
@@ -357,7 +360,7 @@ animations = [{
 }],
 "loop": 1,
 "name": &"run",
-"speed": 10.0
+"speed": 20.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -396,9 +399,12 @@ scale = Vector2(1.365, 1.365)
 collision_mask = 6
 script = ExtResource("1_glpr6")
 standing_shape = ExtResource("2_555hj")
-standing_offset = Vector2(0, -13)
+standing_offset = Vector2(0, -12)
 ducking_shape = ExtResource("3_xrw5f")
 ducking_offset = Vector2(0, -8)
+jump_effect = ExtResource("4_sa5ij")
+land_effect = ExtResource("4_xrw5f")
+attack_effect = ExtResource("6_7cb1a")
 
 [node name="StateMachine" type="Node" parent="." unique_id=865979981]
 script = ExtResource("3_ugqs2")
@@ -452,7 +458,7 @@ attack_cooldown = 0.7
 z_index = 1
 position = Vector2(0, -24.175825)
 sprite_frames = SubResource("SpriteFrames_pjt0s")
-animation = &"jump"
+animation = &"run"
 metadata/_edit_group_ = true
 
 [node name="BodyCollider" type="CollisionShape2D" parent="." unique_id=1308594552]
@@ -482,3 +488,6 @@ metadata/_edit_group_ = true
 position = Vector2(0, -16.117216)
 shape = SubResource("CircleShape2D_omraf")
 debug_color = Color(1, 1, 1, 0.8862745)
+
+[node name="AudioListener2D" type="AudioListener2D" parent="." unique_id=782005001]
+current = true

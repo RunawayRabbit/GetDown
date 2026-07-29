@@ -11,17 +11,16 @@ point_count = 3
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_fe6m6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_omraf"]
-size = Vector2(64, 16)
+size = Vector2(81.265625, 7.109091)
 
 [node name="MovingPlatform" type="Node2D" unique_id=134645671]
 script = ExtResource("1_dcoc3")
 loop_mode = 1
 move_duration = 5.0
 pause_duration = 2.0
+editor_platform_color = Color(1, 0.34901962, 0.7764706, 0.46666667)
 
 [node name="Path2D" type="Path2D" parent="." unique_id=1359240538]
-position = Vector2(-9.6, 18.109756)
-scale = Vector2(1.0666667, 0.6707317)
 curve = SubResource("Curve2D_uufl4")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Path2D" unique_id=1135556142]
@@ -32,12 +31,12 @@ rotates = false
 remote_path = NodePath("../../../AnimatableBody2D")
 
 [node name="AnimatableBody2D" type="AnimatableBody2D" parent="." unique_id=1947332733]
-scale = Vector2(1.0666667, 0.6707317)
+position = Vector2(9, -27)
 collision_layer = 4
 
 [node name="Sprite2D" type="Sprite2D" parent="AnimatableBody2D" unique_id=422653896]
-position = Vector2(1.013279e-06, 0.124999404)
-scale = Vector2(64.00001, 15.75)
+position = Vector2(0.49999976, 0)
+scale = Vector2(80.99999, 7.999999)
 texture = SubResource("PlaceholderTexture2D_fe6m6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatableBody2D" unique_id=1958943926]

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ImpactEffect" format=3 uid="uid://bglgk4lab42nd"]
+
+[ext_resource type="Script" uid="uid://dmj0eyn47ospi" path="res://FX/impact_effect.gd" id="1_84cae"]
+[ext_resource type="AudioStream" uid="uid://d4a6c2r2pumkj" path="res://FX/SFX/manda_quacks/land_1.ogg" id="2_hlk1g"]
+[ext_resource type="AudioStream" uid="uid://bs8kvww0jtjw5" path="res://FX/SFX/manda_quacks/land_2.ogg" id="3_837ml"]
+
+[resource]
+script = ExtResource("1_84cae")
+sound = Array[AudioStream]([ExtResource("2_hlk1g"), ExtResource("3_837ml")])
+screen_shake_intensity = 1.0
+screen_shake_duration = 0.3
+metadata/_custom_type_script = "uid://dmj0eyn47ospi"

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ImpactEffect" format=3 uid="uid://kvkbef02n1yg"]
+
+[ext_resource type="Script" uid="uid://dmj0eyn47ospi" path="res://FX/impact_effect.gd" id="1_r36us"]
+[ext_resource type="AudioStream" uid="uid://cgovu0babxqj" path="res://FX/SFX/manda_quacks/jump_1.ogg" id="2_r36us"]
+
+[resource]
+script = ExtResource("1_r36us")
+sound = Array[AudioStream]([ExtResource("2_r36us")])
+metadata/_custom_type_script = "uid://dmj0eyn47ospi"

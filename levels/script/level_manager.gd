@@ -19,13 +19,13 @@ var has_golden_feather: bool = false
 var collected_count: int = 0
 var total_collectables: int = 0
 
-var _timer: Timer
+var _completed: bool = false
+
+signal escape_timer_start_requested(duration: float)
 
 ## Emitted whenever this level decides a reset is needed - the escape timer
 ## expiring, or the player dying. Game Manager listens for this.
 signal reset_requested(resume_after_golden: bool)
-signal escape_timer_started(timer: Timer)
-signal escape_failed
 signal wing_completed
 
 
@@ -34,11 +34,6 @@ signal wing_completed
 ## collected.
 func initialize(resume_after_golden: bool = false) -> void:
 	total_collectables = collectables.size()
-
-	_timer = Timer.new()
-	_timer.one_shot = true
-	_timer.timeout.connect(_on_escape_timer_timeout)
-	add_child(_timer)
 
 	for c in collectables:
 		c.picked_up.connect(_on_collectable_collected)
@@ -82,12 +77,11 @@ func _on_golden_feather_collected(_feather: Collectable) -> void:
 
 
 func _start_escape_timer() -> void:
-	_timer.start(escape_time_seconds)
-	escape_timer_started.emit(_timer)
+	escape_timer_start_requested.emit(escape_time_seconds)
 
 
-func _on_escape_timer_timeout() -> void:
-	escape_failed.emit()
+## Called by GameManager
+func on_escape_timeout() -> void:
 	reset_requested.emit(true)
 
 
@@ -99,8 +93,7 @@ func on_player_died() -> void:
 ## Called by this level's Door once the player reaches its ReturnZone with
 ## the golden feather in hand.
 func complete() -> void:
-	if _timer.is_stopped(): return
-	DebugDisplay.remove_watch("Timer")
+	if _completed: return
+	_completed = true
 
-	_timer.stop()
 	wing_completed.emit()

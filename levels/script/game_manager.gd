@@ -25,6 +25,8 @@ var _staged_level: String = ""
 var _is_loading: bool = false
 var _loading_position: Vector2 = Vector2.ZERO
 
+var _escape_timer: Timer = null
+
 const throne_room_scene = preload("res://levels/throne_room.tscn")
 const player_scene = preload("res://entities/character/character.tscn")
 const camera_scene = preload("res://camera/camera.tscn")
@@ -37,6 +39,11 @@ signal level_loaded(scene_path: String, level: LevelManager)
 func _ready() -> void:
 	fadeout.modulate.a = 1.0
 	fadeout.fade(0.0, 2.0)
+
+	_escape_timer = Timer.new()
+	_escape_timer.one_shot = true
+	_escape_timer.timeout.connect(_on_escape_timer_timeout)
+	add_child(_escape_timer)
 
 	_throne_room_uid = throne_room_scene.resource_path
 	var throne_room = throne_room_scene.instantiate() as LevelManager
@@ -86,10 +93,16 @@ func spawn_player(position: Vector2) -> CharacterController:
 	return player
 
 
+## Returns the currently active wing if it matches scene_path, else null.
+func get_loaded_wing(scene_path: String) -> LevelManager:
+	if _active_wing and scene_path == _active_wing_scene_path:
+		return _active_wing
+	return null
+
+
 func enter_wing(scene_path: String, anchor_position: Vector2) -> void:
 	if _active_wing and scene_path == _active_wing_scene_path:
 		_active_wing_anchor = anchor_position
-
 		_reload_active_wing(false, false)
 		return
 
@@ -148,8 +161,8 @@ func _finish_load() -> void:
 
 	# Emit before initialize()
 	level_loaded.emit(finished_path, level)
-	level.initialize() # Fresh start - no golden feather to resume from.
 	_wire_level(level)
+	level.initialize() # Fresh start - no golden feather to resume from.
 
 	_loading_position = Vector2.ZERO
 
@@ -160,14 +173,27 @@ func _wire_doors(level: LevelManager) -> void:
 
 
 func _wire_level(level: LevelManager) -> void:
-	level.escape_timer_started.connect(timer_display.start_timer)
-	level.escape_failed.connect(timer_display.end_timer)
-	level.wing_completed.connect(timer_display.freeze_timer)
-	level.wing_completed.connect(func(): mark_wing_complete(level.wing_id))
+	level.escape_timer_start_requested.connect(_on_escape_timer_start_requested)
+	level.wing_completed.connect(func(): _on_wing_completed(level))
 	level.reset_requested.connect(_on_reset_requested)
 
-	for door in level.doors:
-		door.initialize(self)
+
+func _on_escape_timer_start_requested(duration: float) -> void:
+	_escape_timer.start(duration)
+	timer_display.start_timer(_escape_timer)
+
+
+func _on_escape_timer_timeout() -> void:
+	timer_display.end_timer()
+
+	if _active_wing:
+		_active_wing.on_escape_timeout()
+
+
+func _on_wing_completed(level: LevelManager) -> void:
+	_escape_timer.stop() # Stop the actual countdown, not just the UI - otherwise a near-simultaneous timeout could still fire and trigger a bogus reset after a successful finish.
+	timer_display.freeze_timer()
+	mark_wing_complete(level.wing_id)
 
 
 func _return_to_hub() -> void:
@@ -180,12 +206,7 @@ func _return_to_hub() -> void:
 
 ## Requests come from LevelManager, we just do what it asks for.
 func _on_reset_requested(resume_after_golden: bool) -> void:
-	retry_active_wing(resume_after_golden)
-
-
-func retry_active_wing(resume_after_golden: bool) -> void:
-	# This IS the death/timeout case - fade to black makes sense here.
-	await _reload_active_wing(resume_after_golden, true)
+	_reload_active_wing(resume_after_golden, true)
 
 
 func _reload_active_wing(resume_after_golden: bool, is_forced_respawn: bool) -> void:
@@ -208,8 +229,8 @@ func _reload_active_wing(resume_after_golden: bool, is_forced_respawn: bool) -> 
 	_active_wing = level
 
 	level_loaded.emit(scene_path, level)
-	level.initialize(resume_after_golden)
 	_wire_level(level)
+	level.initialize(resume_after_golden)
 
 	var target_position := _player.global_position
 	if is_forced_respawn:

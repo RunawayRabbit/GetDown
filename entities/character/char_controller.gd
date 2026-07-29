@@ -47,14 +47,10 @@ class_name CharacterController
 @export var ducking_offset: Vector2 = Vector2.ZERO
 
 
-@export_category("Audio")
-## How many one-shot sounds can overlap at once.
-@export var sfx_pool_size: int = 4
-## Random pitch variance applied on every play_sfx() call,
-@export var sfx_pitch_variance: float = 0.06
-
-var _sfx_players: Array[AudioStreamPlayer2D] = []
-var _next_sfx_player: int = 0
+@export_category("Impact Effects")
+@export var jump_effect: ImpactEffect
+@export var land_effect: ImpactEffect
+@export var attack_effect: ImpactEffect
 
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
@@ -66,6 +62,7 @@ var _next_sfx_player: int = 0
 @onready var hurtbox: Hurtbox = $Hurtbox
 @onready var remote_transform_2d: RemoteTransform2D = $RemoteTransform2D
 
+var cam:Cam
 
 var move_input: float = 0.0
 var is_ducking: bool = false
@@ -82,6 +79,8 @@ var _jump_buffer_timer: float = 0.0
 var _attack_lock_timer: float = 0.0
 var _attack_buffer_timer: float = 0.0
 var wall_released_this_frame: bool = false
+var _was_on_floor: bool = true
+var _was_beak_attacking: bool = false
 
 
 class Ability:
@@ -101,33 +100,9 @@ func remove_ability(ability: StringName) -> void:
 	_abilities.erase(ability)
 
 
-var cam:Cam
-
 
 func _ready() -> void:
 	set_ducked_shape(false)
-	_setup_sfx_pool()
-
-
-func _setup_sfx_pool() -> void:
-	for i in sfx_pool_size:
-		var player := AudioStreamPlayer2D.new()
-		player.bus = "SFX" # Same bus the options menu's volume slider controls.
-		add_child(player)
-		_sfx_players.append(player)
-
-
-func play_sfx(stream: AudioStream, volume_db: float = 0.0) -> void:
-	if not stream or _sfx_players.is_empty():
-		return
-
-	var player := _sfx_players[_next_sfx_player]
-	_next_sfx_player = (_next_sfx_player + 1) % _sfx_players.size()
-
-	player.stream = stream
-	player.volume_db = volume_db
-	player.pitch_scale = 1.0 + randf_range(-sfx_pitch_variance, sfx_pitch_variance)
-	player.play()
 
 
 func _physics_process(delta: float) -> void:
@@ -144,6 +119,11 @@ func _physics_process(delta: float) -> void:
 		attack_pressed_for_beak = false
 	beak_attack.physics_update(delta, attack_pressed_for_beak)
 
+	var is_beak_attacking_now := beak_attack.is_active()
+	if is_beak_attacking_now and not _was_beak_attacking:
+		FX.play(attack_effect, global_position)
+	_was_beak_attacking = is_beak_attacking_now
+
 	move_and_slide()
 
 
@@ -151,10 +131,13 @@ func _update_timers(delta: float) -> void:
 	#TODO: I know it's a game jam but holy fuck these timers gettin out of control
 	# Really should be doing timestamps holy fuck
 	if is_on_floor():
+		if not _was_on_floor and get_real_velocity().y > 1.0:
+			FX.play(land_effect, global_position)
 		_coyote_timer = coyote_time
 		_can_hover_jump = true
 	else:
 		_coyote_timer -= delta
+	_was_on_floor = is_on_floor()
 
 	if _jump_buffer_timer > 0.0:
 		_jump_buffer_timer -= delta
@@ -193,6 +176,7 @@ func _check_jump_trigger() -> void:
 	if _jump_buffer_timer > 0.0 and _coyote_timer > 0.0:
 		var params := state_machine.current_state.get_jump_params()
 		state_machine.transition_to("jump", params)
+		FX.play(jump_effect, global_position)
 		return
  
 	if has_ability(Ability.YOSHI_JUMP) and _can_hover_jump and not is_on_floor() and _jump_button_went_down:

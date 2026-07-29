@@ -5,13 +5,25 @@ extends CanvasLayer
 # Color settings for active vs background character
 @export var active_col: Color = Color(1.0, 1.0, 1.0, 1.0)
 @export var fade_col: Color = Color(0.4, 0.4, 0.4, 1.0)
+@export var pitch_min: float = 0.9
+@export var pitch_max: float = 1.1
 
+@export_category("Left Dude")
 @onready var left_dude: TextureRect = $LeftDude
+@export var left_dude_clips: Array[AudioStream] = []
+@export var left_dude_shout: AudioStream
+
+@export_category("Right Dude")
 @onready var right_dude: TextureRect = $RightDude
+@export var right_dude_clips: Array[AudioStream] = []
+@export var right_dude_shout: AudioStream
+
+
 @onready var speaker_name: Label = $Panel/SpeakerName
 @onready var dialogue_text: RichTextLabel = $Panel/DialogueText
+@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 
-const PAUSE_REASON: StringName = "dialogue"
+const PAUSE_REASON: StringName = &"dialogue"
 
 ## Typing speed in seconds per character. Yea that's inverted from what makes most sense,
 ## fuck you I'm tired.
@@ -21,6 +33,11 @@ var dialogue_data: Array = []
 var current_index: int = 0
 var tween: Tween
 var is_typing: bool = false
+var is_left_dude_speaking = true
+var _is_shouting = false
+var _is_silent = false
+var _regex: RegEx = RegEx.new()
+
 
 var current_dialogue_path: String = ""
 
@@ -55,8 +72,37 @@ var _seen_dialogues: Dictionary[String, bool] = {}
 func _ready() -> void:
 	hide()
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	
 	dialogue_cooldown.one_shot = true
 	add_child(dialogue_cooldown)
+	
+	# Configure audio player
+	audio_stream_player.finished.connect(_on_audio_finished)
+	_regex.compile("[^A-Za-z0-9]")
+
+func _play_voice_clip() -> void:
+	var clip = _pick_clip()
+	if not is_typing or not clip:
+		return
+	
+	audio_stream_player.stream = clip
+	audio_stream_player.pitch_scale = randf_range(pitch_min, pitch_max)
+	audio_stream_player.play()
+
+
+func _pick_clip() -> AudioStream:
+	if _is_silent: return null
+	if _is_shouting:
+		return left_dude_shout if is_left_dude_speaking else right_dude_shout
+	
+	var voice_clips = left_dude_clips if is_left_dude_speaking else right_dude_clips
+	if voice_clips.is_empty(): return null
+	
+	return voice_clips.pick_random()
+	
+
+func _on_audio_finished() -> void:
+	_play_voice_clip()
 
 func start_next_dialogue() -> void:
 	for stage in DIALOGUE_LISTS:
@@ -101,7 +147,6 @@ func start_dialogue(file_path: String) -> void:
 		show_line()
 
 func _unhandled_input(event: InputEvent) -> void:
-
 	if not Pause.is_topmost(PAUSE_REASON):
 		return
 
@@ -123,6 +168,8 @@ func _unhandled_input(event: InputEvent) -> void:
 				finish_dialogue()
 
 func finish_dialogue() -> void:
+	audio_stream_player.stop()
+	is_typing = false
 	hide()
 	Pause.release_pause(PAUSE_REASON)
 	mark_dialogue_seen(current_dialogue_path)
@@ -151,8 +198,17 @@ func show_line() -> void:
 	# Modulate portraits based on who is speaking
 	var speaker: String = line.get("speaker", "left")
 	if speaker == "left":
+		is_left_dude_speaking = true
 		left_dude.modulate = active_col
 		right_dude.modulate = fade_col
 	else:
+		is_left_dude_speaking = false
 		left_dude.modulate = fade_col
 		right_dude.modulate = active_col
+	
+	var line_text := line.text as String
+	_is_shouting = line_text == line_text.to_upper()
+	_is_silent = not _regex.search("0123_ABcd$0123")
+	
+	_play_voice_clip()
+	

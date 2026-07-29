@@ -1,13 +1,22 @@
 [gd_scene format=3 uid="uid://cl4d363vropap"]
 
 [ext_resource type="Script" uid="uid://fbnfy6i7f16f" path="res://dialogue/code/dialogue_manager.gd" id="1_dpp1v"]
+[ext_resource type="AudioStream" uid="uid://6bw7d61kfg11" path="res://FX/SFX/manda_quacks/dialogue_1.ogg" id="2_gg6aj"]
 [ext_resource type="Texture2D" uid="uid://csslwv63unhqg" path="res://art/portraits/CountDownPortrait.png" id="2_ym7p5"]
 [ext_resource type="Texture2D" uid="uid://cnmifaesrjwxv" path="res://art/portraits/PlayerPortrait.png" id="3_bj625"]
+[ext_resource type="AudioStream" uid="uid://0sv6aca46b8v" path="res://FX/SFX/manda_quacks/dialogue_2.ogg" id="3_xbnfj"]
 [ext_resource type="FontFile" uid="uid://d50kkdub6lxj" path="res://UI/Kileydot Demo.otf" id="4_0qds4"]
+[ext_resource type="AudioStream" uid="uid://b4alhg4q2xq5v" path="res://FX/SFX/manda_quacks/dialogue_3.ogg" id="4_vsr63"]
+[ext_resource type="AudioStream" uid="uid://bqgj8fcneyb27" path="res://FX/SFX/manda_quacks/dialogue_4.ogg" id="5_68ydp"]
 [ext_resource type="FontFile" uid="uid://4ab7snynf8ga" path="res://UI/AppleGaramond.ttf" id="5_spj8m"]
 [ext_resource type="FontFile" uid="uid://bh0700dstkaql" path="res://UI/AppleGaramond-Bold.ttf" id="6_8yh2g"]
+[ext_resource type="AudioStream" uid="uid://doj72l7ch36bd" path="res://FX/SFX/manda_quacks/dialogue_5.ogg" id="6_j7l6q"]
+[ext_resource type="AudioStream" uid="uid://cyu2p35l7iajd" path="res://FX/SFX/manda_quacks/general_1.ogg" id="7_j7l6q"]
 [ext_resource type="FontFile" uid="uid://bmxfwaljkv5gk" path="res://UI/AppleGaramond-BoldItalic.ttf" id="7_rwiki"]
 [ext_resource type="FontFile" uid="uid://co12oi4q6bpf7" path="res://UI/AppleGaramond-Italic.ttf" id="8_g7vrf"]
+[ext_resource type="AudioStream" uid="uid://bjnse8wonoen0" path="res://FX/SFX/manda_quacks/general_2.ogg" id="8_t8kgo"]
+[ext_resource type="AudioStream" uid="uid://bv8vgkakkrf7t" path="res://FX/SFX/manda_quacks/general_3.ogg" id="9_20i84"]
+[ext_resource type="AudioStream" uid="uid://c5r18o0y1xs0b" path="res://FX/SFX/manda_quacks/general_4.ogg" id="10_l7c4g"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_bet35"]
 line_spacing = 0.0
@@ -20,6 +29,7 @@ outline_color = Color(0, 0, 0, 1)
 process_mode = 3
 script = ExtResource("1_dpp1v")
 dialogue_file_path = "res://dialogue/test_dialogue.json"
+right_dude_clips = Array[AudioStream]([ExtResource("2_gg6aj"), ExtResource("3_xbnfj"), ExtResource("4_vsr63"), ExtResource("5_68ydp"), ExtResource("6_j7l6q"), ExtResource("7_j7l6q"), ExtResource("8_t8kgo"), ExtResource("9_20i84"), ExtResource("10_l7c4g")])
 
 [node name="LeftDude" type="TextureRect" parent="." unique_id=1482760523]
 offset_left = 29.0
@@ -62,3 +72,6 @@ theme_override_fonts/bold_italics_font = ExtResource("7_rwiki")
 theme_override_fonts/italics_font = ExtResource("8_g7vrf")
 bbcode_enabled = true
 text = "ah yiss,[wave amp=50 freq=2] motherfukkin' text.[/wave]"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=921277527]
+bus = &"SFX"

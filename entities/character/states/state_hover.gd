@@ -11,7 +11,7 @@ func enter(_previous_state_name: String, _params: Dictionary = {}) -> void:
 	controller.consume_hover_jump()
 
 func exit() -> void:
-	DebugDisplay.remove_watch("Hover Weight")
+	pass
 
 
 func is_groundable() -> bool:

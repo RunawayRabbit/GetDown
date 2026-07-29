@@ -15,9 +15,8 @@ class_name Door
 var _game_manager: GameManager
 var _level: LevelManager = null
 
-
-var _level_ready: bool = false
 var _is_open: bool = false
+var _needs_fresh_load: bool = true
 
 # Called by GameManager before _ready().
 func initialize(manager: GameManager) -> void:
@@ -31,8 +30,6 @@ func _ready() -> void:
 	if return_zone:
 		return_zone.body_entered.connect(_on_return_zone_entered)
 
-	DebugDisplay.watch("DoorState", func():
-		return "open" if _is_open else ("ready" if _level_ready else "loading"))
 
 	if not level_anchor:
 		push_warning("%s has no LevelAnchor Marker2D — falling back to door position." % name)
@@ -51,7 +48,7 @@ func _on_level_loaded(scene_path: String, level: LevelManager) -> void:
 		return
 
 	_level = level
-	_level_ready = true
+	_needs_fresh_load = false
 
 	_open()
 
@@ -62,17 +59,20 @@ func _on_body_entered(body: Node2D) -> void:
 	if _is_open:
 		return
 
-	if _level_ready:
+	var currently_active := _game_manager.get_loaded_wing(destination)
+
+	if currently_active and not _needs_fresh_load:
+		_level = currently_active
 		_open()
 		return
 
 	var anchor := level_anchor.global_position if level_anchor else global_position
 
+	anim.play("waiting")
 	# enter_wing (not load_level) - it's the one entry point that knows
 	# whether this is a brand new wing or a retry of the one already active.
 	_game_manager.enter_wing(destination, anchor)
 
-	anim.play("waiting")
 
 
 func _open() -> void:
@@ -94,5 +94,6 @@ func _on_return_zone_entered(body: Node2D) -> void:
 
 func _close() -> void:
 	_is_open = false
-	_level_ready = false # Next approach should request a fresh reload.
+	_needs_fresh_load = true # This instance is spent - next approach needs a reload.
+
 	anim.play("closing")
