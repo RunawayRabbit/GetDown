@@ -52,12 +52,14 @@
   {
 	"speaker": "right",
 	"name": "Goose",
-	"text": "..."
+	"text": "...",
+	"silent": true
   },
   {
 	"speaker": "left",
 	"name": "Count Down",
-	"text": "[wave amp=50 freq=4]SIGH[/wave]"
+	"text": "[wave amp=50 freq=4]SIGH[/wave]",
+	"sigh": true
   },
   {
 	"speaker": "left",

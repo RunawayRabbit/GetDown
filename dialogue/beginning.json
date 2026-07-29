@@ -27,7 +27,8 @@
   {
 	"speaker": "left",
 	"name": "Count Down",
-	"text": "[wave amp=50 freq=4]SILENCE![/wave]"
+	"text": "[wave amp=50 freq=4]SILENCE![/wave]",
+	"shouting": true,
   },
   {
 	"speaker": "left",

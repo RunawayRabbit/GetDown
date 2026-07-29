@@ -1,22 +1,35 @@
 [gd_scene format=3 uid="uid://cl4d363vropap"]
 
 [ext_resource type="Script" uid="uid://fbnfy6i7f16f" path="res://dialogue/code/dialogue_manager.gd" id="1_dpp1v"]
+[ext_resource type="AudioStream" uid="uid://bm5ujsdldy7yv" path="res://FX/SFX/euan_honks/honk-01.ogg" id="2_dp5xk"]
 [ext_resource type="AudioStream" uid="uid://6bw7d61kfg11" path="res://FX/SFX/manda_quacks/dialogue_1.ogg" id="2_gg6aj"]
 [ext_resource type="Texture2D" uid="uid://csslwv63unhqg" path="res://art/portraits/CountDownPortrait.png" id="2_ym7p5"]
 [ext_resource type="Texture2D" uid="uid://cnmifaesrjwxv" path="res://art/portraits/PlayerPortrait.png" id="3_bj625"]
+[ext_resource type="AudioStream" uid="uid://qy8jqkolr8l7" path="res://FX/SFX/euan_honks/honk-02.ogg" id="3_r4rje"]
 [ext_resource type="AudioStream" uid="uid://0sv6aca46b8v" path="res://FX/SFX/manda_quacks/dialogue_2.ogg" id="3_xbnfj"]
 [ext_resource type="FontFile" uid="uid://d50kkdub6lxj" path="res://UI/Kileydot Demo.otf" id="4_0qds4"]
+[ext_resource type="AudioStream" uid="uid://04kinfqbqach" path="res://FX/SFX/euan_honks/honk-03.ogg" id="4_hpyds"]
 [ext_resource type="AudioStream" uid="uid://b4alhg4q2xq5v" path="res://FX/SFX/manda_quacks/dialogue_3.ogg" id="4_vsr63"]
 [ext_resource type="AudioStream" uid="uid://bqgj8fcneyb27" path="res://FX/SFX/manda_quacks/dialogue_4.ogg" id="5_68ydp"]
+[ext_resource type="AudioStream" uid="uid://dl2juyki53ygi" path="res://FX/SFX/euan_honks/honk-04.ogg" id="5_dhgkv"]
 [ext_resource type="FontFile" uid="uid://4ab7snynf8ga" path="res://UI/AppleGaramond.ttf" id="5_spj8m"]
+[ext_resource type="AudioStream" uid="uid://dsku0rjchwosk" path="res://FX/SFX/euan_honks/honk-05.ogg" id="6_5tao4"]
 [ext_resource type="FontFile" uid="uid://bh0700dstkaql" path="res://UI/AppleGaramond-Bold.ttf" id="6_8yh2g"]
 [ext_resource type="AudioStream" uid="uid://doj72l7ch36bd" path="res://FX/SFX/manda_quacks/dialogue_5.ogg" id="6_j7l6q"]
+[ext_resource type="AudioStream" uid="uid://dxe1rcjtx3u87" path="res://FX/SFX/euan_honks/honk-07.ogg" id="7_8a3x2"]
 [ext_resource type="AudioStream" uid="uid://cyu2p35l7iajd" path="res://FX/SFX/manda_quacks/general_1.ogg" id="7_j7l6q"]
 [ext_resource type="FontFile" uid="uid://bmxfwaljkv5gk" path="res://UI/AppleGaramond-BoldItalic.ttf" id="7_rwiki"]
 [ext_resource type="FontFile" uid="uid://co12oi4q6bpf7" path="res://UI/AppleGaramond-Italic.ttf" id="8_g7vrf"]
+[ext_resource type="AudioStream" uid="uid://cnjfn7sey1j44" path="res://FX/SFX/euan_honks/honk-08.ogg" id="8_oxh2l"]
 [ext_resource type="AudioStream" uid="uid://bjnse8wonoen0" path="res://FX/SFX/manda_quacks/general_2.ogg" id="8_t8kgo"]
 [ext_resource type="AudioStream" uid="uid://bv8vgkakkrf7t" path="res://FX/SFX/manda_quacks/general_3.ogg" id="9_20i84"]
+[ext_resource type="AudioStream" uid="uid://7lns6ipimuy2" path="res://FX/SFX/euan_honks/honk-09.ogg" id="9_fj4ob"]
+[ext_resource type="AudioStream" uid="uid://bx387lsanxmw" path="res://FX/SFX/euan_honks/honk-10.ogg" id="10_fcopm"]
 [ext_resource type="AudioStream" uid="uid://c5r18o0y1xs0b" path="res://FX/SFX/manda_quacks/general_4.ogg" id="10_l7c4g"]
+[ext_resource type="AudioStream" uid="uid://crvck18rdf0kj" path="res://FX/SFX/euan_honks/honk-11.ogg" id="11_d6exi"]
+[ext_resource type="AudioStream" uid="uid://xqi787m6afdd" path="res://FX/SFX/euan_honks/honk-12.ogg" id="12_vv5nw"]
+[ext_resource type="AudioStream" uid="uid://25fghh57i2r7" path="res://FX/SFX/euan_honks/honk-14.ogg" id="13_wq38y"]
+[ext_resource type="AudioStream" uid="uid://pbh31mpbl6ns" path="res://FX/SFX/euan_honks/shout_honk.ogg" id="14_lq270"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_bet35"]
 line_spacing = 0.0
@@ -29,6 +42,8 @@ outline_color = Color(0, 0, 0, 1)
 process_mode = 3
 script = ExtResource("1_dpp1v")
 dialogue_file_path = "res://dialogue/test_dialogue.json"
+left_dude_clips = Array[AudioStream]([ExtResource("2_dp5xk"), ExtResource("3_r4rje"), ExtResource("4_hpyds"), ExtResource("5_dhgkv"), ExtResource("6_5tao4"), ExtResource("7_8a3x2"), ExtResource("8_oxh2l"), ExtResource("9_fj4ob"), ExtResource("10_fcopm"), ExtResource("11_d6exi"), ExtResource("12_vv5nw"), ExtResource("13_wq38y")])
+left_dude_shout = ExtResource("14_lq270")
 right_dude_clips = Array[AudioStream]([ExtResource("2_gg6aj"), ExtResource("3_xbnfj"), ExtResource("4_vsr63"), ExtResource("5_68ydp"), ExtResource("6_j7l6q"), ExtResource("7_j7l6q"), ExtResource("8_t8kgo"), ExtResource("9_20i84"), ExtResource("10_l7c4g")])
 
 [node name="LeftDude" type="TextureRect" parent="." unique_id=1482760523]

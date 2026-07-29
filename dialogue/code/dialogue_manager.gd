@@ -12,11 +12,13 @@ extends CanvasLayer
 @onready var left_dude: TextureRect = $LeftDude
 @export var left_dude_clips: Array[AudioStream] = []
 @export var left_dude_shout: AudioStream
+@export var left_dude_sigh: AudioStream
 
 @export_category("Right Dude")
 @onready var right_dude: TextureRect = $RightDude
 @export var right_dude_clips: Array[AudioStream] = []
 @export var right_dude_shout: AudioStream
+@export var right_dude_sigh: AudioStream
 
 
 @onready var speaker_name: Label = $Panel/SpeakerName
@@ -29,15 +31,16 @@ const PAUSE_REASON: StringName = &"dialogue"
 ## fuck you I'm tired.
 @export var text_speed: float = 0.03
 
-var dialogue_data: Array = []
-var current_index: int = 0
-var tween: Tween
-var is_typing: bool = false
-var is_left_dude_speaking = true
+var _dialogue_data: Array = []
+var _current_index: int = 0
+var _tween: Tween
+var _is_typing: bool = false
+var _is_left_dude_speaking = true
+
+#Getting out of hand. Refactor.
 var _is_shouting = false
 var _is_silent = false
-var _regex: RegEx = RegEx.new()
-
+var _is_sigh = false
 
 var current_dialogue_path: String = ""
 
@@ -78,11 +81,11 @@ func _ready() -> void:
 	
 	# Configure audio player
 	audio_stream_player.finished.connect(_on_audio_finished)
-	_regex.compile("[^A-Za-z0-9]")
+
 
 func _play_voice_clip() -> void:
 	var clip = _pick_clip()
-	if not is_typing or not clip:
+	if not _is_typing or not clip:
 		return
 	
 	audio_stream_player.stream = clip
@@ -91,11 +94,11 @@ func _play_voice_clip() -> void:
 
 
 func _pick_clip() -> AudioStream:
-	if _is_silent: return null
-	if _is_shouting:
-		return left_dude_shout if is_left_dude_speaking else right_dude_shout
+	if _is_silent == true: return null
+	if _is_shouting == true: return left_dude_shout if _is_left_dude_speaking else right_dude_shout
+	if _is_sigh == true: return left_dude_sigh if _is_left_dude_speaking else right_dude_sigh
 	
-	var voice_clips = left_dude_clips if is_left_dude_speaking else right_dude_clips
+	var voice_clips = left_dude_clips if _is_left_dude_speaking else right_dude_clips
 	if voice_clips.is_empty(): return null
 	
 	return voice_clips.pick_random()
@@ -138,8 +141,8 @@ func start_dialogue(file_path: String) -> void:
 	var json = JSON.new()
 	if json.parse(file.get_as_text()) == OK:
 		current_dialogue_path = file_path
-		dialogue_data = json.data
-		current_index = 0
+		_dialogue_data = json.data
+		_current_index = 0
 		
 		# Pause the entire game and display UI
 		Pause.request_pause(PAUSE_REASON)
@@ -155,21 +158,21 @@ func _unhandled_input(event: InputEvent) -> void:
 	   (event is InputEventMouseButton and \
 		event.is_pressed() and \
 		event.button_index == MOUSE_BUTTON_LEFT):
-		if is_typing:
-			if tween and tween.is_running():
-				tween.kill()
+		if _is_typing:
+			if _tween and _tween.is_running():
+				_tween.kill()
 			dialogue_text.visible_characters = -1
-			is_typing = false
+			_is_typing = false
 		else:
-			current_index += 1
-			if current_index < dialogue_data.size():
+			_current_index += 1
+			if _current_index < _dialogue_data.size():
 				show_line()
 			else:
 				finish_dialogue()
 
 func finish_dialogue() -> void:
 	audio_stream_player.stop()
-	is_typing = false
+	_is_typing = false
 	hide()
 	Pause.release_pause(PAUSE_REASON)
 	mark_dialogue_seen(current_dialogue_path)
@@ -178,37 +181,37 @@ func finish_dialogue() -> void:
 	dialogue_finished.emit()
 
 func show_line() -> void:
-	var line: Dictionary = dialogue_data[current_index]
+	var line: Dictionary = _dialogue_data[_current_index]
 	speaker_name.text = line.get("name", "")
 	dialogue_text.text = line.get("text", "")
 	
 	dialogue_text.visible_characters = 0
-	is_typing = true
+	_is_typing = true
 	
-	if tween and tween.is_running():
-		tween.kill()
+	if _tween and _tween.is_running():
+		_tween.kill()
 	
-	tween = create_tween()
+	_tween = create_tween()
 	var char_count = dialogue_text.get_total_character_count()
 	
 	# Tweens also respect process mode!
-	tween.tween_property(dialogue_text, "visible_characters", char_count, char_count * text_speed)
-	tween.finished.connect(func(): is_typing = false)
+	_tween.tween_property(dialogue_text, "visible_characters", char_count, char_count * text_speed)
+	_tween.finished.connect(func(): _is_typing = false)
 	
 	# Modulate portraits based on who is speaking
 	var speaker: String = line.get("speaker", "left")
 	if speaker == "left":
-		is_left_dude_speaking = true
+		_is_left_dude_speaking = true
 		left_dude.modulate = active_col
 		right_dude.modulate = fade_col
 	else:
-		is_left_dude_speaking = false
+		_is_left_dude_speaking = false
 		left_dude.modulate = fade_col
 		right_dude.modulate = active_col
 	
-	var line_text := line.text as String
-	_is_shouting = line_text == line_text.to_upper()
-	_is_silent = not _regex.search("0123_ABcd$0123")
-	
+	_is_shouting = line.get("shouting", false)
+	_is_silent = line.get("silent", false)
+	_is_sigh = line.get("sigh", false)
+	prints("shout", _is_shouting, "silent", _is_silent, "sigh", _is_sigh)
 	_play_voice_clip()
 	
