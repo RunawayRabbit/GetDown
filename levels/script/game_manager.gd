@@ -262,6 +262,7 @@ func mark_wing_complete(wing_id: String) -> void:
 		completed_wings[wing_id] = true
 		wing_completed.emit(wing_id)
 
+
 func is_wing_complete(wing_id: String) -> bool:
 	return completed_wings.get(wing_id, false)
 

@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://desh2bes4ycjj"]
+
+[ext_resource type="Script" uid="uid://bhwsveefbirw5" path="res://Music/music_zone.gd" id="1_fp5cc"]
+[ext_resource type="AudioStream" uid="uid://vjbopkf44ta8" path="res://Music/Level Theme.tres" id="2_58ejh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_awmjm"]
+size = Vector2(221, 172.5)
+
+[node name="MusicZone" type="Area2D" unique_id=495056098]
+monitorable = false
+audio_bus_name = &"Music"
+script = ExtResource("1_fp5cc")
+zone_music = ExtResource("2_58ejh")
+fade_out_old = true
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1779513296]
+position = Vector2(-39.5, 53.25)
+shape = SubResource("RectangleShape2D_awmjm")
+debug_color = Color(0.66843635, 0.5105843, 3.85046e-07, 0.41960785)

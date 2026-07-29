@@ -7,6 +7,7 @@ var _next_player: int = 0
 
 
 func _ready() -> void:
+		
 	for i in pool_size:
 		var player := AudioStreamPlayer2D.new()
 		player.bus = "SFX" # Same bus the options menu's volume slider controls.
