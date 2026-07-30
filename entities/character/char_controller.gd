@@ -200,6 +200,10 @@ func set_ducked_shape(ducked: bool) -> void:
 	var shape := ducking_shape if ducked else standing_shape
 	var offset := ducking_offset if ducked else standing_offset
 
+	call_deferred("_apply_ducked_shape", shape, offset)
+
+
+func _apply_ducked_shape(shape: Shape2D, offset: Vector2) -> void:
 	body_collider.shape = shape
 	body_collider.position = offset
 

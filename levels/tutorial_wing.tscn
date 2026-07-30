@@ -44,10 +44,10 @@ sources/0 = SubResource("TileSetAtlasSource_16ips")
 sources/1 = SubResource("TileSetAtlasSource_icn5j")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dsa6f"]
-size = Vector2(138, 182)
+size = Vector2(886, 490)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nwtq3"]
-size = Vector2(1022, 479)
+size = Vector2(889, 479)
 
 [sub_resource type="LabelSettings" id="LabelSettings_omraf"]
 line_spacing = 0.0
@@ -95,16 +95,15 @@ golden_feather = NodePath("../GoldenFeather")
 editor_icon = ExtResource("8_lak2r")
 
 [node name="CamZone" parent="." unique_id=1234361721 instance=ExtResource("7_dsa6f")]
-visible = false
 
 [node name="CollisionShape2D" parent="CamZone" index="0" unique_id=508428621]
 visible = true
-position = Vector2(37, -44)
+position = Vector2(411, -198)
 shape = SubResource("RectangleShape2D_dsa6f")
 
 [node name="Bounds" parent="CamZone" index="1" unique_id=1836860311]
 visible = true
-position = Vector2(454, -151.5)
+position = Vector2(387.5, -151.5)
 shape = SubResource("RectangleShape2D_nwtq3")
 
 [node name="Spikes" parent="." unique_id=2127231259 instance=ExtResource("8_nwtq3")]
