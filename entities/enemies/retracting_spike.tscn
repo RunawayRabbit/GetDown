@@ -1,0 +1,157 @@
+[gd_scene format=3 uid="uid://4jj5f0prm6d"]
+
+[ext_resource type="Script" uid="uid://54b2847q4d7l" path="res://entities/enemies/scripts/retracting_spike.gd" id="1_adw3l"]
+[ext_resource type="Texture2D" uid="uid://ei0e8qqjnn2p" path="res://art/hazards/holespear.png" id="2_5o31r"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2t0c3"]
+atlas = ExtResource("2_5o31r")
+region = Rect2(80, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jafnv"]
+atlas = ExtResource("2_5o31r")
+region = Rect2(96, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ea4bk"]
+atlas = ExtResource("2_5o31r")
+region = Rect2(112, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_46165"]
+atlas = ExtResource("2_5o31r")
+region = Rect2(128, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6r0kb"]
+atlas = ExtResource("2_5o31r")
+region = Rect2(128, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ji55l"]
+atlas = ExtResource("2_5o31r")
+region = Rect2(144, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_crbq3"]
+atlas = ExtResource("2_5o31r")
+region = Rect2(160, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nnywo"]
+atlas = ExtResource("2_5o31r")
+region = Rect2(64, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g06iu"]
+atlas = ExtResource("2_5o31r")
+region = Rect2(16, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_36xql"]
+atlas = ExtResource("2_5o31r")
+region = Rect2(0, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_13dg5"]
+atlas = ExtResource("2_5o31r")
+region = Rect2(64, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vtx12"]
+atlas = ExtResource("2_5o31r")
+region = Rect2(80, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wv02c"]
+atlas = ExtResource("2_5o31r")
+region = Rect2(0, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8j554"]
+atlas = ExtResource("2_5o31r")
+region = Rect2(16, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ny18e"]
+atlas = ExtResource("2_5o31r")
+region = Rect2(32, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y8k2l"]
+atlas = ExtResource("2_5o31r")
+region = Rect2(48, 0, 16, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_omraf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2t0c3")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_jafnv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ea4bk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_46165")
+}],
+"loop": 0,
+"name": &"extend",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6r0kb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ji55l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_crbq3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nnywo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g06iu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_36xql")
+}],
+"loop": 0,
+"name": &"retract",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_13dg5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vtx12")
+}],
+"loop": 1,
+"name": &"warning",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wv02c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8j554")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ny18e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y8k2l")
+}],
+"loop": 0,
+"name": &"warning_start",
+"speed": 8.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_omraf"]
+size = Vector2(3, 24)
+
+[node name="RetractingSpike" type="Area2D" unique_id=129889053]
+script = ExtResource("1_adw3l")
+warning_duration = 1.0
+extended_duration = 2.0
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1914428493]
+sprite_frames = SubResource("SpriteFrames_omraf")
+animation = &"warning"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1565747581]
+position = Vector2(-0.5, 1)
+shape = SubResource("RectangleShape2D_omraf")
+debug_color = Color(0.9569641, 0.21025819, 0, 0.41960785)

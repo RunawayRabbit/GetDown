@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b5b5oaw12bdnr"]
 
-[ext_resource type="Script" uid="uid://htht6lc54b86" path="res://entities/enemies/baloon.gd" id="1_1qciw"]
+[ext_resource type="Script" uid="uid://htht6lc54b86" path="res://entities/enemies/scripts/baloon.gd" id="1_1qciw"]
 [ext_resource type="Texture2D" uid="uid://dk5gv1s2vebh1" path="res://art/enemies/carl.png" id="2_1mf4w"]
 [ext_resource type="Script" uid="uid://fet56joiwi3x" path="res://entities/hurtbox.gd" id="2_1qciw"]
 

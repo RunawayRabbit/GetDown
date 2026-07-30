@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://tvc1lvprpaop" path="res://debug/level_test_scaffold.tscn" id="2_ny0t1"]
 [ext_resource type="PackedScene" uid="uid://svrhbskj8ea0" path="res://entities/enemies/spikes.tscn" id="3_ny0t1"]
 [ext_resource type="PackedScene" uid="uid://desh2bes4ycjj" path="res://Music/music_zone.tscn" id="4_r4e4k"]
+[ext_resource type="PackedScene" uid="uid://4jj5f0prm6d" path="res://entities/enemies/retracting_spike.tscn" id="5_pnvjf"]
 
 [node name="Node2D" type="Node2D" unique_id=908895933]
 
@@ -28,3 +29,13 @@ position = Vector2(334, 32)
 
 [node name="MusicZone" parent="." unique_id=495056098 instance=ExtResource("4_r4e4k")]
 position = Vector2(193, -68)
+
+[node name="RetractingSpike2" parent="." unique_id=129889053 instance=ExtResource("5_pnvjf")]
+position = Vector2(436, -9)
+
+[node name="RetractingSpike3" parent="." unique_id=837998165 instance=ExtResource("5_pnvjf")]
+position = Vector2(471, -23)
+rotation = -1.5707964
+
+[node name="RetractingSpike" parent="." unique_id=127027634 instance=ExtResource("5_pnvjf")]
+position = Vector2(410, -9)

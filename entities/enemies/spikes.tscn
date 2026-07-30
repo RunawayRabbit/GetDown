@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://svrhbskj8ea0"]
 
-[ext_resource type="Script" uid="uid://idtgf7k8vtdx" path="res://entities/enemies/hazard.gd" id="1_ii5ru"]
+[ext_resource type="Script" uid="uid://idtgf7k8vtdx" path="res://entities/enemies/scripts/hazard.gd" id="1_ii5ru"]
 [ext_resource type="Texture2D" uid="uid://bac3joxhsgxmh" path="res://art/hazards/spikeys.png" id="2_jyr5b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_omraf"]
