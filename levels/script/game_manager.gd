@@ -86,6 +86,11 @@ func _process(_delta: float) -> void:
 				_begin_load(_staged_level)
 
 
+func grant_ability(ability: String) -> void:
+	if _player:
+		_player.add_ability(ability)
+
+
 func spawn_player(position: Vector2) -> CharacterController:
 	var player = player_scene.instantiate() as CharacterController
 	player.global_position = position

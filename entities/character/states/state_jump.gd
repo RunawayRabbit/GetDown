@@ -32,5 +32,6 @@ func _get_animation() -> String:
 
 
 func _check_air_transition() -> void:
-	if controller.velocity.y >= 0.0:
+	if controller.velocity.y >= 0.0 or\
+		controller.is_on_ceiling_only():
 		state_machine.transition_to("fall")

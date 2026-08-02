@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://6ayxylsougji"]
 
-[ext_resource type="Script" uid="uid://dpmqbcyfetx6l" path="res://entities/doodads/moving_platform.gd" id="1_dcoc3"]
+[ext_resource type="Script" uid="uid://dpmqbcyfetx6l" path="res://entities/doodads/scripts/moving_platform.gd" id="1_dcoc3"]
 
 [sub_resource type="Curve2D" id="Curve2D_uufl4"]
 _data = {

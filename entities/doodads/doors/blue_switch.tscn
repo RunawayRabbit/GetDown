@@ -1,0 +1,100 @@
+[gd_scene format=3 uid="uid://d35onpbaefdp2"]
+
+[ext_resource type="Script" uid="uid://ckqu05gdbfodv" path="res://entities/doodads/scripts/switch.gd" id="1_7bdeb"]
+[ext_resource type="Texture2D" uid="uid://c8iiscs8pfu3o" path="res://art/doodads/button_switch.png" id="2_gnpq1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7bdeb"]
+atlas = ExtResource("2_gnpq1")
+region = Rect2(0, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gnpq1"]
+atlas = ExtResource("2_gnpq1")
+region = Rect2(32, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t2kyi"]
+atlas = ExtResource("2_gnpq1")
+region = Rect2(64, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fg1sw"]
+atlas = ExtResource("2_gnpq1")
+region = Rect2(96, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b76i1"]
+atlas = ExtResource("2_gnpq1")
+region = Rect2(96, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bohx7"]
+atlas = ExtResource("2_gnpq1")
+region = Rect2(64, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xiyff"]
+atlas = ExtResource("2_gnpq1")
+region = Rect2(32, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sfevj"]
+atlas = ExtResource("2_gnpq1")
+region = Rect2(0, 0, 32, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_omraf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7bdeb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gnpq1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t2kyi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fg1sw")
+}],
+"loop": 0,
+"name": &"down",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b76i1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bohx7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xiyff")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sfevj")
+}],
+"loop": 0,
+"name": &"up",
+"speed": 12.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_omraf"]
+size = Vector2(16, 11)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_awmjm"]
+size = Vector2(26, 5)
+
+[node name="Switch" type="Area2D" unique_id=189186113]
+monitorable = false
+script = ExtResource("1_7bdeb")
+metadata/_custom_type_script = "uid://ckqu05gdbfodv"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=523687896]
+position = Vector2(0, -8)
+sprite_frames = SubResource("SpriteFrames_omraf")
+animation = &"down"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=767248528]
+position = Vector2(0, -8.5)
+shape = SubResource("RectangleShape2D_omraf")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=503685811]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=576894156]
+position = Vector2(0, -2.5)
+shape = SubResource("RectangleShape2D_awmjm")
+debug_color = Color(0.5644636, 0.556134, 0.14709958, 0.41960785)

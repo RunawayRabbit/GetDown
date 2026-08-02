@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://db7wok8clpn1t"]
 
-[ext_resource type="Script" uid="uid://cxpyoage1kg7n" path="res://entities/doodads/golden_feather.gd" id="1_slwyl"]
+[ext_resource type="Script" uid="uid://cxpyoage1kg7n" path="res://entities/doodads/scripts/golden_feather.gd" id="1_slwyl"]
 [ext_resource type="Texture2D" uid="uid://nona6ltrlf76" path="res://art/pickups/goldenfeather.png" id="2_slwyl"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_omraf"]

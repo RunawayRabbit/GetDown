@@ -184,7 +184,14 @@ func _check_jump_trigger() -> void:
 
 
 func _force_duck() -> void:
-	if state_machine.current_state is StateAir: return
+	if state_machine.current_state is StateJump: return
+	
+	# Case where a "crusher" is squishing us and physics resolved us into the ground.
+	if is_on_ceiling() and not is_on_floor():
+		state_machine.transition_to("duck")
+		return
+		
+	# Case where we are on the floor, but can't stand up.
 	var standing_transform := Transform2D(0.0, standing_offset)
 	var ducking_transform := Transform2D(0.0, ducking_offset)
 	if not shapecast(standing_shape, standing_transform).is_empty() and \

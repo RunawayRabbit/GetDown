@@ -466,9 +466,8 @@ z_index = 1000
 position = Vector2(0, -13)
 shape = ExtResource("2_555hj")
 
-[node name="Hitbox" type="Area2D" parent="." unique_id=1987433047]
+[node name="Hitbox" type="Area2D" parent="." unique_id=1987433047 groups=["player_attack"]]
 position = Vector2(-20, -23.015)
-collision_layer = 0
 collision_mask = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1506303166]

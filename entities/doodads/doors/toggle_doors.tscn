@@ -1,0 +1,89 @@
+[gd_scene format=3 uid="uid://okqd4t8nw2hq"]
+
+[ext_resource type="Script" uid="uid://c65k7sqi13skx" path="res://entities/doodads/scripts/switch_door_toggle.gd" id="1_5hs54"]
+[ext_resource type="Script" uid="uid://3dd24am78ri3" path="res://entities/doodads/scripts/door_gate.gd" id="2_ykawc"]
+[ext_resource type="Texture2D" uid="uid://bf0fxrjeyeptl" path="res://art/doodads/door.png" id="3_8lajx"]
+[ext_resource type="PackedScene" uid="uid://bmmlekire8arm" path="res://entities/doodads/doors/toggle_switch.tscn" id="4_ykawc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_awmjm"]
+size = Vector2(8, 56)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_omraf"]
+size = Vector2(20, 30)
+
+[node name="ToggleDoorPair" type="Node" unique_id=430405174]
+
+[node name="ToggleDoorLeft" type="Node2D" parent="." unique_id=1787167711 node_paths=PackedStringArray("switches")]
+position = Vector2(-52, 0)
+script = ExtResource("1_5hs54")
+switches = [NodePath("../ToggleSwitch")]
+metadata/_custom_type_script = "uid://c65k7sqi13skx"
+metadata/_edit_group_ = true
+
+[node name="DoorGate" type="Node2D" parent="ToggleDoorLeft" unique_id=1811963465]
+script = ExtResource("2_ykawc")
+metadata/_custom_type_script = "uid://3dd24am78ri3"
+
+[node name="Body" type="AnimatableBody2D" parent="ToggleDoorLeft/DoorGate" unique_id=1333474390]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ToggleDoorLeft/DoorGate/Body" unique_id=402665411]
+position = Vector2(0, -28)
+shape = SubResource("RectangleShape2D_awmjm")
+
+[node name="Sprite2D" type="Sprite2D" parent="ToggleDoorLeft/DoorGate/Body" unique_id=1245148178]
+position = Vector2(0, -32)
+texture = ExtResource("3_8lajx")
+hframes = 2
+
+[node name="Closed" type="Marker2D" parent="ToggleDoorLeft/DoorGate" unique_id=1039375490]
+
+[node name="Open" type="Marker2D" parent="ToggleDoorLeft/DoorGate" unique_id=1820911313]
+position = Vector2(0, -50)
+
+[node name="ClearanceZone" type="Area2D" parent="ToggleDoorLeft/DoorGate" unique_id=1455036935]
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ToggleDoorLeft/DoorGate/ClearanceZone" unique_id=1744540429]
+position = Vector2(0, -15)
+shape = SubResource("RectangleShape2D_omraf")
+debug_color = Color(0.24365675, 0.48261523, 3.85046e-07, 0.41960785)
+
+[node name="ToggleDoorRight" type="Node2D" parent="." unique_id=159513427 node_paths=PackedStringArray("switches")]
+position = Vector2(48, 0)
+script = ExtResource("1_5hs54")
+opens_on = 1
+switches = [NodePath("../ToggleSwitch")]
+metadata/_custom_type_script = "uid://c65k7sqi13skx"
+metadata/_edit_group_ = true
+
+[node name="DoorGate" type="Node2D" parent="ToggleDoorRight" unique_id=1112562408]
+script = ExtResource("2_ykawc")
+metadata/_custom_type_script = "uid://3dd24am78ri3"
+
+[node name="Body" type="AnimatableBody2D" parent="ToggleDoorRight/DoorGate" unique_id=407973975]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ToggleDoorRight/DoorGate/Body" unique_id=1966494701]
+position = Vector2(0, -28)
+shape = SubResource("RectangleShape2D_awmjm")
+
+[node name="Sprite2D" type="Sprite2D" parent="ToggleDoorRight/DoorGate/Body" unique_id=1069104243]
+position = Vector2(0, -32)
+texture = ExtResource("3_8lajx")
+hframes = 2
+
+[node name="Closed" type="Marker2D" parent="ToggleDoorRight/DoorGate" unique_id=524614626]
+
+[node name="Open" type="Marker2D" parent="ToggleDoorRight/DoorGate" unique_id=260621347]
+position = Vector2(0, -50)
+
+[node name="ClearanceZone" type="Area2D" parent="ToggleDoorRight/DoorGate" unique_id=1583020828]
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ToggleDoorRight/DoorGate/ClearanceZone" unique_id=1702375521]
+position = Vector2(0, -15)
+shape = SubResource("RectangleShape2D_omraf")
+debug_color = Color(0.24365675, 0.48261523, 3.85046e-07, 0.41960785)
+
+[node name="ToggleSwitch" parent="." unique_id=1788532069 instance=ExtResource("4_ykawc")]

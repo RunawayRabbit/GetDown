@@ -35,12 +35,12 @@ var _dialogue_data: Array = []
 var _current_index: int = 0
 var _tween: Tween
 var _is_typing: bool = false
-var _is_left_dude_speaking = true
 
-#Getting out of hand. Refactor.
-var _is_shouting = false
-var _is_silent = false
-var _is_sigh = false
+enum Speaker { LEFT, RIGHT }
+enum VoiceMode { NORMAL, SHOUT, SIGH, SILENT }
+
+var _current_speaker: Speaker = Speaker.LEFT
+var _current_voice_mode: VoiceMode = VoiceMode.NORMAL
 
 var current_dialogue_path: String = ""
 
@@ -84,8 +84,11 @@ func _ready() -> void:
 
 
 func _play_voice_clip() -> void:
-	var clip = _pick_clip()
-	if not _is_typing or not clip:
+	if not _is_typing:
+		return
+
+	var clip := _pick_clip()
+	if not clip:
 		return
 	
 	audio_stream_player.stream = clip
@@ -94,14 +97,18 @@ func _play_voice_clip() -> void:
 
 
 func _pick_clip() -> AudioStream:
-	if _is_silent == true: return null
-	if _is_shouting == true: return left_dude_shout if _is_left_dude_speaking else right_dude_shout
-	if _is_sigh == true: return left_dude_sigh if _is_left_dude_speaking else right_dude_sigh
+	match _current_voice_mode:
+		VoiceMode.SILENT:
+			return null
+		VoiceMode.SHOUT:
+			return left_dude_shout if _current_speaker == Speaker.LEFT else right_dude_shout
+		VoiceMode.SIGH:
+			return left_dude_sigh if _current_speaker == Speaker.LEFT else right_dude_sigh
+		VoiceMode.NORMAL:
+			var clips := left_dude_clips if _current_speaker == Speaker.LEFT else right_dude_clips
+			return clips.pick_random() if not clips.is_empty() else null
 	
-	var voice_clips = left_dude_clips if _is_left_dude_speaking else right_dude_clips
-	if voice_clips.is_empty(): return null
-	
-	return voice_clips.pick_random()
+	return null
 	
 
 func _on_audio_finished() -> void:
@@ -109,7 +116,7 @@ func _on_audio_finished() -> void:
 
 func start_next_dialogue() -> void:
 	for stage in DIALOGUE_LISTS:
-		game_manager._player.add_ability(stage.wing)
+		game_manager.grant_ability(stage.wing)
 		if game_manager.is_wing_complete(stage.wing):
 			continue
 
@@ -159,16 +166,20 @@ func _unhandled_input(event: InputEvent) -> void:
 		event.is_pressed() and \
 		event.button_index == MOUSE_BUTTON_LEFT):
 		if _is_typing:
-			if _tween and _tween.is_running():
-				_tween.kill()
-			dialogue_text.visible_characters = -1
-			_is_typing = false
+			_skip_typing()
 		else:
 			_current_index += 1
 			if _current_index < _dialogue_data.size():
 				show_line()
 			else:
 				finish_dialogue()
+
+
+func _skip_typing() -> void:
+	if _tween and _tween.is_running():
+		_tween.kill()
+	dialogue_text.visible_characters = -1
+	_is_typing = false
 
 func finish_dialogue() -> void:
 	audio_stream_player.stop()
@@ -198,20 +209,32 @@ func show_line() -> void:
 	_tween.tween_property(dialogue_text, "visible_characters", char_count, char_count * text_speed)
 	_tween.finished.connect(func(): _is_typing = false)
 	
+	_current_speaker = _parse_speaker(line)
+	_current_voice_mode = _parse_voice_mode(line)
+	
 	# Modulate portraits based on who is speaking
-	var speaker: String = line.get("speaker", "left")
-	if speaker == "left":
-		_is_left_dude_speaking = true
+	if _current_speaker == Speaker.LEFT:
 		left_dude.modulate = active_col
 		right_dude.modulate = fade_col
 	else:
-		_is_left_dude_speaking = false
 		left_dude.modulate = fade_col
 		right_dude.modulate = active_col
 	
-	_is_shouting = line.get("shouting", false)
-	_is_silent = line.get("silent", false)
-	_is_sigh = line.get("sigh", false)
-	prints("shout", _is_shouting, "silent", _is_silent, "sigh", _is_sigh)
 	_play_voice_clip()
 	
+
+func _parse_speaker(line: Dictionary) -> Speaker:
+	var raw: String = line.get("speaker", "left")
+	if raw != "left" and raw != "right":
+		push_warning("Dialogue line has unrecognized speaker '%s' (expected 'left' or 'right') - defaulting to left." % raw)
+	return Speaker.LEFT if raw == "left" else Speaker.RIGHT
+
+
+func _parse_voice_mode(line: Dictionary) -> VoiceMode:
+	if line.get("silent", false):
+		return VoiceMode.SILENT
+	if line.get("shouting", false):
+		return VoiceMode.SHOUT
+	if line.get("sigh", false):
+		return VoiceMode.SIGH
+	return VoiceMode.NORMAL

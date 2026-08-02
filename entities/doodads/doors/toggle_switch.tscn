@@ -1,0 +1,106 @@
+[gd_scene format=3 uid="uid://bmmlekire8arm"]
+
+[ext_resource type="Script" uid="uid://df1bdjruhpuf" path="res://entities/doodads/scripts/toggle_switch.gd" id="1_w47x4"]
+[ext_resource type="Texture2D" uid="uid://858hefvoi7s0" path="res://art/doodads/flip_switch.png" id="2_2uc0s"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wy1j2"]
+atlas = ExtResource("2_2uc0s")
+region = Rect2(256, 0, 64, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jwgan"]
+atlas = ExtResource("2_2uc0s")
+region = Rect2(192, 0, 64, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tm27i"]
+atlas = ExtResource("2_2uc0s")
+region = Rect2(128, 0, 64, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r6rtn"]
+atlas = ExtResource("2_2uc0s")
+region = Rect2(64, 0, 64, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3dq6q"]
+atlas = ExtResource("2_2uc0s")
+region = Rect2(0, 0, 64, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l61fl"]
+atlas = ExtResource("2_2uc0s")
+region = Rect2(0, 0, 64, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_au0x7"]
+atlas = ExtResource("2_2uc0s")
+region = Rect2(64, 0, 64, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2wr3e"]
+atlas = ExtResource("2_2uc0s")
+region = Rect2(128, 0, 64, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_euial"]
+atlas = ExtResource("2_2uc0s")
+region = Rect2(192, 0, 64, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yos4n"]
+atlas = ExtResource("2_2uc0s")
+region = Rect2(256, 0, 64, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_w47x4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wy1j2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jwgan")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tm27i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r6rtn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3dq6q")
+}],
+"loop": 0,
+"name": &"left",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l61fl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_au0x7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2wr3e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_euial")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yos4n")
+}],
+"loop": 0,
+"name": &"right",
+"speed": 12.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_omraf"]
+size = Vector2(54, 39.5)
+
+[node name="ToggleSwitch" type="Area2D" unique_id=1788532069]
+collision_layer = 4
+script = ExtResource("1_w47x4")
+metadata/_custom_type_script = "uid://df1bdjruhpuf"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1812047269]
+position = Vector2(0, -24)
+sprite_frames = SubResource("SpriteFrames_w47x4")
+animation = &"right"
+frame = 4
+frame_progress = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=767248528]
+position = Vector2(0, -19.25)
+shape = SubResource("RectangleShape2D_omraf")

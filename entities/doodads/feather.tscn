@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cutonouy8x2y4"]
 
-[ext_resource type="Script" uid="uid://b6oo5xhbdur10" path="res://entities/doodads/collectable.gd" id="1_gyqjp"]
+[ext_resource type="Script" uid="uid://b6oo5xhbdur10" path="res://entities/doodads/scripts/collectable.gd" id="1_gyqjp"]
 [ext_resource type="Texture2D" uid="uid://bmv2i412iu3bw" path="res://art/pickups/downfeather.png" id="2_jkogr"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_omraf"]

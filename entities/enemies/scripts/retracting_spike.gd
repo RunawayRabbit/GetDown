@@ -50,7 +50,6 @@ func _run_cycle() -> void:
 		var start_duration := get_animation_total_time(anim.sprite_frames, "warning_start")
 		if start_duration < warning_duration:
 			await anim.animation_finished
-			print(warning_duration - start_duration)
 			await get_tree().create_timer(warning_duration - start_duration).timeout
 		else:
 			await get_tree().create_timer(warning_duration).timeout

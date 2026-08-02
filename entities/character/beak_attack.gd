@@ -16,6 +16,7 @@ var _is_attack_queued: bool = false
 
 func _ready() -> void:
 	hitbox.monitoring = false
+	hitbox.monitorable = false
 	hitbox.area_entered.connect(_on_hitbox_area_entered)
 	hitbox.body_entered.connect(_on_hitbox_body_entered)
 	_attack_hitbox_offset = -hitbox.position.x
@@ -52,11 +53,13 @@ func _start_attack() -> void:
 
 	hitbox.position.x = _attack_hitbox_offset * controller.facing_dir
 	hitbox.set_deferred("monitoring", true)
+	hitbox.set_deferred("monitorable", true)
 
 
 func _end_attack() -> void:
 	_is_active = false
 	hitbox.set_deferred("monitoring", false)
+	hitbox.set_deferred("monitorable", false)
 
 
 func get_hitbox_offset() -> float:

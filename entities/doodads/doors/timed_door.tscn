@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://bbwmi5ybd2ijv"]
+
+[ext_resource type="Script" uid="uid://syu7rqfivco0" path="res://entities/doodads/scripts/switch_door_timed.gd" id="1_opcth"]
+[ext_resource type="Script" uid="uid://3dd24am78ri3" path="res://entities/doodads/scripts/door_gate.gd" id="2_5gdem"]
+[ext_resource type="Texture2D" uid="uid://bf0fxrjeyeptl" path="res://art/doodads/door.png" id="3_d8enb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0dhbc"]
+size = Vector2(8, 56)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_omraf"]
+size = Vector2(26, 30)
+
+[node name="TimedDoor" type="Node2D" unique_id=1595932558]
+script = ExtResource("1_opcth")
+
+[node name="Timer" type="Timer" parent="." unique_id=961577458]
+one_shot = true
+
+[node name="DoorGate" type="Node2D" parent="." unique_id=1811963465]
+script = ExtResource("2_5gdem")
+metadata/_custom_type_script = "uid://3dd24am78ri3"
+
+[node name="Body" type="AnimatableBody2D" parent="DoorGate" unique_id=431869572]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorGate/Body" unique_id=1882039541]
+position = Vector2(0, -28)
+shape = SubResource("RectangleShape2D_0dhbc")
+
+[node name="Sprite2D" type="Sprite2D" parent="DoorGate/Body" unique_id=1990944447]
+position = Vector2(0, -32)
+texture = ExtResource("3_d8enb")
+hframes = 2
+
+[node name="Closed" type="Marker2D" parent="DoorGate" unique_id=1039375490]
+
+[node name="Open" type="Marker2D" parent="DoorGate" unique_id=1820911313]
+position = Vector2(0, -50)
+
+[node name="ClearanceZone" type="Area2D" parent="DoorGate" unique_id=1455036935]
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorGate/ClearanceZone" unique_id=1744540429]
+position = Vector2(0, -15)
+shape = SubResource("RectangleShape2D_omraf")
+debug_color = Color(0.24365675, 0.48261523, 3.85046e-07, 0.41960785)

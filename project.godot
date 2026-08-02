@@ -48,6 +48,7 @@ player=""
 door=""
 interactable=""
 cam_zones=""
+player_attack=""
 
 [input]
 

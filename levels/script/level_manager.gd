@@ -1,8 +1,10 @@
 extends Node
 class_name LevelManager
 
-## Set up the doors. Sorry in advance.
+## Set up the doors for the Throne Room.
 @export var doors: Array[Door]
+## Every switch-door.
+@export var switch_doors: Array[SwitchDoor]
 ## Regular feathers go here.
 @export var collectables: Array[Collectable]
 ## Our ONE AND ONLY golden feather.
@@ -46,6 +48,9 @@ func initialize(resume_after_golden: bool = false) -> void:
 		else:
 			golden_feather.set_locked(true)
 			_update_golden_feather_lock() # covers the zero-collectables edgecase
+
+	for door in switch_doors:
+		door.initialize(resume_after_golden)
 
 
 func _resume_with_golden_feather() -> void:
