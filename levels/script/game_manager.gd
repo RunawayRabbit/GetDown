@@ -256,7 +256,8 @@ func _reload_active_wing(resume_after_golden: bool, is_forced_respawn: bool) -> 
 ## Call this when the player dies.
 func _on_player_died() -> void:
 	if not _active_wing:
-		push_error("How the fuck did you die in the throne room? Seriously, tell me.")
+		push_warning("How the fuck did you die in the throne room? Seriously, tell me.")
+		_player.reset(Vector2.ZERO)
 		return
 
 	_active_wing.on_player_died()
