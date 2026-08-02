@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ei0e8qqjnn2p"
-path="res://.godot/imported/holespear.png-a8268f19abccbbf8bd238786c59bbbd2.ctex"
+uid="uid://4l31e1ov7w2y"
+path="res://.godot/imported/block_spear.png-6c9af1ff3aef99307228a2941b5140f6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/hazards/holespear.png"
-dest_files=["res://.godot/imported/holespear.png-a8268f19abccbbf8bd238786c59bbbd2.ctex"]
+source_file="res://art/hazards/block_spear.png"
+dest_files=["res://.godot/imported/block_spear.png-6c9af1ff3aef99307228a2941b5140f6.ctex"]
 
 [params]
 

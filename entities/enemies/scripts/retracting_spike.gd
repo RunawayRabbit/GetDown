@@ -46,20 +46,21 @@ func _run_cycle() -> void:
 	while is_inside_tree():
 		await get_tree().create_timer(retracted_duration).timeout
 
-		anim.play("warning_start")
-		var start_duration := get_animation_total_time(anim.sprite_frames, "warning_start")
+		anim.play(&"warning_start")
+		var start_duration := get_animation_total_time(anim.sprite_frames, &"warning_start")
 		if start_duration < warning_duration:
 			await anim.animation_finished
+			anim.play(&"warning_loop")
 			await get_tree().create_timer(warning_duration - start_duration).timeout
 		else:
 			await get_tree().create_timer(warning_duration).timeout
 
-		anim.play("extend")
+		anim.play(&"extend")
 		FX.play(extend_effect, global_position)
 		monitoring = true
 
 		await get_tree().create_timer(extended_duration).timeout
 
 		monitoring = false
-		anim.play("retract")
+		anim.play(&"retract")
 		FX.play(retract_effect, global_position)
