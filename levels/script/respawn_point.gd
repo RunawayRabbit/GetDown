@@ -45,6 +45,7 @@ func snap_to_tilemap() -> void:
 
 	while tilemap.get_cell_source_id(cell) == -1:
 		cell.y += 1
+		if cell.y > 1000: break
 
 	var tile_local = tilemap.map_to_local(cell)
 

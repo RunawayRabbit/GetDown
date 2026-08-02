@@ -45,6 +45,7 @@ func _exit_tree() -> void:
 
 func _on_level_loaded(scene_path: String, level: LevelManager) -> void:
 	if scene_path != destination:
+		_close()
 		return
 
 	_level = level

@@ -206,6 +206,7 @@ func _return_to_hub() -> void:
 		_active_wing.queue_free()
 		_active_wing = null
 
+	# Here. Make sure we close the doors of unloaded levels.
 	level_loaded.emit(_throne_room_uid, _hub)
 
 
