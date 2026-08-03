@@ -5,14 +5,20 @@ const BUS_NAMES := ["Master", "Music", "SFX"]
 
 signal volume_changed(bus_name: String, linear_value: float)
 signal keybind_changed(action: String)
+signal timer_scale_changed(scale: float)
+signal shake_intensity_changed(intensity: float)
 
 var _config := ConfigFile.new()
+
+var _timer_scale: float = 1.0
+var _shake_intensity: float = 1.0
 
 
 func _ready() -> void:
 	_config.load(SETTINGS_PATH) # Error ignored on purpose - missing file just means first run.
 	_apply_saved_volumes()
 	_apply_saved_keybinds()
+	_apply_saved_accessibility()
 
 
 # --- Audio ----
@@ -90,3 +96,39 @@ func _apply_saved_keybinds() -> void:
 		var event := InputEventKey.new()
 		event.physical_keycode = keycode as Key
 		_apply_key_binding(action, event)
+
+
+# --- Accessibility -----
+
+func get_timer_scale() -> float:
+	return _timer_scale
+
+
+func set_timer_scale(scale: float) -> void:
+	_timer_scale = scale
+
+	# TODO: Potentially unnecessary string "inf". Check how Godot does this kind of serialization.
+	@warning_ignore("incompatible_ternary")
+	_config.set_value("accessibility", "timer_scale", "inf" if is_inf(scale) else scale)
+	_config.save(SETTINGS_PATH)
+	timer_scale_changed.emit(scale)
+
+
+func get_shake_intensity() -> float:
+	return _shake_intensity
+
+
+func set_shake_intensity(intensity: float) -> void:
+	_shake_intensity = clampf(intensity, 0.0, 1.0)
+	_config.set_value("accessibility", "shake_intensity", _shake_intensity)
+	_config.save(SETTINGS_PATH)
+	shake_intensity_changed.emit(_shake_intensity)
+
+
+func _apply_saved_accessibility() -> void:
+	if _config.has_section_key("accessibility", "timer_scale"):
+		var raw = _config.get_value("accessibility", "timer_scale")
+		_timer_scale = INF if raw == "inf" else float(raw)
+
+	if _config.has_section_key("accessibility", "shake_intensity"):
+		_shake_intensity = _config.get_value("accessibility", "shake_intensity")

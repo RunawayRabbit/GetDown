@@ -26,8 +26,8 @@ func random_in_circle() -> Vector2:
 
 ## Experimenting with actually using variant.. but these arguments are floats. :D
 func shake(duration = null, intensity = null):
-	var _duration:float = duration if duration else shake_duration
-	var _intensity:float = intensity if intensity else shake_intensity
+	var _duration:float = duration if duration != null else shake_duration
+	var _intensity:float = (intensity if intensity != null else shake_intensity) * Settings.get_shake_intensity()
 	
 	if shake_tween: shake_tween.kill()
 	

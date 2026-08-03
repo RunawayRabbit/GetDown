@@ -47,6 +47,7 @@ func _run_cycle() -> void:
 		await get_tree().create_timer(retracted_duration).timeout
 
 		anim.play(&"warning_start")
+		FX.play(warning_effect, global_position)
 		var start_duration := get_animation_total_time(anim.sprite_frames, &"warning_start")
 		if start_duration < warning_duration:
 			await anim.animation_finished

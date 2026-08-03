@@ -34,6 +34,6 @@ func freeze_timer() -> void:
 	visible = false
 
 func _process(_delta: float) -> void:
-	if _timer: #and _timer.time_left > 0.0:
-		_last_seen_time = String.num(_timer.time_left, 2)
+	if _timer:
+		_last_seen_time = "∞" if is_inf(_timer.time_left) else String.num(_timer.time_left, 2)
 		_timer_text.text = _last_seen_time

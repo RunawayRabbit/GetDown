@@ -10,7 +10,13 @@ enum State { OPEN, HALF_BLOCKED, CLOSED }
 var ducking_shape: Shape2D = preload("uid://p2p6cilw8jlg")
 @export var gap_margin: float = 8.0
 
+## Plays once when it closes.
 @export var seal_effect: ImpactEffect
+## Plays repeatedly during closing "phase 1".
+@export var tick_effect: ImpactEffect
+@export var tick_interval: float = 0.6
+
+signal closing_progress(t: float)
 
 @onready var body: AnimatableBody2D = $Body
 @onready var clearance_zone: Area2D = $ClearanceZone
@@ -37,7 +43,6 @@ func _ready() -> void:
 
 
 func _precompute_minimal_gap() -> void:
-	#Not fully confident in this math.
 	var required_gap := _get_shape_height(ducking_shape) + gap_margin
 	var total_drop := closed_position.position.y - open_position.position.y
 
@@ -98,6 +103,7 @@ func close() -> void:
 
 	state = State.HALF_BLOCKED
 	_tween_to(_minimal_gap_position, _phase_1_duration)
+	_run_closing_affordance()
 
 	# Timer-based, not tween.finished-based - a reopen mid-phase-1 kills this
 	# tween without ever firing its finished signal, and this wait needs to
@@ -108,6 +114,16 @@ func close() -> void:
 		return # Reopened while phase 1 was still playing.
 
 	set_physics_process(true) # Poll clearance_zone until it's safe to finish sealing.
+
+
+func _run_closing_affordance() -> void:
+	var elapsed := 0.0
+	while state == State.HALF_BLOCKED and elapsed < _phase_1_duration:
+		var t := elapsed / _phase_1_duration if _phase_1_duration > 0.0 else 1.0
+		closing_progress.emit(t)
+		FX.play(tick_effect, body.global_position)
+		await get_tree().create_timer(tick_interval).timeout
+		elapsed += tick_interval
 
 
 func _physics_process(_delta: float) -> void:

@@ -6,7 +6,14 @@ signal closed
 @onready var master_slider: HSlider = %MasterSlider
 @onready var music_slider: HSlider = %MusicSlider
 @onready var sfx_slider: HSlider = %SFXSlider
+
 @onready var keybind_list: Container = %KeybindList
+
+@onready var timer_scale_slider: HSlider = %TimerScaleSlider
+@onready var timer_scale_value_label: Label = %TimerScaleValueLabel
+const TIMER_SCALE_MAX := 10.0
+
+@onready var shake_slider: HSlider = %CameraShakeSlider
 
 @onready var back_button: Button = %BackButton
 
@@ -34,7 +41,31 @@ func _ready() -> void:
 
 	back_button.pressed.connect(func(): closed.emit())
 
+	timer_scale_slider.min_value = 1.0
+	timer_scale_slider.max_value = TIMER_SCALE_MAX
+	timer_scale_slider.step = 0.1
+	timer_scale_slider.value = TIMER_SCALE_MAX if is_inf(Settings.get_timer_scale()) else Settings.get_timer_scale()
+	timer_scale_slider.value_changed.connect(_on_timer_scale_slider_changed)
+	_update_timer_scale_label(timer_scale_slider.value)
+
+	shake_slider.min_value = 0.0
+	shake_slider.max_value = 1.0
+	shake_slider.step = 0.01
+	shake_slider.value = Settings.get_shake_intensity()
+	shake_slider.value_changed.connect(func(v): Settings.set_shake_intensity(v))
+
 	_populate_keybinds()
+
+
+## The slider itself stays finite (0 down to TIMER_SCALE_MAX) - only the
+## value actually stored/applied jumps to INF right at the top tick.
+func _on_timer_scale_slider_changed(value: float) -> void:
+	Settings.set_timer_scale(INF if value >= TIMER_SCALE_MAX else value)
+	_update_timer_scale_label(value)
+
+
+func _update_timer_scale_label(value: float) -> void:
+	timer_scale_value_label.text = "∞" if value >= TIMER_SCALE_MAX else "%.1fx" % value
 
 
 func _populate_keybinds() -> void:

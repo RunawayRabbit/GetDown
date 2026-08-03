@@ -35,6 +35,7 @@ signal wing_completed
 ## whether it's beginning fresh, or resuming with the golden feather already
 ## collected.
 func initialize(resume_after_golden: bool = false) -> void:
+	_auto_discover_collectables()
 	total_collectables = collectables.size()
 
 	for c in collectables:
@@ -51,6 +52,19 @@ func initialize(resume_after_golden: bool = false) -> void:
 
 	for door in switch_doors:
 		door.initialize(resume_after_golden)
+
+
+func _auto_discover_collectables() -> void:
+	collectables.clear()
+	golden_feather = null
+
+	for node in find_children("*", "Collectable", true, false):
+		if node is GoldenFeather:
+			if golden_feather:
+				push_warning("%s: multiple GoldenFeather nodes found - only one is supported per level." % name)
+			golden_feather = node
+		else:
+			collectables.append(node)
 
 
 func _resume_with_golden_feather() -> void:
@@ -82,7 +96,7 @@ func _on_golden_feather_collected(_feather: Collectable) -> void:
 
 
 func _start_escape_timer() -> void:
-	escape_timer_start_requested.emit(escape_time_seconds)
+	escape_timer_start_requested.emit(escape_time_seconds * Settings.get_timer_scale())
 
 
 ## Called by GameManager

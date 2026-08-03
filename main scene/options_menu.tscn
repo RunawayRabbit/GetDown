@@ -39,7 +39,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset_ratio = Vector2(0.5, 0.5)
 theme = ExtResource("2_d0eo4")
-current_tab = 1
+current_tab = 2
 
 [node name="Audio" type="CenterContainer" parent="CenterContainer/Panel/TabContainer" unique_id=1375694662]
 visible = false
@@ -103,6 +103,7 @@ max_value = 1.0
 step = 0.01
 
 [node name="Controls" type="ScrollContainer" parent="CenterContainer/Panel/TabContainer" unique_id=622260609]
+visible = false
 propagate_maximum_size = true
 layout_mode = 2
 metadata/_tab_index = 1
@@ -121,6 +122,68 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("3_t42gx")
+
+[node name="Accessibility" type="CenterContainer" parent="CenterContainer/Panel/TabContainer" unique_id=1975358144]
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="GridContainer" type="VBoxContainer" parent="CenterContainer/Panel/TabContainer/Accessibility" unique_id=778765842]
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("2_d0eo4")
+
+[node name="TimerScaleLabel" type="Label" parent="CenterContainer/Panel/TabContainer/Accessibility/GridContainer" unique_id=449039286]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "Timer Scale"
+horizontal_alignment = 2
+
+[node name="TimerScaleSlider" type="HSlider" parent="CenterContainer/Panel/TabContainer/Accessibility/GridContainer" unique_id=128427123]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+max_value = 1.0
+step = 0.01
+
+[node name="TimerScaleValueLabel" type="Label" parent="CenterContainer/Panel/TabContainer/Accessibility/GridContainer/TimerScaleSlider" unique_id=1981942286]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(20, 0)
+custom_maximum_size = Vector2(20, -1)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -19.0
+offset_top = -9.5
+offset_bottom = 9.5
+grow_horizontal = 0
+grow_vertical = 2
+offset_transform_enabled = true
+offset_transform_position = Vector2(23, 0)
+text = "test"
+
+[node name="CameraShakeLabel" type="Label" parent="CenterContainer/Panel/TabContainer/Accessibility/GridContainer" unique_id=1030305620]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "Camera Shake"
+horizontal_alignment = 2
+
+[node name="CameraShakeSlider" type="HSlider" parent="CenterContainer/Panel/TabContainer/Accessibility/GridContainer" unique_id=867201101]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+max_value = 1.0
+step = 0.01
 
 [node name="BackButton" type="Button" parent="." unique_id=1771447650]
 unique_name_in_owner = true

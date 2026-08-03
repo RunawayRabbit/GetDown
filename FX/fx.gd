@@ -2,6 +2,9 @@ extends Node
 
 @export var pool_size: int = 8
 
+@export_category("Spatial Audio")
+@export var sfx_max_distance: float = 800.0
+@export var sfx_attenuation: float = 1.5
 var _stream_players: Array[AudioStreamPlayer2D] = []
 var _next_player: int = 0
 
@@ -11,6 +14,8 @@ func _ready() -> void:
 	for i in pool_size:
 		var player := AudioStreamPlayer2D.new()
 		player.bus = "SFX" # Same bus the options menu's volume slider controls.
+		player.max_distance = sfx_max_distance
+		player.attenuation = sfx_attenuation
 		add_child(player)
 		_stream_players.append(player)
 
