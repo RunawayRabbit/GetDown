@@ -9,7 +9,7 @@ class_name RetractingSpike
 @export var extended_duration: float = 1.0
 ## Delay before this spike's very first cycle for staggering them.
 @export var start_offset: float = 0.0
-
+@export var warning_effect: ImpactEffect
 @export var extend_effect: ImpactEffect
 @export var retract_effect: ImpactEffect
 

@@ -107,9 +107,8 @@ func get_timer_scale() -> float:
 func set_timer_scale(scale: float) -> void:
 	_timer_scale = scale
 
-	# TODO: Potentially unnecessary string "inf". Check how Godot does this kind of serialization.
 	@warning_ignore("incompatible_ternary")
-	_config.set_value("accessibility", "timer_scale", "inf" if is_inf(scale) else scale)
+	_config.set_value("accessibility", "timer_scale", scale)
 	_config.save(SETTINGS_PATH)
 	timer_scale_changed.emit(scale)
 
@@ -128,7 +127,7 @@ func set_shake_intensity(intensity: float) -> void:
 func _apply_saved_accessibility() -> void:
 	if _config.has_section_key("accessibility", "timer_scale"):
 		var raw = _config.get_value("accessibility", "timer_scale")
-		_timer_scale = INF if raw == "inf" else float(raw)
+		_timer_scale = float(raw)
 
 	if _config.has_section_key("accessibility", "shake_intensity"):
 		_shake_intensity = _config.get_value("accessibility", "shake_intensity")
