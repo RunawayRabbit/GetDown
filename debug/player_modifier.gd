@@ -1,9 +1,14 @@
 extends Node
 class_name PlayerModifier
 
-
 ## Abilities to add.
 @export var abilities: Array[StringName] = []
+
+func _enter_tree() -> void:
+	var players = get_tree().get_node_count_in_group(&"player")
+	if players == 0:
+		for child in get_children():
+			child.process_mode = Node.PROCESS_MODE_INHERIT
 
 func _process(_delta:float) -> void:
 	_try_add_abilities()

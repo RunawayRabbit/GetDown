@@ -5,7 +5,7 @@
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_saysh"]
 texture = ExtResource("1_1gylk")
 1:0/0 = 0
-1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, 8, 0.17985916, 8, 0.35971832, 0.17985916, 8, 0)
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(8, 0, 8, 8, 1.0315528, 8, 1.0315533, 0.057308674)
 6:0/0 = 0
 6:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 3:0/0 = 0

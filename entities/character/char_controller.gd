@@ -62,8 +62,6 @@ class_name CharacterController
 @onready var hurtbox: Hurtbox = $Hurtbox
 @onready var remote_transform_2d: RemoteTransform2D = $RemoteTransform2D
 
-var cam:Cam
-
 var move_input: float = 0.0
 var is_ducking: bool = false
 
@@ -100,9 +98,19 @@ func remove_ability(ability: StringName) -> void:
 	_abilities.erase(ability)
 
 
+var cam:Cam
+
+@warning_ignore("unused_signal") # used in StateDead.
+signal death_finished
+
 
 func _ready() -> void:
 	set_ducked_shape(false)
+	hurtbox.died.connect(_on_death)
+
+
+func _on_death() -> void:
+	state_machine.transition_to("dead")
 
 
 func _physics_process(delta: float) -> void:

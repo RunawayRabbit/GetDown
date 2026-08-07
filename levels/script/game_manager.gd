@@ -59,7 +59,7 @@ func _ready() -> void:
 
 	_player = spawn_player(Vector2.ZERO)
 	_player.register_camera(camera)
-	_player.hurtbox.died.connect(_on_player_died)
+	_player.death_finished.connect(_on_player_died)
 
 	DialogueManager.game_manager = self
 	Pause.player = _player

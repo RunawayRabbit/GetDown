@@ -9,5 +9,7 @@ script = ExtResource("1_k84lb")
 abilities = Array[StringName]([&"yoshi"])
 
 [node name="Camera" parent="." unique_id=311762619 instance=ExtResource("2_50jfs")]
+process_mode = 4
 
 [node name="Player" parent="." unique_id=1132243652 instance=ExtResource("3_kvdgx")]
+process_mode = 4

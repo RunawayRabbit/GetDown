@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://chsxwp4j7fofv" path="res://entities/character/char_state.gd" id="9_6y70v"]
 [ext_resource type="Script" uid="uid://c17xgnqt7ydgq" path="res://entities/character/beak_attack.gd" id="9_dy06j"]
 [ext_resource type="Script" uid="uid://fet56joiwi3x" path="res://entities/hurtbox.gd" id="12_wu0gw"]
+[ext_resource type="Script" uid="uid://dumcbcqru2a6j" path="res://entities/character/states/state_dead.gd" id="15_7cb1a"]
 
 [sub_resource type="Curve" id="Curve_wy5t8"]
 _limits = [-400.0, 600.0, 0.0, 0.9]
@@ -38,6 +39,22 @@ region = Rect2(96, 144, 48, 48)
 [sub_resource type="AtlasTexture" id="AtlasTexture_sa5ij"]
 atlas = ExtResource("2_1l1n4")
 region = Rect2(144, 144, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qixla"]
+atlas = ExtResource("2_1l1n4")
+region = Rect2(48, 384, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_02ngr"]
+atlas = ExtResource("2_1l1n4")
+region = Rect2(48, 144, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gpg0f"]
+atlas = ExtResource("2_1l1n4")
+region = Rect2(0, 336, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4cf84"]
+atlas = ExtResource("2_1l1n4")
+region = Rect2(0, 384, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7cb1a"]
 atlas = ExtResource("2_1l1n4")
@@ -205,6 +222,23 @@ animations = [{
 "loop": 0,
 "name": &"attack",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qixla")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_02ngr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gpg0f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4cf84")
+}],
+"loop": 0,
+"name": &"death",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -449,6 +483,10 @@ metadata/_custom_type_script = "uid://d2qqydh5t287t"
 script = ExtResource("9_6y70v")
 metadata/_custom_type_script = "uid://chsxwp4j7fofv"
 
+[node name="dead" type="Node" parent="StateMachine" unique_id=695106141]
+script = ExtResource("15_7cb1a")
+metadata/_custom_type_script = "uid://dumcbcqru2a6j"
+
 [node name="BeakAttack" type="Node" parent="." unique_id=1742894338]
 script = ExtResource("9_dy06j")
 attack_duration = 0.6
@@ -458,7 +496,7 @@ attack_cooldown = 0.7
 z_index = 1
 position = Vector2(0, -24.175825)
 sprite_frames = SubResource("SpriteFrames_pjt0s")
-animation = &"run"
+animation = &"death"
 metadata/_edit_group_ = true
 
 [node name="BodyCollider" type="CollisionShape2D" parent="." unique_id=1308594552]

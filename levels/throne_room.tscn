@@ -11,6 +11,8 @@
 [ext_resource type="PackedScene" uid="uid://ckuaq5t3qfvpr" path="res://camera/cam_zone.tscn" id="8_evc64"]
 [ext_resource type="PackedScene" uid="uid://yyo7b747jo8j" path="res://entities/doodads/door.tscn" id="9_ntupo"]
 [ext_resource type="Script" uid="uid://dgjdntq0q1is5" path="res://debug/player_modifier.gd" id="11_hayi4"]
+[ext_resource type="PackedScene" uid="uid://desh2bes4ycjj" path="res://Music/music_zone.tscn" id="12_wny1k"]
+[ext_resource type="AudioStream" uid="uid://bq5x6o7quuiqe" path="res://Music/Throne Room Loopable.mp3" id="13_ufed1"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tfkok"]
 texture = ExtResource("1_jh20m")
@@ -88,6 +90,9 @@ size = Vector2(1372, 557)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ntupo"]
 size = Vector2(1373, 572)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_efkhm"]
+size = Vector2(1052, 513.5)
+
 [node name="ThroneRoom" type="Node" unique_id=952412467 node_paths=PackedStringArray("doors")]
 script = ExtResource("1_ymp05")
 doors = [NodePath("YoshiDoor"), NodePath("TutorialDoor"), NodePath("DuckDoor"), NodePath("PeckDoor")]
@@ -126,6 +131,7 @@ process_mode = 3
 limit_transition_speed = 120.0
 
 [node name="CamZone" parent="." unique_id=1234361721 instance=ExtResource("8_evc64")]
+visible = false
 
 [node name="CollisionShape2D" parent="CamZone" index="0" unique_id=508428621]
 visible = true
@@ -180,10 +186,19 @@ position = Vector2(18, 0)
 
 [node name="PlayerMod" type="Node" parent="." unique_id=246792115]
 script = ExtResource("11_hayi4")
-abilities = Array[StringName]([&"duck", &"yoshi", &"peck"])
+
+[node name="MusicZone" parent="." unique_id=495056098 instance=ExtResource("12_wny1k")]
+position = Vector2(421, 9)
+zone_music = ExtResource("13_ufed1")
+
+[node name="CollisionShape2D" parent="MusicZone" index="0" unique_id=1779513296]
+visible = false
+position = Vector2(-489, -117.25)
+shape = SubResource("RectangleShape2D_efkhm")
 
 [editable path="CamZone"]
 [editable path="YoshiDoor"]
 [editable path="TutorialDoor"]
 [editable path="DuckDoor"]
 [editable path="PeckDoor"]
+[editable path="MusicZone"]

@@ -15,5 +15,5 @@ drag_bottom_margin = 0.1
 editor_draw_screen = false
 editor_draw_limits = true
 script = ExtResource("1_lw1ob")
-limit_transition_speed = 300.0
+limit_transition_speed = 450.0
 look_ahead_distance = 25.0
